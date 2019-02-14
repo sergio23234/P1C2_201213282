@@ -32,7 +32,7 @@ public class Pestania extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         Consola = new javax.swing.JTextArea();
 
-        setBackground(new java.awt.Color(153, 153, 255));
+        setBackground(new java.awt.Color(153, 204, 255));
 
         Editor.setColumns(20);
         Editor.setRows(5);

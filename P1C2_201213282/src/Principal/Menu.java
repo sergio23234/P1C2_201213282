@@ -20,7 +20,7 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         Lista= new ArrayList();
-        Crear_Pestania("prueba");
+        Crear_Pestania("nueva");
     }
 
     /**
@@ -48,8 +48,11 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
 
-        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
+        Scroll.setBackground(new java.awt.Color(255, 204, 255));
+
+        Pestanias.setBackground(new java.awt.Color(255, 204, 255));
         Scroll.setViewportView(Pestanias);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -58,14 +61,14 @@ public class Menu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(Scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
+                .addComponent(Scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 783, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(Scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(Scroll, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -97,6 +100,11 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem5.setText("Cerrar Pestaña");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
@@ -122,7 +130,13 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
+        Crear_Pestania("nueva");
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+        Cerrar_Pestania();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,8 +191,14 @@ public class Menu extends javax.swing.JFrame {
     private void Crear_Pestania(String dato) {
         Pestania nueva = new Pestania();
         Lista.add(nueva);
-        Pestanias.add(nueva,dato);
-        repaint();
-        
+        Pestanias.add(nueva,dato+Lista.size());
+        repaint();    
+    }
+    private void Cerrar_Pestania(){
+        int num = Pestanias.getSelectedIndex();
+        if(num>=0){
+            Lista.remove(num);
+        Pestanias.remove(num);
+        }
     }
 }
