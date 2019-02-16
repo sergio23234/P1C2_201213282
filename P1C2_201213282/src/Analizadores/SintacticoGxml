@@ -1,0 +1,116 @@
+package Analizadores;
+import java.io.FileReader;
+import java_cup.runtime.Symbol;
+import Principal.NodoGxml;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+parser code {:
+    protected int error_sync_size () {
+       return 1;   
+    }
+
+    public void syntax_error(Symbol s){
+        System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right) +", Linea: "+(s.left+1)+ " no esperado");
+        /*Nodo_error nuevo = new Nodo_error();
+        nuevo.dato = String.valueOf(s.value);
+        nuevo.linea = (s.left+1);
+        nuevo.columna=(s.right);
+        Errores.add(nuevo);
+        errores=true;*/
+    }
+
+    
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.out.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
+        /*Nodo_error nuevo = new Nodo_error();
+        nuevo.dato = String.valueOf(s.value);
+        nuevo.linea = (s.left+1);
+        nuevo.columna=(s.right);
+        Errores.add(nuevo);
+        errores=true;*/
+    }
+    public Nodo regresar_raiz(){
+        return RCCSS;
+    }
+ /*codig de usuario */
+ String total = "";
+ public NodoGxml RCCSS = null;
+ //public ArrayList<Nodo> e = new ArrayList<Nodo>();
+:}
+action code {:
+    public String estado="";
+:}
+terminal MORE,MAY,MEN,DIA,IGU,RX,RY,RDI,RTAM,RTIP,RALT,RDAT,RPAT,RVID,RBOT,RTEXT,RBOR,RANC,RCOL,RMUS,RENV,RIMA,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RNUM,RIMP,RTAR,RPRI,RCON,RLDA,REFE,RMUL,RAFI,RDES,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
+non terminal NodoGxml  Ini, S, K,F,E ; //Nodos no terminales
+non terminal Start;
+start with Start;
+Start ::= Ini:e1;
+/*---------------------------- Estructura Importar ----------------------------*/
+ES_IMP ::= MAY RIMP MEN TEXT MAY DIA RIMP MEN	{::};
+/*---------------------------- Estructura Ventana ----------------------------*/
+ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  /*CUERPO*/ MAY DIA RVEN    MEN{::};
+		//	<  vetana estructura  >               <   /  ventana  >   
+
+EST_VEN_COM ::= EST_VEN_COM EST_VEN
+			|	EST_VEN ;
+			
+EST_VEN ::= 	RID IGU CAD 	// ID  = "[^]"
+			|	RTIP IGU CAD 	// Tipo  = "[^]"
+			|	RCOL IGU CAD	// Color  = "[^]"
+			|   RAIN IGU MORE	// Accion Inicial  = {[^]}
+			|   RAFI IGU MORE;	// Accion Final  = {[^]}
+			;			
+/*---------------------------- Estructura Contenedor ----------------------------*/
+ES_CON ::= 	MAY RCON       EST_CON_COM MEN  /*CUERPO*/ MAY DIA RCON      MEN{::};
+		//	<   contenedor estructura  >               <   /  contenedor  >  
+			
+EST_CON_COM ::= EST_CON_COM EST_CON
+			|	EST_CON ;
+
+EST_CON ::= 	RID  IGU CAD 	// ID  = "[^]"
+			|	RX   IGU NUM    // X = Numero
+			|   RY   IGU NUM    // Y = Numero
+			|	RALT IGU NUM 	// Alto  = Numero
+			|	RANC IGU NUM 	// Ancho  = Numero
+			|	RCOL IGU CAD	// Color  = "[^]"
+			|   RBOR IGU CAD	// Borde = "[^]"
+			;			
+/*---------------------------- Estructura Texto ----------------------------*/
+ES_TEX ::= 	MAY RTEXT  EST_TEX_COM MEN  /*CUERPO*/ MAY DIA RCON   MEN{::};
+		//	<   Texto  estructura  >               <   /   Texto  >  			
+		
+EST_TEX_COM ::= EST_TEX_COM EST_TEX
+			|	EST_TEX ;
+			
+EST_TEX ::= 	RNOM IGU CAD 	// Nombre = "[^]"
+			|	RX   IGU NUM    // X = Numero
+			|   RY   IGU NUM    // Y = Numero
+			|	RFUE IGU CAD 	// Fuente  = "[^]"
+			|	RTAM IGU NUM 	// Tamañio = Numero
+			|	RCOL IGU CAD	// Color  = "[^]"
+			|   RNEG IGU CAD	// Negrita = "[^]"
+			|   RCUR IGU CAD	// Cursiva = "[^]"
+			;			
+/*---------------------------- Estructura Control ----------------------------*/
+ES_TEX ::= 	MAY RCTR  EST_CTR_COM MEN  /*CUERPO*/ MAY DIA RCTR   MEN{::};
+		//	<   Texto  estructura  >               <   /   Texto  >  			
+		
+EST_CTR_COM ::= EST_CTR_COM EST_CTR
+			|	EST_CTR ;
+			
+EST_CTR ::= 	RNOM IGU CAD 	// Nombre = "[^]"
+			|	RTIP IGU CAD 	// Tipo  = "[^]"
+			|	RX   IGU NUM    // X = Numero
+			|   RY   IGU NUM    // Y = Numero
+			|	RALT IGU NUM 	// Alto  = Numero
+			|	RANC IGU NUM 	// Ancho  = Numero
+			|	RFUE IGU CAD 	// Fuente  = "[^]"
+			|	RTAM IGU NUM 	// Tamañio = Numero
+			|	RCOL IGU CAD	// Color  = "[^]"
+			|   RNEG IGU CAD	// Negrita = "[^]"
+			|   RCUR IGU CAD	// Cursiva = "[^]"
+			|	RMAX IGU NUM 	// Maximo = Numero
+			|	RMIN IGU NUM 	// Minimo = Numero
+			|   RACI IGU MORE;	// Accion = {[^]}			
+			;						
+		
