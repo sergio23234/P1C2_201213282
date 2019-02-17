@@ -29,7 +29,7 @@ parser code {:
         Errores.add(nuevo);
         errores=true;*/
     }
-    public Nodo regresar_raiz(){
+    public NodoGxml regresar_raiz(){
         return RCCSS;
     }
  /*codig de usuario */
@@ -40,29 +40,41 @@ parser code {:
 action code {:
     public String estado="";
 :}
-terminal MORE,MAY,MEN,DIA,IGU,RX,RY,RDI,RTAM,RTIP,RALT,RDAT,RPAT,RVID,RBOT,RTEXT,RBOR,RANC,RCOL,RMUS,RENV,RIMA,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RNUM,RIMP,RTAR,RPRI,RCON,RLDA,REFE,RMUL,RAFI,RDES,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
-non terminal NodoGxml  Ini, S, K,F,E ; //Nodos no terminales
+terminal RMUL,RTEX,MORE,MAY,RID,MEN,DIA,IGU,RX,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
+non terminal NodoGxml  Ini, ES_IMP,ES_VEN,EST_VEN_COM,EST_VEN,Cuerpo_Vent,ES_CON,EST_CON_COM,EST_CON,Tipo_Conte,ES_TEX,EST_TEX_COM,EST_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
+non terminal NodoGxml  Cuerpo_CONTE,ES_MUL,EST_MUL_COM,ES_LDA,EST_LDA_COM,Cuerpo_LDA,ES_DA,EST_DA_COM,ES_DEF,EST_MUL,ES_BOT,EST_BOT_COM,EST_BOT,Cuerpo_BOT,ES_ENV,Cuerpo_Ini,Cuerpo_GEN;
 non terminal Start;
 start with Start;
 Start ::= Ini:e1;
+Ini ::= Cuerpo_Ini Cuerpo_GEN;
+Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
+			| ES_IMP
+			;
+Cuerpo_GEN ::= Cuerpo_GEN ES_VEN
+			| ES_VEN
+			;
 /*---------------------------- Estructura Importar ----------------------------*/
 ES_IMP ::= MAY RIMP MEN TEXT MAY DIA RIMP MEN	{::};
 /*---------------------------- Estructura Ventana ----------------------------*/
-ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  /*CUERPO*/ MAY DIA RVEN    MEN{::};
+ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  Cuerpo_Vent MAY DIA RVEN    MEN{::};
 		//	<  vetana estructura  >               <   /  ventana  >   
 
 EST_VEN_COM ::= EST_VEN_COM EST_VEN
-			|	EST_VEN ;
+			|	EST_VEN 
+			;
 			
 EST_VEN ::= 	RID IGU CAD 	// ID  = "[^]"
 			|	RTIP IGU CAD 	// Tipo  = "[^]"
 			|	RCOL IGU CAD	// Color  = "[^]"
 			|   RAIN IGU MORE	// Accion Inicial  = {[^]}
-			|   RAFI IGU MORE;	// Accion Final  = {[^]}
+			|   RAFI IGU MORE	// Accion Final  = {[^]}
 			;			
+Cuerpo_Vent ::= Cuerpo_Vent ES_CON
+			|	ES_CON
+			;
 /*---------------------------- Estructura Contenedor ----------------------------*/
-ES_CON ::= 	MAY RCON       EST_CON_COM MEN  /*CUERPO*/ MAY DIA RCON      MEN{::};
-		//	<   contenedor estructura  >               <   /  contenedor  >  
+ES_CON ::= 	MAY RCON       EST_CON_COM MEN  Cuerpo_CONTE MAY DIA RCON      MEN{::};
+		//	<   contenedor estructura  >                  <   /  contenedor  >  
 			
 EST_CON_COM ::= EST_CON_COM EST_CON
 			|	EST_CON ;
@@ -75,9 +87,18 @@ EST_CON ::= 	RID  IGU CAD 	// ID  = "[^]"
 			|	RCOL IGU CAD	// Color  = "[^]"
 			|   RBOR IGU CAD	// Borde = "[^]"
 			;			
+Cuerpo_CONTE ::= Cuerpo_CONTE Tipo_Conte
+				| Tipo_Conte;
+				
+Tipo_Conte ::=	ES_TEX 		//texto
+			|	ES_CTR 		//control
+			|	ES_MUL 		//multimedia
+			|	ES_BOT 		//boton
+			|	ES_ENV 		//enviar
+			;
 /*---------------------------- Estructura Texto ----------------------------*/
-ES_TEX ::= 	MAY RTEXT  EST_TEX_COM MEN  /*CUERPO*/ MAY DIA RCON   MEN{::};
-		//	<   Texto  estructura  >               <   /   Texto  >  			
+ES_TEX ::= 	MAY RTEX  EST_TEX_COM MEN  TEXT MAY DIA RTEX   MEN{::};
+		//	<   Texto  estructura  >          <   /   Texto  >  			
 		
 EST_TEX_COM ::= EST_TEX_COM EST_TEX
 			|	EST_TEX ;
@@ -92,8 +113,8 @@ EST_TEX ::= 	RNOM IGU CAD 	// Nombre = "[^]"
 			|   RCUR IGU CAD	// Cursiva = "[^]"
 			;			
 /*---------------------------- Estructura Control ----------------------------*/
-ES_TEX ::= 	MAY RCTR  EST_CTR_COM MEN  /*CUERPO*/ MAY DIA RCTR   MEN{::};
-		//	<   Texto  estructura  >               <   /   Texto  >  			
+ES_CTR ::= 	MAY RCTR  EST_CTR_COM MEN  Cuerpo_CTR MAY DIA RCTR   MEN{::};
+		//	<   Control  estructura  >               <   /   Control  >  			
 		
 EST_CTR_COM ::= EST_CTR_COM EST_CTR
 			|	EST_CTR ;
@@ -111,6 +132,65 @@ EST_CTR ::= 	RNOM IGU CAD 	// Nombre = "[^]"
 			|   RCUR IGU CAD	// Cursiva = "[^]"
 			|	RMAX IGU NUM 	// Maximo = Numero
 			|	RMIN IGU NUM 	// Minimo = Numero
-			|   RACI IGU MORE;	// Accion = {[^]}			
+			|   RACI IGU MORE	// Accion = {[^]}	
 			;						
+			
+Cuerpo_CTR ::= Cuerpo_CTR Tipos_CTR
+			|	Tipos_CTR;
+Tipos_CTR ::=	ES_LDA
+			|	ES_DEF
+			;
+/*---------------------------- Etiqueta Lista Datos----------------------------*/
+ES_LDA ::= 	MAY RCTR         EST_LDA_COM  MEN  Cuerpo_LDA  MAY DIA  RLDA        MEN   {::};
+		//	<   Lista Datos  estructura    >                <   /   Lista Datos  >  
+EST_LDA_COM ::= RACI IGU MORE ;// Accion = {[^]}	
+
+Cuerpo_LDA ::= 	Cuerpo_LDA  ES_DA 
+			|	ES_DA 
+			;
+
+/*---------------------------- Etiqueta Dato----------------------------*/	
+ES_DA ::= 	MAY RDAT  EST_DA_COM MEN TEXT MAY DIA RDAT   MEN{::};
+		//	<   Dato  estructura  >        <   /   Dato  > 
+EST_DA_COM ::= REFE IGU CAD // REFERENCIA = "[^]"
+				;
+			
+/*---------------------------- Etiqueta Defecto----------------------------*/	
+ES_DEF ::= 	MAY RDEF   MEN  TEXT MAY DIA RDEF   MEN{::};
+		//	<   Defecto >         <   /   Defecto  > 		
 		
+/*---------------------------- Estructura Multimedia ----------------------------*/		
+ES_MUL ::= 	MAY RMUL  EST_MUL_COM     MEN  TEXT MAY DIA RMUL   MEN{::};
+		//	<   Multimedia Estructura  >         <   /  Multimedia  > 
+EST_MUL_COM ::= EST_MUL_COM EST_MUL
+			|	EST_MUL ;
+			
+EST_MUL 	::= RNOM IGU CAD 	// Nombre = "[^]"
+			|	RTIP IGU CAD 	// Tipo  = "[^]"
+			|	RPAT IGU CAD 	// Path  = "[^]"
+			|	RX   IGU NUM    // X = Numero
+			|   RY   IGU NUM    // Y = Numero
+			|	RALT IGU NUM 	// Alto  = Numero
+			|	RANC IGU NUM 	// Ancho  = Numero
+			|	RAUT IGU CAD 	// Auto-reproduccion  = "[^]"
+			;			
+/*---------------------------- Estructura Boton ----------------------------*/	
+ES_BOT ::= 	MAY RBOT  EST_BOT_COM  MEN Cuerpo_BOT MAY DIA RBOT   MEN{::};
+		//	<   BOTON Estructura    >              <   /  Boton  > 
+EST_BOT_COM ::= EST_BOT_COM EST_BOT
+			|	EST_BOT ;
+			
+EST_BOT 	::= RNOM IGU CAD 	// Nombre = "[^]"
+			|	RX   IGU NUM    // X = Numero
+			|   RY   IGU NUM    // Y = Numero
+			|	RALT IGU NUM 	// Alto  = Numero
+			|	RANC IGU NUM 	// Ancho  = Numero
+			|	REFE IGU CAD 	// Referencia  = "[^]"
+			|	RACI IGU MORE 	// Accion  = {"[^]"}
+				;
+
+Cuerpo_BOT ::= ES_TEX	//estructura texto
+			|  TEXT;	//texto 
+/*---------------------------- Estructura Enviar ----------------------------*/	
+ES_ENV ::= 	MAY RENV  EST_BOT_COM  MEN Cuerpo_BOT MAY DIA RENV  MEN{::};
+		//	<   ENVIAR Estructura    >             <   /  Enviar  > 

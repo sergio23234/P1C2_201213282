@@ -24,7 +24,7 @@ public static String errores="";
 Numero = [0-9]+
 %%
 "##"([^\n])*[\n]								{/*Ignorar Comentario Simple*/}
-"#$"([^)*"$#"									{/*Ignorar Comentario multiple*/}
+"#$"([^])*"$#"									{/*Ignorar Comentario multiple*/}
 "<"											{return new Symbol(sym.MAY,yyline,yycolumn,yytext());}
 ">"											{return new Symbol(sym.MEN,yyline,yycolumn,yytext());}
 "/"											{return new Symbol(sym.DIA,yyline,yycolumn,yytext());}
@@ -37,15 +37,15 @@ Numero = [0-9]+
 "Alto"										{return new Symbol(sym.RALT,yyline,yycolumn,yytext());}
 "Dato"										{return new Symbol(sym.RDAT,yyline,yycolumn,yytext());}
 "Path"										{return new Symbol(sym.RPAT,yyline,yycolumn,yytext());}
-"Video"										{return new Symbol(sym.RVID,yyline,yycolumn,yytext());}
+//"Video"										{return new Symbol(sym.RVID,yyline,yycolumn,yytext());}
 "Boton"										{return new Symbol(sym.RBOT,yyline,yycolumn,yytext());}
 "Texto"										{return new Symbol(sym.RTEX,yyline,yycolumn,yytext());}
 "Borde"										{return new Symbol(sym.RBOR,yyline,yycolumn,yytext());}
 "Ancho"										{return new Symbol(sym.RANC,yyline,yycolumn,yytext());}
 "Color"										{return new Symbol(sym.RCOL,yyline,yycolumn,yytext());}
-"Musica"									{return new Symbol(sym.RMUS,yyline,yycolumn,yytext());}
+//"Musica"									{return new Symbol(sym.RMUS,yyline,yycolumn,yytext());}
 "Enviar"									{return new Symbol(sym.RENV,yyline,yycolumn,yytext());}
-"Imagen"									{return new Symbol(sym.RIMA,yyline,yycolumn,yytext());}
+//"Imagen"									{return new Symbol(sym.RIMA,yyline,yycolumn,yytext());}
 "Minimo"									{return new Symbol(sym.RMIN,yyline,yycolumn,yytext());}
 "Maximo"									{return new Symbol(sym.RMAX,yyline,yycolumn,yytext());}
 "Accion"									{return new Symbol(sym.RACI,yyline,yycolumn,yytext());}
@@ -55,20 +55,20 @@ Numero = [0-9]+
 "Cursiva"									{return new Symbol(sym.RCUR,yyline,yycolumn,yytext());}
 "Ventana"									{return new Symbol(sym.RVEN,yyline,yycolumn,yytext());}
 "Defecto"									{return new Symbol(sym.RDEF,yyline,yycolumn,yytext());}
-"Numerico"									{return new Symbol(sym.RNUM,yyline,yycolumn,yytext());}
+//"Numerico"									{return new Symbol(sym.RNUM,yyline,yycolumn,yytext());}
 "Importar"									{return new Symbol(sym.RIMP,yyline,yycolumn,yytext());}
 //"TextoArea"									{return new Symbol(sym.RTAR,yyline,yycolumn,yytext());}
 "Contenedor"								{return new Symbol(sym.RCON,yyline,yycolumn,yytext());}
 "ListaDatos"								{return new Symbol(sym.RLDA,yyline,yycolumn,yytext());}
 "Referencia"								{return new Symbol(sym.REFE,yyline,yycolumn,yytext());}
-//"Multimedia"								{return new Symbol(sym.RMUL,yyline,yycolumn,yytext());}
+"Multimedia"								{return new Symbol(sym.RMUL,yyline,yycolumn,yytext());}
 "AccionFinal"								{return new Symbol(sym.RAFI,yyline,yycolumn,yytext());}
-"Desplegable"								{return new Symbol(sym.RDES,yyline,yycolumn,yytext());}
+//"Desplegable"								{return new Symbol(sym.RDES,yyline,yycolumn,yytext());}
 "Controlador"								{return new Symbol(sym.RCTR,yyline,yycolumn,yytext());}
 "AccionInicial"								{return new Symbol(sym.RAIN,yyline,yycolumn,yytext());}
 "Auto-Reproduccion"							{return new Symbol(sym.RAUT,yyline,yycolumn,yytext());}
-(["\""][^\[\"]]+["\""])						{return new Symbol(sym.CAD,yyline,yycolumn,yytext());}
+(["\""][^\"]]+["\""])						{return new Symbol(sym.CAD,yyline,yycolumn,yytext());}
 ({Numero})					    			{return new Symbol(sym.NUM,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
-{["{"](^{,})+["}"]}							{return new Symbol(sym.MORE,yyline,yycolumn,yytext());}	
+(["{"]([^{}])+["}"])							{return new Symbol(sym.MORE,yyline,yycolumn,yytext());}	
 .   										{return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}

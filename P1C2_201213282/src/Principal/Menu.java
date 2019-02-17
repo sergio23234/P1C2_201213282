@@ -37,9 +37,9 @@ public class Menu extends javax.swing.JFrame {
         Pestanias = new javax.swing.JTabbedPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        abrir = new javax.swing.JMenuItem();
+        guardar = new javax.swing.JMenuItem();
+        guardarcomo = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -74,16 +74,26 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Abrir");
-        jMenu1.add(jMenuItem1);
+        abrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        abrir.setText("Abrir");
+        abrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                abrirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(abrir);
 
-        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem2.setText("Guardar");
-        jMenu1.add(jMenuItem2);
+        guardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
+        guardar.setText("Guardar");
+        jMenu1.add(guardar);
 
-        jMenuItem3.setText("Guardar Como");
-        jMenu1.add(jMenuItem3);
+        guardarcomo.setText("Guardar Como");
+        guardarcomo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarcomoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(guardarcomo);
 
         jMenuBar1.add(jMenu1);
 
@@ -138,6 +148,15 @@ public class Menu extends javax.swing.JFrame {
         Cerrar_Pestania();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_abrirActionPerformed
+
+    private void guardarcomoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarcomoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guardarcomoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -176,13 +195,13 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Pestanias;
     private javax.swing.JScrollPane Scroll;
+    private javax.swing.JMenuItem abrir;
+    private javax.swing.JMenuItem guardar;
+    private javax.swing.JMenuItem guardarcomo;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
