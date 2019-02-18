@@ -5,7 +5,17 @@
  */
 package Principal;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -48,7 +58,7 @@ public class Menu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         Scroll.setBackground(new java.awt.Color(255, 204, 255));
 
@@ -85,6 +95,11 @@ public class Menu extends javax.swing.JFrame {
 
         guardar.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         guardar.setText("Guardar");
+        guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guardarActionPerformed(evt);
+            }
+        });
         jMenu1.add(guardar);
 
         guardarcomo.setText("Guardar Como");
@@ -149,13 +164,81 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
-        // TODO add your handling code here:
-        
+     if(Lista.size()>0){
+         
+         //empezamos implementando la clase JFileChooser para abrir archivos
+        JFileChooser JFC = new JFileChooser();
+        //filtro que muestra solo los archivos con extension *.edu
+        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *.txt *.docx", "txt","doc"));
+        //se comprueba si se ha dado al boton aceptar
+        int abrir = JFC.showDialog(null, "Abrir");
+        if (abrir == JFileChooser.APPROVE_OPTION) {
+            FileReader FR = null;
+            BufferedReader BR = null;
+            try {
+                //abro el fichero y creo un BufferedReader para hacer
+                File archivo = JFC.getSelectedFile();//abre un archivo .lengf
+                String PATH = JFC.getSelectedFile().getAbsolutePath();
+                if(PATH.toLowerCase().endsWith(".txt")||PATH.toLowerCase().endsWith(".docx")){
+                    FR = new FileReader(archivo);
+                    BR = new BufferedReader(FR);
+                    
+                    //leyendo el archivo
+                    String linea;//variable para leer linea por linea el archivo de entrada
+                    System.out.println(archivo.getAbsolutePath());
+                    boolean abierto=false;
+                    for(int i=0;i<Lista.size();i++){
+                        if(Lista.get(i).path.compareTo(archivo.getAbsolutePath())==0){
+                            JOptionPane.showMessageDialog(this, "Archivo Abierto","Oops! Error", JOptionPane.ERROR_MESSAGE);
+                            abierto=true;
+                        }
+                    }
+                    if(!abierto){
+                        int num = Pestanias.getSelectedIndex();
+                        Pestania actual = Lista.get(num);
+                        actual.path = archivo.getAbsolutePath();
+                        actual.Editor.setText("");//limpiamos el textArea antes de sobreescribir
+                        while((linea=BR.readLine())!=null){ //cuando termina el texto del archivo?
+                            actual.Editor.append(linea+"\n");//utilizamos append para escribir en el textArea
+                        }
+                    }
+                    
+                }else{
+                    JOptionPane.showMessageDialog(this, "Archivo no soportado","Oops! Error", JOptionPane.ERROR_MESSAGE);                    
+                }
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+            //cerramos el fichero, para asegurar que se cierra tanto
+            // si todo va bien si salta una excepcion
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    if(null!= FR){
+                        FR.close();
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+     }
+     else{
+         JOptionPane.showMessageDialog(this, "Debe existir por lo menos una pestaña para abrir un archivo","Oops! Error", JOptionPane.ERROR_MESSAGE);
+     }   
     }//GEN-LAST:event_abrirActionPerformed
 
     private void guardarcomoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarcomoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_guardarcomoActionPerformed
+
+    private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guardarActionPerformed
 
     /**
      * @param args the command line arguments

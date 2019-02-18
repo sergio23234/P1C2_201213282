@@ -10,7 +10,7 @@ parser code {:
     }
 
     public void syntax_error(Symbol s){
-        System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right) +", Linea: "+(s.left+1)+ " no esperado");
+        System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right+1) +", Linea: "+(s.left+1)+ " no esperado"+s.sym);
         /*Nodo_error nuevo = new Nodo_error();
         nuevo.dato = String.valueOf(s.value);
         nuevo.linea = (s.left+1);
@@ -35,18 +35,21 @@ parser code {:
  /*codig de usuario */
  String total = "";
  public NodoGxml RCCSS = null;
+ private Boolean texto_ini = false;
  //public ArrayList<Nodo> e = new ArrayList<Nodo>();
 :}
 action code {:
     public String estado="";
 :}
-terminal RMUL,RTEX,MORE,MAY,RID,MEN,DIA,IGU,RX,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
+terminal RMUL,RTEX,MORE,ILL,FLL,MAY,RID,MEN,IGU,RX,DIA,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
 non terminal NodoGxml  Ini, ES_IMP,ES_VEN,EST_VEN_COM,EST_VEN,Cuerpo_Vent,ES_CON,EST_CON_COM,EST_CON,Tipo_Conte,ES_TEX,EST_TEX_COM,EST_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
 non terminal NodoGxml  Cuerpo_CONTE,ES_MUL,EST_MUL_COM,ES_LDA,EST_LDA_COM,Cuerpo_LDA,ES_DA,EST_DA_COM,ES_DEF,EST_MUL,ES_BOT,EST_BOT_COM,EST_BOT,Cuerpo_BOT,ES_ENV,Cuerpo_Ini,Cuerpo_GEN;
+non terminal String    SUM_TEXT;
 non terminal Start;
 start with Start;
 Start ::= Ini:e1;
-Ini ::= Cuerpo_Ini Cuerpo_GEN;
+Ini ::= 	Cuerpo_Ini Cuerpo_GEN
+		|	Cuerpo_GEN;
 Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
 			| ES_IMP
 			;
@@ -54,34 +57,37 @@ Cuerpo_GEN ::= Cuerpo_GEN ES_VEN
 			| ES_VEN
 			;
 /*---------------------------- Estructura Importar ----------------------------*/
-ES_IMP ::= MAY RIMP MEN TEXT MAY DIA RIMP MEN	{::};
+ES_IMP ::= MAY RIMP MEN SUM_TEXT MAY  RIMP MEN	{::};
+
+SUM_TEXT ::= SUM_TEXT:e1 TEXT:e2{:if(texto_ini){texto_ini=false; RESULT=e1.toString()+e2.toString();}else{RESULT=e1.toString()+" "+e2.toString(); }:}
+	|		 TEXT:e1 {:RESULT=e1.toString(); texto_ini=true;:};
 /*---------------------------- Estructura Ventana ----------------------------*/
-ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  Cuerpo_Vent MAY DIA RVEN    MEN{::};
+ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  Cuerpo_Vent MAY DIA RVEN    MEN{: System.out.println("llego a final ventana");:};
 		//	<  vetana estructura  >               <   /  ventana  >   
 
 EST_VEN_COM ::= EST_VEN_COM EST_VEN
 			|	EST_VEN 
 			;
 			
-EST_VEN ::= 	RID IGU CAD 	// ID  = "[^]"
-			|	RTIP IGU CAD 	// Tipo  = "[^]"
-			|	RCOL IGU CAD	// Color  = "[^]"
-			|   RAIN IGU MORE	// Accion Inicial  = {[^]}
-			|   RAFI IGU MORE	// Accion Final  = {[^]}
+EST_VEN ::= 	RID  IGU CAD 	{: System.out.println("reconocio ID VEN");:}// ID  = "[^]" 
+			|	RTIP IGU CAD 	{: System.out.println("reconocio ID VEN");:}// Tipo  = "[^]"
+			|	RCOL IGU CAD	{: System.out.println("reconocio ID VEN");:}// Color  = "[^]"
+			|   RAIN IGU MORE	{: System.out.println("reconocio Acc Inicial");:}// Accion Inicial  = {[^]}
+			|   RAFI IGU MORE	{: System.out.println("accion final VEN");:}// Accion Final  = {[^]}
 			;			
 Cuerpo_Vent ::= Cuerpo_Vent ES_CON
 			|	ES_CON
 			;
 /*---------------------------- Estructura Contenedor ----------------------------*/
-ES_CON ::= 	MAY RCON       EST_CON_COM MEN  Cuerpo_CONTE MAY DIA RCON      MEN{::};
+ES_CON ::= 	MAY RCON       EST_CON_COM MEN  Cuerpo_CONTE MAY  DIA RCON      MEN{::};
 		//	<   contenedor estructura  >                  <   /  contenedor  >  
 			
 EST_CON_COM ::= EST_CON_COM EST_CON
 			|	EST_CON ;
 
-EST_CON ::= 	RID  IGU CAD 	// ID  = "[^]"
-			|	RX   IGU NUM    // X = Numero
-			|   RY   IGU NUM    // Y = Numero
+EST_CON ::= 	RID  IGU CAD 	{: System.out.println("reconocio ID CON");:}// ID  = "[^]"
+			|	RX   IGU NUM    {: System.out.println("reconocio ID CON");:}// X = Numero
+			|   RY   IGU NUM    {: System.out.println("reconocio ID CON");:}// Y = Numero
 			|	RALT IGU NUM 	// Alto  = Numero
 			|	RANC IGU NUM 	// Ancho  = Numero
 			|	RCOL IGU CAD	// Color  = "[^]"
@@ -92,18 +98,18 @@ Cuerpo_CONTE ::= Cuerpo_CONTE Tipo_Conte
 				
 Tipo_Conte ::=	ES_TEX 		//texto
 			|	ES_CTR 		//control
-			|	ES_MUL 		//multimedia
+			|	ES_MUL 		//multime
 			|	ES_BOT 		//boton
 			|	ES_ENV 		//enviar
 			;
 /*---------------------------- Estructura Texto ----------------------------*/
-ES_TEX ::= 	MAY RTEX  EST_TEX_COM MEN  TEXT MAY DIA RTEX   MEN{::};
+ES_TEX ::= 	MAY RTEX  EST_TEX_COM MEN SUM_TEXT:e1 {:System.out.println("texto"+e1);:}  MAY DIA RTEX   MEN;
 		//	<   Texto  estructura  >          <   /   Texto  >  			
 		
 EST_TEX_COM ::= EST_TEX_COM EST_TEX
 			|	EST_TEX ;
 			
-EST_TEX ::= 	RNOM IGU CAD 	// Nombre = "[^]"
+EST_TEX ::= 	RNOM IGU CAD 	{: :}// Nombre = "[^]"
 			|	RX   IGU NUM    // X = Numero
 			|   RY   IGU NUM    // Y = Numero
 			|	RFUE IGU CAD 	// Fuente  = "[^]"
@@ -113,13 +119,13 @@ EST_TEX ::= 	RNOM IGU CAD 	// Nombre = "[^]"
 			|   RCUR IGU CAD	// Cursiva = "[^]"
 			;			
 /*---------------------------- Estructura Control ----------------------------*/
-ES_CTR ::= 	MAY RCTR  EST_CTR_COM MEN  Cuerpo_CTR MAY DIA RCTR   MEN{::};
+ES_CTR ::= 	MAY RCTR  EST_CTR_COM MEN  Cuerpo_CTR MAY  DIA   RCTR   MEN{::};
 		//	<   Control  estructura  >               <   /   Control  >  			
 		
 EST_CTR_COM ::= EST_CTR_COM EST_CTR
 			|	EST_CTR ;
 			
-EST_CTR ::= 	RNOM IGU CAD 	// Nombre = "[^]"
+EST_CTR ::= 	RNOM IGU CAD 	{:System.out.println("reconocio Nombre Control");:}// Nombre = "[^]"
 			|	RTIP IGU CAD 	// Tipo  = "[^]"
 			|	RX   IGU NUM    // X = Numero
 			|   RY   IGU NUM    // Y = Numero
@@ -137,31 +143,36 @@ EST_CTR ::= 	RNOM IGU CAD 	// Nombre = "[^]"
 			
 Cuerpo_CTR ::= Cuerpo_CTR Tipos_CTR
 			|	Tipos_CTR;
+			
 Tipos_CTR ::=	ES_LDA
 			|	ES_DEF
 			;
 /*---------------------------- Etiqueta Lista Datos----------------------------*/
-ES_LDA ::= 	MAY RCTR         EST_LDA_COM  MEN  Cuerpo_LDA  MAY DIA  RLDA        MEN   {::};
-		//	<   Lista Datos  estructura    >                <   /   Lista Datos  >  
-EST_LDA_COM ::= RACI IGU MORE ;// Accion = {[^]}	
-
+ES_LDA ::= 	MAY RLDA  EST_LDA_COM ;
+		//	<   Lista Datos  estructura   
+EST_LDA_COM ::= RACI IGU MORE MEN  Cuerpo_LDA  MAY  DIA RLDA        MEN   {::}
+			//  Accion = {[^]} >                <   /   Lista Datos  >   
+			|	MEN  Cuerpo_LDA  MAY DIA  RLDA        MEN   {::};	
+			//  >                <   /   Lista Datos  >  
 Cuerpo_LDA ::= 	Cuerpo_LDA  ES_DA 
 			|	ES_DA 
 			;
 
 /*---------------------------- Etiqueta Dato----------------------------*/	
-ES_DA ::= 	MAY RDAT  EST_DA_COM MEN TEXT MAY DIA RDAT   MEN{::};
-		//	<   Dato  estructura  >        <   /   Dato  > 
-EST_DA_COM ::= REFE IGU CAD // REFERENCIA = "[^]"
+ES_DA ::= 	MAY RDAT  EST_DA_COM ;
+		//	<   Dato  estructura   
+EST_DA_COM ::= REFE IGU CAD       MEN SUM_TEXT:e1 {:System.out.println("texto: "+e1);:}  MAY  DIA RDAT   MEN{::}
+			// REFERENCIA = "[^]" >             <   /      Dato  >
+			|MEN SUM_TEXT MAY  DIA RDAT   MEN{::}
 				;
 			
 /*---------------------------- Etiqueta Defecto----------------------------*/	
-ES_DEF ::= 	MAY RDEF   MEN  TEXT MAY DIA RDEF   MEN{::};
+ES_DEF ::= 	MAY RDEF   MEN  SUM_TEXT:e1 {:System.out.println("texto: "+e1);:}  MAY DIA RDEF   MEN{::};
 		//	<   Defecto >         <   /   Defecto  > 		
 		
-/*---------------------------- Estructura Multimedia ----------------------------*/		
-ES_MUL ::= 	MAY RMUL  EST_MUL_COM     MEN  TEXT MAY DIA RMUL   MEN{::};
-		//	<   Multimedia Estructura  >         <   /  Multimedia  > 
+/*---------------------------- Estructura Multime ----------------------------*/		
+ES_MUL ::= 	MAY RMUL  EST_MUL_COM     MEN  SUM_TEXT MAY DIA RMUL   MEN{::};
+		//	<   Multime Estructura  >         <   /  Multime  > 
 EST_MUL_COM ::= EST_MUL_COM EST_MUL
 			|	EST_MUL ;
 			
@@ -190,7 +201,7 @@ EST_BOT 	::= RNOM IGU CAD 	// Nombre = "[^]"
 				;
 
 Cuerpo_BOT ::= ES_TEX	//estructura texto
-			|  TEXT;	//texto 
+			|  SUM_TEXT;	//texto 
 /*---------------------------- Estructura Enviar ----------------------------*/	
-ES_ENV ::= 	MAY RENV  EST_BOT_COM  MEN Cuerpo_BOT MAY DIA RENV  MEN{::};
+ES_ENV ::= 	MAY RENV  EST_BOT_COM  MEN Cuerpo_BOT MAY  DIA RENV  MEN{::};
 		//	<   ENVIAR Estructura    >             <   /  Enviar  > 

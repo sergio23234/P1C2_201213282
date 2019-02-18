@@ -8,60 +8,64 @@ package Analizadores;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int RNOM = 26;
-  public static final int RFUE = 25;
-  public static final int RMIN = 22;
-  public static final int REFE = 34;
+  public static final int RNOM = 28;
+  public static final int RFUE = 27;
+  public static final int REFE = 36;
+  public static final int RMIN = 24;
   public static final int RMUL = 2;
-  public static final int RIMP = 31;
-  public static final int RTIP = 13;
-  public static final int RPAT = 16;
-  public static final int RCON = 32;
-  public static final int RCUR = 28;
-  public static final int RY = 11;
-  public static final int CAD = 39;
-  public static final int RENV = 21;
-  public static final int RX = 10;
-  public static final int RCOL = 20;
-  public static final int RBOT = 17;
-  public static final int RVEN = 29;
-  public static final int RNEG = 27;
-  public static final int RBOR = 18;
-  public static final int NUM = 40;
-  public static final int RALT = 14;
-  public static final int IGU = 9;
-  public static final int RAIN = 37;
+  public static final int RIMP = 33;
+  public static final int RTIP = 15;
+  public static final int FLL = 6;
+  public static final int RPAT = 18;
+  public static final int RCON = 34;
+  public static final int RCUR = 30;
+  public static final int RY = 13;
+  public static final int CAD = 41;
+  public static final int RENV = 23;
+  public static final int RX = 11;
+  public static final int RCOL = 22;
+  public static final int RBOT = 19;
+  public static final int RVEN = 31;
+  public static final int RNEG = 29;
+  public static final int RBOR = 20;
+  public static final int NUM = 42;
+  public static final int RALT = 16;
+  public static final int IGU = 10;
+  public static final int RAIN = 39;
   public static final int EOF = 0;
   public static final int RTEX = 3;
-  public static final int RACI = 24;
-  public static final int RAUT = 38;
-  public static final int RAFI = 35;
-  public static final int RDEF = 30;
+  public static final int RACI = 26;
+  public static final int RAUT = 40;
+  public static final int RAFI = 37;
+  public static final int RDEF = 32;
   public static final int error = 1;
-  public static final int RMAX = 23;
-  public static final int DIA = 8;
-  public static final int RCTR = 36;
-  public static final int RDAT = 15;
-  public static final int MEN = 7;
-  public static final int TEXT = 41;
-  public static final int RTAM = 12;
-  public static final int MAY = 5;
-  public static final int RID = 6;
+  public static final int RMAX = 25;
+  public static final int DIA = 12;
+  public static final int RCTR = 38;
+  public static final int RDAT = 17;
+  public static final int MEN = 9;
+  public static final int TEXT = 43;
+  public static final int RTAM = 14;
+  public static final int MAY = 7;
+  public static final int ILL = 5;
+  public static final int RID = 8;
   public static final int MORE = 4;
-  public static final int RANC = 19;
-  public static final int RLDA = 33;
+  public static final int RANC = 21;
+  public static final int RLDA = 35;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "RMUL",
   "RTEX",
   "MORE",
+  "ILL",
+  "FLL",
   "MAY",
   "RID",
   "MEN",
-  "DIA",
   "IGU",
   "RX",
+  "DIA",
   "RY",
   "RTAM",
   "RTIP",

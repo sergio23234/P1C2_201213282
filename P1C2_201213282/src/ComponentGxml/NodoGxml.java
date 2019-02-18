@@ -3,13 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Principal;
+package ComponentGxml;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author sergi
  */
 public class NodoGxml {
-    public String tipo_etq;
+    public ArrayList<Ventana> Ventanas;
+    public Ventana actual;
+    public NodoGxml(){
+       Ventanas = new ArrayList();
+    }
     
 }

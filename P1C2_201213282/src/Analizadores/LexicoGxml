@@ -21,12 +21,15 @@ public static String errores="";
 %ignorecase
 %line
 %column
+%state Stado, LLave
 Numero = [0-9]+
 %%
-"##"([^\n])*[\n]								{/*Ignorar Comentario Simple*/}
-"#$"([^])*"$#"									{/*Ignorar Comentario multiple*/}
-"<"											{return new Symbol(sym.MAY,yyline,yycolumn,yytext());}
-">"											{return new Symbol(sym.MEN,yyline,yycolumn,yytext());}
+"##"([^\n])*[\n]							{/*Ignorar Comentario Simple*/}
+"#$"([^$#])*"$#"							{/*Ignorar Comentario multiple*/}
+"<"											{yybegin(LLave); return new Symbol(sym.MAY,yyline,yycolumn,yytext());}
+
+<LLave>{
+">"											{yybegin(YYINITIAL); return new Symbol(sym.MEN,yyline,yycolumn,yytext());}
 "/"											{return new Symbol(sym.DIA,yyline,yycolumn,yytext());}
 "="											{return new Symbol(sym.IGU,yyline,yycolumn,yytext());}
 "X"											{return new Symbol(sym.RX,yyline,yycolumn,yytext());}
@@ -67,8 +70,13 @@ Numero = [0-9]+
 "Controlador"								{return new Symbol(sym.RCTR,yyline,yycolumn,yytext());}
 "AccionInicial"								{return new Symbol(sym.RAIN,yyline,yycolumn,yytext());}
 "Auto-Reproduccion"							{return new Symbol(sym.RAUT,yyline,yycolumn,yytext());}
-(["\""][^\"]]+["\""])						{return new Symbol(sym.CAD,yyline,yycolumn,yytext());}
+(["\""]([^\"])+["\""])						{return new Symbol(sym.CAD,yyline,yycolumn,yytext());}
+(["{"]([^}])+["}"])						    {return new Symbol(sym.MORE,yyline,yycolumn,yytext());}
 ({Numero})					    			{return new Symbol(sym.NUM,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
-(["{"]([^{}])+["}"])							{return new Symbol(sym.MORE,yyline,yycolumn,yytext());}	
-.   										{return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}
+}
+<Stado>{
+([^<>])+   									{yybegin(YYINITIAL); return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}
+}
+([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
+([^])   									{yybegin(Stado); return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}
