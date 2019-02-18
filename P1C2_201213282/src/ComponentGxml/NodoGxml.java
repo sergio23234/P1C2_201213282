@@ -18,4 +18,10 @@ public class NodoGxml {
        Ventanas = new ArrayList();
     }
     
+    public void Recorrer_Ventanas(){
+        for(int i=0;i<Ventanas.size();i++){
+            Ventana actual = Ventanas.get(i);
+            System.out.println(actual.Id+"-->"+actual.tipo+"-->"+actual.color+"-->"+actual.accionI+"-->"+actual.accionF);
+        }
+    }
 }

@@ -8,6 +8,7 @@ import ComponentGxml.NodoGxml;
 import Analizadores.*;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +19,14 @@ import java.util.logging.Logger;
 public class Pestania extends javax.swing.JPanel {
     
     public String path;
+    private ArrayList<NodoError> errores;
     /**
      * Creates new form Pestania
      */
     public Pestania() {
         initComponents();
         path="";
+        errores = new ArrayList();
     }
 
     /**
@@ -95,12 +98,20 @@ public class Pestania extends javax.swing.JPanel {
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
     if(!path.equals("")){
         try {
+            errores.clear();
             File archivo = new File(path);
             FileReader fr = new FileReader(archivo);
             LexicoGxml lex = new LexicoGxml(fr);
             SintacticoGxml miParser = new SintacticoGxml(lex);
             miParser.parse();
             NodoGxml Raiz=miParser.RCCSS;
+            errores=miParser.errores;
+            System.out.println("errores --->"+errores.size()+"--->"+miParser.errores.size());
+            for(int i=0;i<errores.size();i++){
+                NodoError actual = errores.get(i);
+                System.out.println(actual.tipo+"->"+actual.descripcion+"->"+actual.linea+"->"+actual.columna);
+            }
+            Raiz.Recorrer_Ventanas();
         } catch (Exception ex) {
             Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
         }

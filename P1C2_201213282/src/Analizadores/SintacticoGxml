@@ -1,7 +1,8 @@
 package Analizadores;
 import java.io.FileReader;
 import java_cup.runtime.Symbol;
-import Principal.NodoGxml;
+import ComponentGxml.*;
+import Principal.NodoError;
 import java_cup.runtime.*;
 import java.util.ArrayList;
 parser code {:
@@ -36,18 +37,20 @@ parser code {:
  String total = "";
  public NodoGxml RCCSS = null;
  private Boolean texto_ini = false;
+ public ArrayList<NodoError> errores = new ArrayList();
  //public ArrayList<Nodo> e = new ArrayList<Nodo>();
 :}
 action code {:
     public String estado="";
 :}
 terminal RMUL,RTEX,MORE,ILL,FLL,MAY,RID,MEN,IGU,RX,DIA,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
-non terminal NodoGxml  Ini, ES_IMP,ES_VEN,EST_VEN_COM,EST_VEN,Cuerpo_Vent,ES_CON,EST_CON_COM,EST_CON,Tipo_Conte,ES_TEX,EST_TEX_COM,EST_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
+non terminal NodoGxml  Ini, ES_IMP,ES_VEN,Cuerpo_Vent,ES_CON,EST_CON_COM,EST_CON,Tipo_Conte,ES_TEX,EST_TEX_COM,EST_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
 non terminal NodoGxml  Cuerpo_CONTE,ES_MUL,EST_MUL_COM,ES_LDA,EST_LDA_COM,Cuerpo_LDA,ES_DA,EST_DA_COM,ES_DEF,EST_MUL,ES_BOT,EST_BOT_COM,EST_BOT,Cuerpo_BOT,ES_ENV,Cuerpo_Ini,Cuerpo_GEN;
 non terminal String    SUM_TEXT;
+non terminal NodoSGxml EST_VEN_COM,EST_VEN;
 non terminal Start;
 start with Start;
-Start ::= Ini:e1;
+Start ::= Ini:e1	{::};
 Ini ::= 	Cuerpo_Ini Cuerpo_GEN
 		|	Cuerpo_GEN;
 Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
@@ -59,21 +62,21 @@ Cuerpo_GEN ::= Cuerpo_GEN ES_VEN
 /*---------------------------- Estructura Importar ----------------------------*/
 ES_IMP ::= MAY RIMP MEN SUM_TEXT MAY  RIMP MEN	{::};
 
-SUM_TEXT ::= SUM_TEXT:e1 TEXT:e2{:if(texto_ini){texto_ini=false; RESULT=e1.toString()+e2.toString();}else{RESULT=e1.toString()+" "+e2.toString(); }:}
-	|		 TEXT:e1 {:RESULT=e1.toString(); texto_ini=true;:};
+SUM_TEXT ::= SUM_TEXT:e1 TEXT:e2		{:if(texto_ini){texto_ini=false; RESULT=e1.toString()+e2.toString();}else{RESULT=e1.toString()+" "+e2.toString(); }:}
+	|		 TEXT:e1 					{:RESULT=e1.toString(); texto_ini=true;:};
 /*---------------------------- Estructura Ventana ----------------------------*/
-ES_VEN ::= MAY RVEN  EST_VEN_COM MEN  Cuerpo_Vent MAY DIA RVEN    MEN{: System.out.println("llego a final ventana");:};
+ES_VEN ::= MAY RVEN  EST_VEN_COM:e1 MEN  {:Ventana v = new Ventana(); v.Imprimir_NodoS(e1); v.Analizar_Attributos(e1,errores); RCCSS.Ventanas.add(v);:}Cuerpo_Vent MAY DIA RVEN    MEN{: System.out.println("llego a final ventana");:};
 		//	<  vetana estructura  >               <   /  ventana  >   
 
-EST_VEN_COM ::= EST_VEN_COM EST_VEN
-			|	EST_VEN 
+EST_VEN_COM ::= EST_VEN_COM:e2 EST_VEN:e1		{:e2.listas.add(e1); RESULT=e2;:}
+			|	EST_VEN:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:}
 			;
 			
-EST_VEN ::= 	RID  IGU CAD 	{: System.out.println("reconocio ID VEN");:}// ID  = "[^]" 
-			|	RTIP IGU CAD 	{: System.out.println("reconocio ID VEN");:}// Tipo  = "[^]"
-			|	RCOL IGU CAD	{: System.out.println("reconocio ID VEN");:}// Color  = "[^]"
-			|   RAIN IGU MORE	{: System.out.println("reconocio Acc Inicial");:}// Accion Inicial  = {[^]}
-			|   RAFI IGU MORE	{: System.out.println("accion final VEN");:}// Accion Final  = {[^]}
+EST_VEN ::= 	RID  IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="ID"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// ID  = "[^]" 
+			|	RTIP IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Tipo"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tipo  = "[^]"
+			|	RCOL IGU CAD:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Color"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
+			|   RAIN IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Inicial"; nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Inicial  = {[^]}
+			|   RAFI IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Final"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Final  = {[^]}
 			;			
 Cuerpo_Vent ::= Cuerpo_Vent ES_CON
 			|	ES_CON
@@ -204,4 +207,4 @@ Cuerpo_BOT ::= ES_TEX	//estructura texto
 			|  SUM_TEXT;	//texto 
 /*---------------------------- Estructura Enviar ----------------------------*/	
 ES_ENV ::= 	MAY RENV  EST_BOT_COM  MEN Cuerpo_BOT MAY  DIA RENV  MEN{::};
-		//	<   ENVIAR Estructura    >             <   /  Enviar  > 
+		

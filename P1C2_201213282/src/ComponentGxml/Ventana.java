@@ -6,31 +6,137 @@
 package ComponentGxml;
 
 import java.util.ArrayList;
+import Principal.NodoError;
+import java.awt.Color;
 
 /**
  *
  * @author sergi
  */
 public class Ventana {
+
     public String Id;
     public String tipo;
     public String color;
     public String accionI;
     public String accionF;
     ArrayList<Contenedor> contenedores;
-    public Ventana(){
+
+    public Ventana() {
         contenedores = new ArrayList();
-        Id ="";
-        tipo="";
-        color="";
-        accionI="";
-        accionF="";
+        Id = "";
+        tipo = "";
+        color = "#ffffff";
+        accionI = "";
+        accionF = "";
     }
-    public boolean set_Id(String Id){
-        if(this.Id.equalsIgnoreCase("")){
-           this.Id = Id;
-           return true;
+
+    public void Imprimir_NodoS(NodoSGxml nodo) {
+        System.out.println("----------------------***------------------");
+        for (int i = 0; i < nodo.listas.size(); i++) {
+            NodoSGxml actual = nodo.listas.get(i);
+            System.out.println(actual.tipo + "--->" + actual.val);
         }
-        return false;
+        System.out.println("----------------------***------------------");
+    }
+
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {
+        Analizar_Attributos_repetidos(Nodo.listas, lista);
+        Analizar_Attributos_obligatorios(Nodo.listas,lista);
+        Analizar_Attributo_Principal(Nodo.listas,lista);
+        Analizar_Attributo_Color(Nodo.listas,lista);
+        Set_Attributos(Nodo.listas);
+    }
+
+    private void Analizar_Attributos_repetidos(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        for (int i = 0; i < hijos.size(); i++) {
+            for (int j = i + 1; j < hijos.size(); j++) {
+                if (hijos.get(i).tipo.equalsIgnoreCase(hijos.get(j).tipo)) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "Se encuentra repetido el attributo: " + hijos.get(i).tipo;
+                    error.linea = String.valueOf(hijos.get(j).linea);
+                    error.columna = String.valueOf(hijos.get(j).columna);
+                    lista.add(error);
+                }
+            }
+        }
+    }
+
+    private void Analizar_Attributos_obligatorios(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        boolean id = false;
+        boolean tipo = false;
+        for (int i = 0; i < hijos.size(); i++) {
+            if (hijos.get(i).tipo.equalsIgnoreCase("id")) {
+                id = true;
+            } else if (hijos.get(i).tipo.equalsIgnoreCase("tipo")) {
+                tipo = true;
+            }
+        }
+        if (!id || !tipo) {
+            NodoError error = new NodoError("semantico");
+            error.linea = String.valueOf(hijos.get(hijos.size()-1).linea);
+            error.columna = String.valueOf(hijos.get(hijos.size()-1).columna);
+            String tipoe;
+            if(!id){
+                tipoe="ID";
+            }else{
+                tipoe="Tipo";
+            }
+            error.descripcion = "No se encuentra el atributo: " + tipoe+" que es de caracter obligatorio en esta etiqueta";
+            lista.add(error);     
+        }
+    }
+
+    private void Analizar_Attributo_Principal(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista){
+          for (int i = 0; i < hijos.size(); i++) {
+              if (hijos.get(i).tipo.equalsIgnoreCase("tipo")) {
+                   String hijo = hijos.get(i).val.replace("\"","");
+                   if(!(hijo.equalsIgnoreCase("principal")||hijo.equalsIgnoreCase("secundaria"))){
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "El tipo definido no es ni Secundario ni Principal es: " + hijos.get(i).val;
+                    error.linea = String.valueOf(hijos.get(i).linea);
+                    error.columna = String.valueOf(hijos.get(i).columna);
+                    lista.add(error);
+                    }
+                }
+          }
+    }
+    
+    private void Analizar_Attributo_Color(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista){
+         for (int i = 0; i < hijos.size(); i++) {
+              if (hijos.get(i).tipo.equalsIgnoreCase("color")) {
+                   String hijo = hijos.get(i).val.replace("\"","");
+                   try{
+                   Color color = Color.decode(hijo);
+                   }catch(Exception e){
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "El color definido:"+ hijo +" no es un color valido tiene que extar en hexadecimal";
+                    error.linea = String.valueOf(hijos.get(i).linea);
+                    error.columna = String.valueOf(hijos.get(i).columna);
+                    lista.add(error);
+                   }
+                   /*if(){
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "El tipo definido no es ni Secundario ni Principal es: " + hijos.get(i).val;
+                    error.linea = String.valueOf(hijos.get(i).linea);
+                    error.columna = String.valueOf(hijos.get(i).columna);
+                    lista.add(error);
+                    }*/
+                }
+          }
+    }
+
+    private void Set_Attributos(ArrayList<NodoSGxml> hijos){
+        for (int i = 0; i < hijos.size(); i++) {
+            String hijo = hijos.get(i).tipo;  
+            String val = hijos.get(i).val;
+            switch(hijo.toLowerCase()){
+                case "tipo" : this.tipo=val.replace("\"",""); break;
+                case "id": this.Id=val.replace("\"", "");  break;
+                case "color":this.color=val.replace("\"", ""); break;
+                case "inicial":this.accionI=val; break;
+                case "final": this.accionF=val; break;
+        }
+          }
     }
 }
