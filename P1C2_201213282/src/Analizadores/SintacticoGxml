@@ -35,7 +35,7 @@ parser code {:
     }
  /*codig de usuario */
  String total = "";
- public NodoGxml RCCSS = null;
+ public NodoGxml RCCSS = new NodoGxml();
  private Boolean texto_ini = false;
  public ArrayList<NodoError> errores = new ArrayList();
  //public ArrayList<Nodo> e = new ArrayList<Nodo>();
@@ -43,11 +43,11 @@ parser code {:
 action code {:
     public String estado="";
 :}
-terminal RMUL,RTEX,MORE,ILL,FLL,MAY,RID,MEN,IGU,RX,DIA,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
-non terminal NodoGxml  Ini, ES_IMP,ES_VEN,Cuerpo_Vent,ES_CON,EST_CON_COM,EST_CON,Tipo_Conte,ES_TEX,EST_TEX_COM,EST_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
+terminal RMUL,RTEX,MORE,ILL,RVER,RFAL,FLL,MAY,RID,MEN,IGU,RX,DIA,RY,RTAM,RTIP,RALT,RDAT,RPAT,RBOT,RBOR,RANC,RCOL,RENV,RMIN,RMAX,RACI,RFUE,RNOM,RNEG,RCUR,RVEN,RDEF,RIMP,RCON,RLDA,REFE,RAFI,RCTR,RAIN,RAUT,CAD,NUM,TEXT;// Terminales
+non terminal NodoGxml  Ini, ES_IMP,ES_VEN,Cuerpo_Vent,ES_CON,Tipo_Conte,ES_TEX,ES_CTR,EST_CTR_COM,EST_CTR,Cuerpo_CTR,Tipos_CTR; //Nodos no terminales
 non terminal NodoGxml  Cuerpo_CONTE,ES_MUL,EST_MUL_COM,ES_LDA,EST_LDA_COM,Cuerpo_LDA,ES_DA,EST_DA_COM,ES_DEF,EST_MUL,ES_BOT,EST_BOT_COM,EST_BOT,Cuerpo_BOT,ES_ENV,Cuerpo_Ini,Cuerpo_GEN;
-non terminal String    SUM_TEXT;
-non terminal NodoSGxml EST_VEN_COM,EST_VEN;
+non terminal String    SUM_TEXT,BOL;
+non terminal NodoSGxml EST_VEN_COM,EST_VEN,EST_CON_COM,EST_CON,EST_TEX_COM,EST_TEX;
 non terminal Start;
 start with Start;
 Start ::= Ini:e1	{::};
@@ -59,6 +59,10 @@ Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
 Cuerpo_GEN ::= Cuerpo_GEN ES_VEN
 			| ES_VEN
 			;
+			
+BOL ::= RVER{:RESULT ="verdadero";:}
+	|	RFAL{:RESULT ="falso";:};
+	
 /*---------------------------- Estructura Importar ----------------------------*/
 ES_IMP ::= MAY RIMP MEN SUM_TEXT MAY  RIMP MEN	{::};
 
@@ -82,23 +86,25 @@ Cuerpo_Vent ::= Cuerpo_Vent ES_CON
 			|	ES_CON
 			;
 /*---------------------------- Estructura Contenedor ----------------------------*/
-ES_CON ::= 	MAY RCON       EST_CON_COM MEN  Cuerpo_CONTE MAY  DIA RCON      MEN{::};
-		//	<   contenedor estructura  >                  <   /  contenedor  >  
+ES_CON ::= 	MAY RCON       EST_CON_COM:e1 MEN  {:Contenedor v = new Contenedor(); v.Imprimir_NodoS(e1); v.Analizar_Attributos(e1,errores); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:} Cuerpo_CONTE MAY  DIA RCON      MEN{::};
+		//	<   contenedor estructura  >                 																												 <   /  contenedor  >  
 			
-EST_CON_COM ::= EST_CON_COM EST_CON
-			|	EST_CON ;
+EST_CON_COM ::= EST_CON_COM:e2 EST_CON:e1		{:e2.listas.add(e1); RESULT=e2;:}
+			|	EST_CON:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
 
-EST_CON ::= 	RID  IGU CAD 	{: System.out.println("reconocio ID CON");:}// ID  = "[^]"
-			|	RX   IGU NUM    {: System.out.println("reconocio ID CON");:}// X = Numero
-			|   RY   IGU NUM    {: System.out.println("reconocio ID CON");:}// Y = Numero
-			|	RALT IGU NUM 	// Alto  = Numero
-			|	RANC IGU NUM 	// Ancho  = Numero
-			|	RCOL IGU CAD	// Color  = "[^]"
-			|   RBOR IGU CAD	// Borde = "[^]"
+EST_CON ::= 	RID  IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="ID"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// ID  = "[^]"
+			|	RX   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="X"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// X = Numero
+			|   RY   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Y"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Y = Numero
+			|	RALT IGU NUM:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Alto"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Alto  = Numero
+			|	RANC IGU NUM:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Ancho"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Ancho  = Numero
+			|	RCOL IGU CAD:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Color"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
+			|   RBOR IGU BOL:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Borde"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Borde = "[^]"
 			;			
 Cuerpo_CONTE ::= Cuerpo_CONTE Tipo_Conte
 				| Tipo_Conte;
 				
+
+	
 Tipo_Conte ::=	ES_TEX 		//texto
 			|	ES_CTR 		//control
 			|	ES_MUL 		//multime
@@ -106,42 +112,42 @@ Tipo_Conte ::=	ES_TEX 		//texto
 			|	ES_ENV 		//enviar
 			;
 /*---------------------------- Estructura Texto ----------------------------*/
-ES_TEX ::= 	MAY RTEX  EST_TEX_COM MEN SUM_TEXT:e1 {:System.out.println("texto"+e1);:}  MAY DIA RTEX   MEN;
+ES_TEX ::= 	MAY RTEX  EST_TEX_COM:e1 MEN SUM_TEXT:e2 {:Texto v = new Texto(); v.Analizar_Attributos(e1,errores,e2); Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Textos.add(v);:}  MAY DIA RTEX   MEN;
 		//	<   Texto  estructura  >          <   /   Texto  >  			
 		
-EST_TEX_COM ::= EST_TEX_COM EST_TEX
-			|	EST_TEX ;
+EST_TEX_COM ::= EST_TEX_COM:e2 EST_TEX:e1			{:e2.listas.add(e1); RESULT=e2;:}
+			|	EST_TEX:e1 							{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
 			
-EST_TEX ::= 	RNOM IGU CAD 	{: :}// Nombre = "[^]"
-			|	RX   IGU NUM    // X = Numero
-			|   RY   IGU NUM    // Y = Numero
-			|	RFUE IGU CAD 	// Fuente  = "[^]"
-			|	RTAM IGU NUM 	// Tamañio = Numero
-			|	RCOL IGU CAD	// Color  = "[^]"
-			|   RNEG IGU CAD	// Negrita = "[^]"
-			|   RCUR IGU CAD	// Cursiva = "[^]"
+EST_TEX ::= 	RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Nombre"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Nombre = "[^]"
+			|	RX   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="X"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// X = Numero
+			|   RY   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Y"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Y = Numero
+			|	RFUE IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="fuente"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Fuente  = "[^]"
+			|	RTAM IGU NUM:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="tam";			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tamañio = Numero
+			|	RCOL IGU CAD:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="color";		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
+			|   RNEG IGU BOL:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="negrita"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Negrita = verdadero/falso
+			|   RCUR IGU BOL:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="cursiva"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Cursiva = verdadero/falso
 			;			
 /*---------------------------- Estructura Control ----------------------------*/
 ES_CTR ::= 	MAY RCTR  EST_CTR_COM MEN  Cuerpo_CTR MAY  DIA   RCTR   MEN{::};
 		//	<   Control  estructura  >               <   /   Control  >  			
 		
-EST_CTR_COM ::= EST_CTR_COM EST_CTR
-			|	EST_CTR ;
+EST_CTR_COM ::= EST_CTR_COM:e2 EST_CTR:e1			{:e2.listas.add(e1); RESULT=e2;:}
+			|	EST_CTR:e1							{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
 			
-EST_CTR ::= 	RNOM IGU CAD 	{:System.out.println("reconocio Nombre Control");:}// Nombre = "[^]"
-			|	RTIP IGU CAD 	// Tipo  = "[^]"
-			|	RX   IGU NUM    // X = Numero
-			|   RY   IGU NUM    // Y = Numero
-			|	RALT IGU NUM 	// Alto  = Numero
-			|	RANC IGU NUM 	// Ancho  = Numero
-			|	RFUE IGU CAD 	// Fuente  = "[^]"
-			|	RTAM IGU NUM 	// Tamañio = Numero
-			|	RCOL IGU CAD	// Color  = "[^]"
-			|   RNEG IGU CAD	// Negrita = "[^]"
-			|   RCUR IGU CAD	// Cursiva = "[^]"
-			|	RMAX IGU NUM 	// Maximo = Numero
-			|	RMIN IGU NUM 	// Minimo = Numero
-			|   RACI IGU MORE	// Accion = {[^]}	
+EST_CTR ::= 	RNOM IGU CAD 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Nombre"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Nombre = "[^]"
+			|	RTIP IGU CAD 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Tipo"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tipo  = "[^]"
+			|	RX   IGU NUM    {: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="X";	 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// X = Numero
+			|   RY   IGU NUM    {: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Y"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Y = Numero
+			|	RALT IGU NUM 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Alto"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Alto  = Numero
+			|	RANC IGU NUM 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Ancho"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Ancho  = Numero
+			|	RFUE IGU CAD 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="fuente"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Fuente  = "[^]"
+			|	RTAM IGU NUM 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="tam"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tamañio = Numero
+			|	RCOL IGU CAD	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="color"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
+			|   RNEG IGU BOL	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="negrita";		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Negrita = verdadero/falso
+			|   RCUR IGU BOL	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="cursiva"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Cursiva = verdadero/falso
+			|	RMAX IGU NUM 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="maximo"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Maximo = Numero
+			|	RMIN IGU NUM 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="minimo"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Minimo = Numero
+			|   RACI IGU MORE	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="accion"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion = {[^]}	
 			;						
 			
 Cuerpo_CTR ::= Cuerpo_CTR Tipos_CTR
@@ -186,7 +192,7 @@ EST_MUL 	::= RNOM IGU CAD 	// Nombre = "[^]"
 			|   RY   IGU NUM    // Y = Numero
 			|	RALT IGU NUM 	// Alto  = Numero
 			|	RANC IGU NUM 	// Ancho  = Numero
-			|	RAUT IGU CAD 	// Auto-reproduccion  = "[^]"
+			|	RAUT IGU BOL 	// Auto-reproduccion  = "[^]"
 			;			
 /*---------------------------- Estructura Boton ----------------------------*/	
 ES_BOT ::= 	MAY RBOT  EST_BOT_COM  MEN Cuerpo_BOT MAY DIA RBOT   MEN{::};

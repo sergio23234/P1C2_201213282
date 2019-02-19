@@ -20,7 +20,7 @@ public class Ventana {
     public String color;
     public String accionI;
     public String accionF;
-    ArrayList<Contenedor> contenedores;
+    public ArrayList<Contenedor> contenedores;
 
     public Ventana() {
         contenedores = new ArrayList();
@@ -138,5 +138,19 @@ public class Ventana {
                 case "final": this.accionF=val; break;
         }
           }
+    }
+
+    public void Analizar_Nombre_Contenedores(ArrayList<NodoError> lista){
+        for(int i=0;i<contenedores.size();i++){
+            for(int j=i+1;j<contenedores.size();j++){
+                if (contenedores.get(i).Id.equalsIgnoreCase(contenedores.get(j).Id)) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "Se encuentra repetido el id del contenedor: " + contenedores.get(i).Id;
+                    error.linea = String.valueOf(contenedores.get(j).linea);
+                    error.columna = String.valueOf(contenedores.get(j).columna);
+                    lista.add(error);
+                }
+            }       
+        }
     }
 }
