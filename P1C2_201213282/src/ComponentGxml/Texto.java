@@ -34,14 +34,24 @@ public class Texto {
         Valor="";
     }
 
-    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista,String Valor) {
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista,EDato Valor) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         //Analizar_Attributo_Borde(Nodo.listas, lista);
         //Analizar_Attributo_Numeros(Nodo.listas, lista);
         //Analizar_Attributo_Color(Nodo.listas,lista);
         Set_Attributos(Nodo.listas);
-        this.Valor = Valor;
+        if(Valor.Dato.trim().contains("\n")){
+             NodoError error;
+                error = new NodoError("semantico");
+                error.linea = String.valueOf(Valor.linea);
+                error.columna = String.valueOf(Valor.columna);
+                error.descripcion = "la etiqueta tiene un salto de linea no valido en la etiqueta Texto";
+                lista.add(error);
+        }
+        else{
+            this.Valor = Valor.Dato.trim();
+        }
     }
 
     private void Analizar_Attributos_repetidos(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {

@@ -200,8 +200,48 @@ public class Control {
         if (Datos != null) {
             Datos.verficar_datos_repetidos(lista);
         }
+       if(Defecto!=null){
+           Analizar_etiqueta_Defecto(lista);
+       } 
     }
 
+    private void Analizar_etiqueta_Defecto(ArrayList<NodoError> lista){
+        switch(Tipo.toLowerCase()) {
+            case "desplegable":
+                if(!Datos.buscar_lista_datos(Defecto.Dato)){
+                NodoError error;
+                error = new NodoError("semantico");
+                error.linea = String.valueOf(Defecto.linea);
+                error.columna = String.valueOf(Defecto.columna);
+                error.descripcion = "la etiqueta Defecto no tiene un valor valido dentro de los datos de la lista";
+                lista.add(error);
+                }
+                break;
+            case "numerico":
+                if(!Defecto.match_numero()){
+                NodoError error;
+                error = new NodoError("semantico");
+                error.linea = String.valueOf(Defecto.linea);
+                error.columna = String.valueOf(Defecto.columna);
+                error.descripcion = "la etiqueta Defecto tiene solo numeros dentro del tipo numerico";
+                lista.add(error);
+                }
+                break;
+            case "texto":   
+                if(Defecto.Dato.contains("\n")){
+                NodoError error;
+                error = new NodoError("semantico");
+                error.linea = String.valueOf(Defecto.linea);
+                error.columna = String.valueOf(Defecto.columna);
+                error.descripcion = "la etiqueta Defecto tiene un salto de linea, no valido en tipo Texto";
+                lista.add(error);
+                }
+                break;
+            case "textoArea": 
+                break;
+        }
+    }
+    
     private void Set_Attributos(ArrayList<NodoSGxml> hijos) {
         for (int i = 0; i < hijos.size(); i++) {
             String hijo = hijos.get(i).tipo;

@@ -271,12 +271,11 @@ public class Contenedor {
                     lista.add(error);
                 }
             }
-
         }
 
     }
 
-    private void Analisis_Final(ArrayList<NodoError> lista) {
+    public void Analisis_Final(ArrayList<NodoError> lista) {
         Analizar_Nombres_Texto(lista);
         Analizar_Nombres_controles(lista);
         Analizar_Nombres_multimedia(lista);

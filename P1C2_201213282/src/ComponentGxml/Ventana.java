@@ -21,7 +21,8 @@ public class Ventana {
     public String accionI;
     public String accionF;
     public ArrayList<Contenedor> contenedores;
-
+    public int linea,columna;
+    
     public Ventana() {
         contenedores = new ArrayList();
         Id = "";
@@ -132,7 +133,9 @@ public class Ventana {
             String val = hijos.get(i).val;
             switch(hijo.toLowerCase()){
                 case "tipo" : this.tipo=val.replace("\"",""); break;
-                case "id": this.Id=val.replace("\"", "");  break;
+                case "id": this.Id=val.replace("\"", ""); 
+                            linea=hijos.get(i).linea; 
+                            columna=hijos.get(i).columna; break;
                 case "color":this.color=val.replace("\"", ""); break;
                 case "inicial":this.accionI=val; break;
                 case "final": this.accionF=val; break;
@@ -150,7 +153,8 @@ public class Ventana {
                     error.columna = String.valueOf(contenedores.get(j).columna);
                     lista.add(error);
                 }
-            }       
+            }
+            contenedores.get(i).Analisis_Final(lista);
         }
     }
 }

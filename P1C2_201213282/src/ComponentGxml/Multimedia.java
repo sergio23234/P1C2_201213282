@@ -17,7 +17,7 @@ public class Multimedia {
     public String Path, Nombre, Tipo, Auto;
     public int alto, ancho, x, y;
     public int linea, columna;
-    public String texto;
+    //public String texto;
 
     public Multimedia() {
         Path = Nombre = Tipo = "";
@@ -113,10 +113,10 @@ public class Multimedia {
         }
     }
 
-    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista,String texto) {
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         Set_Attributos(Nodo.listas);
-        this.texto = texto.replace("\"","");
+       // this.texto = texto.replace("\"","");
     }
 }

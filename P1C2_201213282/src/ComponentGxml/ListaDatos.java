@@ -36,6 +36,15 @@ public class ListaDatos {
         }
     }
 
+    public boolean buscar_lista_datos(String dato) {
+        for (int i = 0; i < Datos.size(); i++) {
+            if (Datos.get(i).Dato.equalsIgnoreCase(dato)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void imprimir_lista_datos() {
         System.out.println("---DATOS----");
         for (int i = 0; i < Datos.size(); i++) {

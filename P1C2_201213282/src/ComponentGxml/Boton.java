@@ -17,7 +17,15 @@ public class Boton {
     public String referencia, accion, Nombre, tipo;
     public int alto, ancho, x, y, linea, columna;
     public String texto;
-
+    public Texto Etexto;
+    
+    public Boton() {
+        referencia = Nombre = "";
+        x = y = 0;
+        alto = ancho = 100;
+        linea = columna = 0;
+        
+    }
     public Boton(String tipo) {
         referencia = Nombre = "";
         x = y = 0;
@@ -26,11 +34,11 @@ public class Boton {
         this.tipo = tipo;
     }
 
-    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista, String texto) {
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista/*, String texto*/) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         Set_Attributos(Nodo.listas);
-        this.texto = texto.replace("\"", "");
+        /*this.texto = texto.replace("\"", "");*/
     }
 
     private void Analizar_Attributos_repetidos(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
