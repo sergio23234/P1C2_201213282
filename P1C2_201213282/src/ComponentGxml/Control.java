@@ -22,6 +22,8 @@ public class Control {
     public int tam, alto, ancho;
     public String negrita, cursiva, accion;
     public int linea, columna;
+    public ListaDatos Datos;
+    public EDato Defecto;
 
     public Control() {
         Nombre = Tipo = Fuente = "";
@@ -31,15 +33,16 @@ public class Control {
         x = y = maximo = minimo = 0;
         negrita = cursiva = "falso";
         accion = "";
+        Datos = null;
     }
 
     public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
-        //Analizar_Attributo_Borde(Nodo.listas, lista);
+        Analizar_Attributos_Tipo(Nodo.listas, lista);
         //Analizar_Attributo_Numeros(Nodo.listas, lista);
         //Analizar_Attributo_Color(Nodo.listas,lista);
-        //Set_Attributos(Nodo.listas);
+        Set_Attributos(Nodo.listas);
     }
 
     private void Analizar_Attributos_repetidos(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
@@ -102,10 +105,13 @@ public class Control {
                 Analizar_Attributos_Tipo_Texto(hijos, lista);
                 break;
             case "numerico":
+                Analizar_Attributos_Tipo_Numerico(hijos, lista);
                 break;
             case "textoarea":
+                Analizar_Attributos_Tipo_Texto(hijos, lista);
                 break;
             case "desplegable":
+                Analizar_Attributos_Tipo_desplegable(hijos, lista);
                 break;
 
         }
@@ -120,17 +126,131 @@ public class Control {
                     error = new NodoError("semantico");
                     error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
                     error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
-                    error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto";
+                    error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto/textoarea";
                     lista.add(error);
                     break;
                 case "minimo":
                     error = new NodoError("semantico");
                     error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
                     error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
-                    error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto";
+                    error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto/textoarea";
                     lista.add(error);
-                    break;                    
+                    break;
             }
         }
     }
+
+    private void Analizar_Attributos_Tipo_Numerico(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        for (int i = 0; i < hijos.size(); i++) {
+            NodoSGxml actual = hijos.get(i);
+            NodoError error;
+            switch (actual.tipo.toLowerCase()) {
+                case "negrita":
+                case "cursiva":
+                case "accion":
+                case "color":
+                case "tam":
+                case "fuente":
+                    error = new NodoError("semantico");
+                    error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
+                    error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
+                    error.descripcion = "El attributo " + actual.tipo + " no esta permitido dentro del cotrol tipo numerico";
+                    lista.add(error);
+                    break;
+
+            }
+        }
+    }
+
+    private void Analizar_Attributos_Tipo_desplegable(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        for (int i = 0; i < hijos.size(); i++) {
+            NodoSGxml actual = hijos.get(i);
+            NodoError error;
+            switch (actual.tipo.toLowerCase()) {
+                case "negrita":
+                case "minimo":
+                case "maximo":
+                case "cursiva":
+                case "accion":
+                case "color":
+                case "tam":
+                case "fuente":
+                    error = new NodoError("semantico");
+                    error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
+                    error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
+                    error.descripcion = "El attributo " + actual.tipo + " no esta permitido dentro del cotrol tipo desplegable";
+                    lista.add(error);
+                    break;
+
+            }
+        }
+    }
+
+    public void Analizar_Lista_Datos(ArrayList<NodoError> lista) {
+        if (!Tipo.equalsIgnoreCase("desplegable")) {
+            if (Datos != null) {
+                NodoError error;
+                error = new NodoError("semantico");
+                error.linea = String.valueOf(linea);
+                error.columna = String.valueOf(columna);
+                error.descripcion = "la etiqueta desplegable no esta permitido dentro del cotrol tipo: " + Tipo;
+                lista.add(error);
+            }
+        }
+        if (Datos != null) {
+            Datos.verficar_datos_repetidos(lista);
+        }
+    }
+
+    private void Set_Attributos(ArrayList<NodoSGxml> hijos) {
+        for (int i = 0; i < hijos.size(); i++) {
+            String hijo = hijos.get(i).tipo;
+            String val = hijos.get(i).val;
+            switch (hijo.toLowerCase()) {
+                case "negrita":
+                    this.negrita = val.replace("\"", "");
+                    break;
+                case "cursiva":
+                    this.negrita = val.replace("\"", "");
+                    break;
+                case "accion":
+                    this.accion = val.replace("\"", "");
+                    break;                    
+                case "nombre":
+                    this.Nombre= val.replace("\"", "");
+                    this.linea = hijos.get(i).linea;
+                    this.columna = hijos.get(i).columna;
+                    break;
+                case "tipo":
+                    this.Tipo= val.replace("\"", "");
+                    break;                    
+                case "color":
+                    this.color = val.replace("\"", "");
+                    break;
+                case "y":
+                    this.x = Integer.valueOf(val);
+                    break;
+                case "x":
+                    this.y = Integer.valueOf(val);
+                    break;
+                case "tam":
+                    this.tam = Integer.valueOf(val);
+                    break; 
+                case "maximo":
+                    this.maximo = Integer.valueOf(val);
+                    break;
+                case "minimo":
+                    this.minimo = Integer.valueOf(val);
+                    break;                    
+                case "alto":
+                    this.alto = Integer.valueOf(val);
+                    break;
+                case "ancho":
+                    this.ancho = Integer.valueOf(val);
+                    break;
+            }
+        }
+    }
+
+    
 }
