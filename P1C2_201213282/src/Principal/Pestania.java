@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Principal;
+
 import ComponentGxml.NodoGxml;
 import Analizadores.*;
 import java.io.File;
@@ -17,16 +18,19 @@ import java.util.logging.Logger;
  * @author sergi
  */
 public class Pestania extends javax.swing.JPanel {
-    
+
     public String path;
     private ArrayList<NodoError> errores;
+    private ArrayList<NodoError> lexicos;
+
     /**
      * Creates new form Pestania
      */
     public Pestania() {
         initComponents();
-        path="";
+        path = "";
         errores = new ArrayList();
+        lexicos = new ArrayList();
     }
 
     /**
@@ -96,29 +100,39 @@ public class Pestania extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
-    if(!path.equals("")){
-        try {
-            errores.clear();
-            File archivo = new File(path);
-            FileReader fr = new FileReader(archivo);
-            LexicoGxml lex = new LexicoGxml(fr);
-            SintacticoGxml miParser = new SintacticoGxml(lex);
-            miParser.parse();
-            NodoGxml Raiz=miParser.RCCSS;
-            errores=miParser.errores;
-            System.out.println("errores --->"+errores.size()+"--->"+miParser.errores.size());
-            for(int i=0;i<errores.size();i++){
-                NodoError actual = errores.get(i);
-                System.out.println(actual.tipo+"->"+actual.descripcion+"->"+actual.linea+"->"+actual.columna);
+        if (!path.equals("")) {
+            try {
+                errores.clear();
+                lexicos.clear();
+                File archivo = new File(path);
+                FileReader fr = new FileReader(archivo);
+                LexicoGxml lex = new LexicoGxml(fr);
+                SintacticoGxml miParser = new SintacticoGxml(lex);
+                miParser.parse();
+                NodoGxml Raiz = miParser.RCCSS;
+                errores = miParser.errores;
+                lexicos = lex.Elista;
+                System.out.println("errores --->" + errores.size() + "--->" + miParser.errores.size());
+
+                System.out.println("---------" + lex.Elista.size());
+                Raiz.Recorrer_Ventanas();
+            } catch (Exception ex) {
+                Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             }
-            Raiz.Recorrer_Ventanas();
-        } catch (Exception ex) {
-            Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
+
         }
-            
-    }
     }//GEN-LAST:event_analizarActionPerformed
 
+    public ArrayList<NodoError> dev_errores() {
+        ArrayList<NodoError> total = new ArrayList();
+        for (int i = 0; i < errores.size(); i++) {
+             total.add(errores.get(i));
+        }
+        for (int i = 0; i < lexicos.size(); i++) {
+            total.add(lexicos.get(i));
+        }
+        return total;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;

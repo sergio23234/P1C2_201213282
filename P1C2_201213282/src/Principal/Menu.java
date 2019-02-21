@@ -54,6 +54,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        errores = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
@@ -135,6 +136,16 @@ public class Menu extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Errores");
+
+        errores.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        errores.setText("Ver Errores");
+        errores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                erroresActionPerformed(evt);
+            }
+        });
+        jMenu3.add(errores);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -240,6 +251,19 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_guardarActionPerformed
 
+    private void erroresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_erroresActionPerformed
+        // TODO add your handling code here:
+            int num = Pestanias.getSelectedIndex();
+        if (num >= 0) {
+            Pestania pest = Lista.get(num);
+            ArrayList<NodoError> lexicos=pest.dev_errores();
+                for (int i = 0; i <lexicos.size(); i++) {
+                    NodoError actual = lexicos.get(i);
+                    System.out.println(actual.tipo + "->" + actual.descripcion + "->" + actual.linea + "->" + actual.columna);
+                }
+        }
+    }//GEN-LAST:event_erroresActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -279,6 +303,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTabbedPane Pestanias;
     private javax.swing.JScrollPane Scroll;
     private javax.swing.JMenuItem abrir;
+    private javax.swing.JMenuItem errores;
     private javax.swing.JMenuItem guardar;
     private javax.swing.JMenuItem guardarcomo;
     private javax.swing.JMenu jMenu1;

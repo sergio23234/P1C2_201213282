@@ -12,15 +12,16 @@ parser code {:
 
     public void syntax_error(Symbol s){
         System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right+1) +", Linea: "+(s.left+1)+ " no esperado"+s.sym);
-        /*Nodo_error nuevo = new Nodo_error();
-        nuevo.dato = String.valueOf(s.value);
-        nuevo.linea = (s.left+1);
-        nuevo.columna=(s.right);
-        Errores.add(nuevo);
-        errores=true;*/
+		NodoError Nerror = new NodoError("sintactico");
+		Nerror.descripcion = "caracter no reconocido: "+ s.value;
+		Nerror.linea = String.valueOf(s.left+1);
+		Nerror.columna = String.valueOf(s.right+1);
+		errores.add(Nerror);
     }
 
-    
+    private void error_sintaxis(){
+	
+	}
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
         System.out.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
         /*Nodo_error nuevo = new Nodo_error();
@@ -54,7 +55,7 @@ non terminal NodoSGxml EST_VEN_COM,EST_VEN,EST_CON_COM,EST_CON,EST_TEX_COM,EST_T
 non terminal ListaDatos Cuerpo_LDA,ES_LDA,EST_LDA_COM;
 non terminal EDato		ES_DA,EST_DA_COM,ES_DEF; 
 non terminal Texto		ES_TEX;
-non terminal Start;
+non terminal 			Start,ES_VEN1,ES_VEN2,ES_VEN3,ES_CON1,ES_CON2,ES_CON3;
 start with Start;
 Start ::= Ini:e1	{:RCCSS.Analizar_Nombres_Ventanas(errores);:};
 Ini ::= 	Cuerpo_Ini Cuerpo_GEN
@@ -75,25 +76,50 @@ ES_IMP ::= MAY RIMP MEN SUM_TEXT MAY  RIMP MEN	{::};
 SUM_TEXT ::= SUM_TEXT:e1 TEXT:e2		{:if(texto_ini){texto_ini=false; RESULT=e1.toString()+e2.toString();}else{RESULT=e1.toString()+" "+e2.toString(); }:}
 	|		 TEXT:e1 					{:RESULT=e1.toString(); texto_ini=true;:};
 /*---------------------------- Estructura Ventana ----------------------------*/
-ES_VEN ::= MAY RVEN  EST_VEN_COM:e1 MEN  {:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); RCCSS.Ventanas.add(v);:}Cuerpo_Vent MAY DIA RVEN    MEN{: System.out.println("llego a final ventana");:};
-		//	<  vetana estructura  >               <   /  ventana  >   
+ES_VEN ::= ES_VEN1 ES_VEN3 ; 
+			//ESTRUCTURA de ventana 
+			
+		//ES_VEN1 = ESTRUCTURA INICIAL DE VENTANA
+ES_VEN1 ::= MAY RVEN  EST_VEN_COM:e1 MEN  	{:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); RCCSS.Ventanas.add(v);:}
+			| error:e1 MEN 					{:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ RCCSS.Ventanas.add(v); :};
 
+		//Estructura Final de ventana 
+ES_VEN2 ::= MAY DIA RVEN    MEN
+			| error:e1		MEN ;
+		
+		//Estructura Central de Vetana Si viene su cuerpo o es un error, recupera con la estructura final de ventana 
+ES_VEN3 ::= Cuerpo_Vent ES_VEN2
+			| error ES_VEN2;
+			
+		// Cuerpo de los atributos de ventana 
 EST_VEN_COM ::= EST_VEN_COM:e2 EST_VEN:e1		{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_VEN:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:}
 			;
 			
+				//atributos de ventana 
 EST_VEN ::= 	RID  IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="ID"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// ID  = "[^]" 
 			|	RTIP IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Tipo"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tipo  = "[^]"
 			|	RCOL IGU CAD:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Color"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
 			|   RAIN IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Inicial"; nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Inicial  = {[^]}
 			|   RAFI IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Final"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Final  = {[^]}
 			;			
+	
+			//los tipos de datos que pueden venir dentro de venta 
 Cuerpo_Vent ::= Cuerpo_Vent ES_CON
-			|	ES_CON
-			;
+			|	ES_CON;
+			
 /*---------------------------- Estructura Contenedor ----------------------------*/
-ES_CON ::= 	MAY RCON       EST_CON_COM:e1 MEN  {:Contenedor v = new Contenedor(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:} Cuerpo_CONTE MAY  DIA RCON      MEN{::};
-		//	<   contenedor estructura  >                 																												 <   /  contenedor  >  
+ES_CON ::= 	ES_CON1 ES_CON2{::};
+		 //	<   contenedor estructura  >                 																												 <   /  contenedor  >  
+//estructura inicial del contenedor 
+ES_CON1::= MAY RCON EST_CON_COM:e1 MEN  {:Contenedor v = new Contenedor(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:} 
+		|  MAY RCON error MEN 					{:Contenedor v = new Contenedor(); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:};
+
+ES_CON2::= Cuerpo_CONTE ES_CON3
+		|	error ES_CON3 ;
+
+ES_CON3::= MAY  DIA RCON MEN	
+		|  error MEN 			;
 			
 EST_CON_COM ::= EST_CON_COM:e2 EST_CON:e1		{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_CON:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
@@ -118,8 +144,8 @@ Tipo_Conte ::=	ES_TEX:e1 	{:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.si
 			|	ES_ENV 		{:	:}//enviar
 			;
 /*---------------------------- Estructura Texto ----------------------------*/
-ES_TEX ::= 	MAY RTEX  EST_TEX_COM:e1 MEN SUM_TEXT:e2 MAY DIA RTEX   MEN{:Texto v = new Texto(); EDato nuevo= new EDato(e2,e2left+1,e2right+1); 	v.Analizar_Attributos(e1,errores,nuevo); RESULT=v;:};
-		//	<   Texto  estructura  >          <   /   Texto  >  			
+ES_TEX ::= 	MAY RTEX  EST_TEX_COM:e1 MEN SUM_TEXT:e2 MAY DIA RTEX   MEN{:Texto v = new Texto(); EDato nuevo= new EDato(e2,e2left+1,e2right+1); 	v.Analizar_Attributos(e1,errores,nuevo); RESULT=v;:}
+			;//	<   Texto  estructura  >          <   /   Texto  >  			
 		
 EST_TEX_COM ::= EST_TEX_COM:e2 EST_TEX:e1			{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_TEX:e1 							{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
@@ -210,7 +236,7 @@ EST_MUL 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			;			
 /*---------------------------- Estructura Boton ----------------------------*/	
 ES_BOT ::= 	MAY RBOT  EST_BOT_COM:e1  MEN {:Boton v = new Boton("boton"); v.Analizar_Attributos(e1,errores); botonaso=v;:}Cuerpo_BOT MAY DIA RBOT   MEN{:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:}
-		| 	Error MEN;
+;
 		//	<   BOTON Estructura    >              <   /  Boton  > 
 
 EST_BOT_COM ::= EST_BOT_COM:e2 EST_BOT:e1		{:e2.listas.add(e1); RESULT=e2;:}

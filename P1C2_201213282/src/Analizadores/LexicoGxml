@@ -1,10 +1,13 @@
 package Analizadores;
 import java_cup.runtime.*;
 import java.io.Reader;
+import Principal.NodoError;
+import java.util.ArrayList;
 %%
 %class LexicoGxml
 %{
 public static String errores="";
+ public ArrayList<NodoError> Elista = new ArrayList();
     private Symbol Symbol(int type){
         return new Symbol(type ,yyline, yycolumn);
     }
@@ -12,8 +15,13 @@ public static String errores="";
         return new Symbol(type, yyline, yycolumn, value);
     }
 
-    public static void errorLexico(String error,int x, int y ){
+    private void errorLexico(String error,int x, int y ){
        errores+="error lexico \""+error+"\" en linea: "+Integer.toString(y)+" colulmna: "+Integer.toString(x)+"\n";
+	   NodoError Nerror = new NodoError("lexico");
+       Nerror.descripcion = "caracter no reconocido: "+error;
+       Nerror.linea = String.valueOf(y);
+       Nerror.columna = String.valueOf(x);
+       Elista.add(Nerror);
     }
 %}
 %public
@@ -72,6 +80,8 @@ Numero = [0-9]+
 (["{"]([^}])+["}"])						    {return new Symbol(sym.MORE,yyline,yycolumn,yytext());}
 ({Numero})					    			{return new Symbol(sym.NUM,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
+.											{errorLexico(yytext(),yyline,yycolumn);}
+
 }
 <Stado>{
 ([^<>])+   									{yybegin(YYINITIAL); return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}
