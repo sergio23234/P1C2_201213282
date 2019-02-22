@@ -16,16 +16,18 @@ public class EDato {
     public String referencia;
     public int linea,columna;
     public EDato(){
-        
+        Dato="";
+        referencia="";
+        linea=columna=0;
     }
     public EDato(String Dato,int linea,int columna){
-        this.Dato = Dato;
+        this.Dato = Dato.trim();
         this.linea = linea;
         this.columna= columna;
     }
      
     public boolean match_numero(){
-        String regexp = "[0-9]+";
+        String regexp = "(-|\"+\")?[0-9]+";
         return Pattern.matches(regexp,Dato);
     }
 }

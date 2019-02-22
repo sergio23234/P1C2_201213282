@@ -34,13 +34,17 @@ public class Texto {
         Valor="";
     }
 
-    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista,EDato Valor) {
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         //Analizar_Attributo_Borde(Nodo.listas, lista);
         //Analizar_Attributo_Numeros(Nodo.listas, lista);
         //Analizar_Attributo_Color(Nodo.listas,lista);
         Set_Attributos(Nodo.listas);
+        
+    }
+    
+    public void Analizar_Valor(EDato Valor,ArrayList<NodoError> lista){
         if(Valor.Dato.trim().contains("\n")){
              NodoError error;
                 error = new NodoError("semantico");

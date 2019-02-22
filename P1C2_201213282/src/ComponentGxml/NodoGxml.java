@@ -15,10 +15,12 @@ import java.util.ArrayList;
 public class NodoGxml {
 
     public ArrayList<Ventana> Ventanas;
+    public ArrayList<EDato> Importaciones;
     public Ventana actual;
 
     public NodoGxml() {
         Ventanas = new ArrayList();
+        Importaciones = new ArrayList();
     }
 
     public void Recorrer_Ventanas() {
@@ -41,6 +43,19 @@ public class NodoGxml {
             }
             Ventanas.get(i).Analizar_Nombre_Contenedores(lista);
         }
+    }
 
+    public void Analizar_Importaciones(ArrayList<NodoError> lista) {
+        for (int i = 0; i < Importaciones.size(); i++) {
+            for (int j = i + 1; j < Importaciones.size(); j++) {
+                if (Importaciones.get(i).Dato.equalsIgnoreCase(Importaciones.get(j).Dato)) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "Se encuentra repetido el nombre: " + Importaciones.get(j).Dato + " en la etiquetas de importaciones";
+                    error.linea = String.valueOf(Importaciones.get(j).linea);
+                    error.columna = String.valueOf(Importaciones.get(j).columna);
+                    lista.add(error);
+                }
+            }
+        }
     }
 }

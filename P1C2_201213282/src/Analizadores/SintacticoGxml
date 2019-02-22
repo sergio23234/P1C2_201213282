@@ -50,11 +50,11 @@ non terminal NodoGxml  Cuerpo_CONTE,ES_MUL,ES_BOT,Cuerpo_BOT,Cuerpo_ENV,ES_ENV,C
 non terminal String    SUM_TEXT,BOL;
 non terminal NodoSGxml EST_VEN_COM,EST_VEN,EST_CON_COM,EST_CON,EST_TEX_COM,EST_TEX,EST_CTR_COM,EST_CTR,EST_MUL_COM,EST_MUL,EST_BOT_COM,EST_BOT;
 non terminal ListaDatos Cuerpo_LDA,ES_LDA,EST_LDA_COM;
-non terminal EDato		ES_DA,EST_DA_COM,ES_DEF; 
-non terminal Texto		ES_TEX;
-non terminal 			Start,ES_VEN1,ES_VEN2,ES_VEN3,ES_CON1,ES_CON2,ES_CON3,ES_CTR1,ES_CTR2,ES_MUL1,ES_MUL2,ES_BOT1,ES_BOT2,ES_ENV2;
+non terminal EDato		ES_DA,EST_DA_COM,ES_DEF,ES_DEF2,ES_TEX2; 
+non terminal Texto		ES_TEX,ES_TEX1;
+non terminal 			Start,ES_IMP1,ES_IMP3,ES_IMP2,ES_LDA2,ES_VEN1,ES_VEN2,ES_VEN3,ES_CON1,ES_CON2,ES_CON3,ES_CTR1,ES_CTR2,ES_MUL1,ES_MUL2,ES_BOT1,ES_BOT2,ES_ENV2,ES_DEF1,ES_DEF3,ES_TEX3,ES_DA2;
 start with Start;
-Start ::= Ini:e1	{:RCCSS.Analizar_Nombres_Ventanas(errores);:};
+Start ::= Ini:e1	{:RCCSS.Analizar_Nombres_Ventanas(errores); RCCSS.Analizar_Importaciones(errores);:};
 Ini ::= 	Cuerpo_Ini Cuerpo_GEN
 		|	Cuerpo_GEN;
 Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
@@ -62,29 +62,44 @@ Cuerpo_Ini ::= Cuerpo_Ini ES_IMP
 			;
 Cuerpo_GEN ::= Cuerpo_GEN ES_VEN
 			| ES_VEN
+			| error ES_VEN
 			;
 			
 BOL ::= RVER{:RESULT ="verdadero";:}
 	|	RFAL{:RESULT ="falso";:};
 	
-/*---------------------------- Estructura Importar ----------------------------*/
-ES_IMP ::= MAY RIMP MEN SUM_TEXT MAY  RIMP MEN	{::};
+/*---------------------------- Estructura Importar ----------------------------YA CON RECUPERACION DE ERRORES*/
+ES_IMP ::= ES_IMP1 ES_IMP2;
+
+ES_IMP1 ::= MAY RIMP MEN
+		|	MAY RIMP error MEN;
+		
+ES_IMP2 ::= SUM_TEXT:e2 ES_IMP3	{:EDato nuevo = new EDato(e2,e2left+1,e2right+1); RCCSS.Importaciones.add(nuevo); :}
+		|	error	 	ES_IMP3;
+
+ES_IMP3 ::=   MAY DIA 		RIMP    		MEN
+			| MAY DIA    	RIMP 	error 	MEN 
+			| MAY error 	DIA 	RIMP	MEN 
+			| MAY DIA 		error	RIMP 	MEN 
+			| MAY error		MEN ;
 
 SUM_TEXT ::= SUM_TEXT:e1 TEXT:e2		{:if(texto_ini){texto_ini=false; RESULT=e1.toString()+e2.toString();}else{RESULT=e1.toString()+" "+e2.toString(); }:}
+	
 	|		 TEXT:e1 					{:RESULT=e1.toString(); texto_ini=true;:};
-/*---------------------------- Estructura Ventana ----------------------------*/
+/*---------------------------- Estructura Ventana ----------------------------YA CON RECUPERACION DE ERRORES*/
 ES_VEN ::= ES_VEN1 ES_VEN3 ; 
 			//ESTRUCTURA de ventana 
 			
 		//ES_VEN1 = ESTRUCTURA INICIAL DE VENTANA
 ES_VEN1 ::= MAY RVEN  EST_VEN_COM:e1 MEN  	{:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); RCCSS.Ventanas.add(v);:}
-			| error:e1 MEN 					{:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ RCCSS.Ventanas.add(v); :};
+		|   error:e1 MEN 					{:Ventana v = new Ventana(); /*v.Imprimir_NodoS(e1);*/ RCCSS.Ventanas.add(v); :};
 
 		//Estructura Final de ventana 
-ES_VEN2 ::= MAY DIA RVEN    MEN
-			| MAY DIA    RVEN error MEN 
-			| MAY error DIA RVEN		 MEN 
-			| error		MEN ;
+ES_VEN2 ::=   MAY DIA 		RVEN    		MEN
+			| MAY DIA    	RVEN 	error 	MEN 
+			| MAY error 	DIA 	RVEN	MEN 
+			| MAY DIA 		error	RVEN 	MEN 
+			| MAY error		MEN ;
 		
 		//Estructura Central de Vetana Si viene su cuerpo o es un error, recupera con la estructura final de ventana 
 ES_VEN3 ::= Cuerpo_Vent ES_VEN2
@@ -107,7 +122,7 @@ EST_VEN ::= 	RID  IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 Cuerpo_Vent ::= Cuerpo_Vent ES_CON
 			|	ES_CON;
 			
-/*---------------------------- Estructura Contenedor ----------------------------*/
+/*---------------------------- Estructura Contenedor ----------------------------YA CON RECUPERACION DE ERRORES*/
 ES_CON ::= 	ES_CON1 ES_CON2{::};
 		 //	<   contenedor estructura  >                 																												 <   /  contenedor  >  
 //estructura inicial del contenedor 
@@ -115,12 +130,13 @@ ES_CON1::= MAY RCON EST_CON_COM:e1 MEN  {:Contenedor v = new Contenedor(); /*v.I
 		|  MAY RCON error MEN 					{:Contenedor v = new Contenedor(); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:};
 
 ES_CON2::= Cuerpo_CONTE ES_CON3
-		|	error ES_CON3 ;
+		|  error 		ES_CON3 ;
 
-ES_CON3::= MAY  DIA RCON MEN	
-		|  MAY  DIA RCON error MEN 	
-		|  MAY error DIA RCON MEN 	
-		|  error MEN;
+ES_CON3::= MAY  DIA 	RCON 			MEN	
+		|  MAY  DIA 	RCON 	error 	MEN 	
+		|  MAY  error 	DIA 	RCON 	MEN 	
+		|  MAY  DIA 	error 	RCON 	MEN 	
+		|  MAY  DIA 	error 			MEN;
 			
 EST_CON_COM ::= EST_CON_COM:e2 EST_CON:e1		{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_CON:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
@@ -144,13 +160,30 @@ Tipo_Conte ::=	ES_TEX:e1 	{:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.si
 			|	ES_BOT 		{:	:}//boton
 			|	ES_ENV 		{:	:}//enviar
 			;
-/*---------------------------- Estructura Texto ----------------------------*/
-ES_TEX ::= 	MAY RTEX  EST_TEX_COM:e1 MEN SUM_TEXT:e2 MAY DIA RTEX   MEN{:Texto v = new Texto(); EDato nuevo= new EDato(e2,e2left+1,e2right+1); 	v.Analizar_Attributos(e1,errores,nuevo); RESULT=v;:}
+/*---------------------------- Estructura Texto ----------------------------YA CON RECUPERACION DE ERRORES*/
+ES_TEX ::= 	ES_TEX1:e1 ES_TEX2:e2 {: e1.Analizar_Valor(e2,errores); RESULT=e1;:}
 			;//	<   Texto  estructura  >          <   /   Texto  >  			
-		
+
+//TIPO TEXTO		
+ES_TEX1 ::= MAY RTEX EST_TEX_COM:e1 MEN{:Texto v = new Texto();  	v.Analizar_Attributos(e1,errores); RESULT=v;:}
+		|	MAY RTEX error 			MEN{:Texto v= new Texto(); RESULT = v;:}
+		;
+//TIPO EDATO
+ES_TEX2 ::= SUM_TEXT:e2	ES_TEX3		{:EDato nuevo= new EDato(e2,e2left+1,e2right+1); RESULT=nuevo;:}
+		|	error 		ES_TEX3		{:EDato nuevo= new EDato("",0,0); RESULT=nuevo;:};
+
+//SIN TIPO
+ES_TEX3 ::= MAY DIA 	RTEX 	MEN
+		|	MAY DIA 	error	MEN
+		|	MAY error			MEN
+		|	MAY DIA 	RTEX 	error	MEN
+		|	MAY DIA 	error	RTEX 	MEN
+		;
+
 EST_TEX_COM ::= EST_TEX_COM:e2 EST_TEX:e1			{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_TEX:e1 							{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:};
 			
+
 EST_TEX ::= 	RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Nombre"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Nombre = "[^]"
 			|	RX   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="X"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// X = Numero
 			|   RY   IGU NUM:e1    	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Y"; 			nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Y = Numero
@@ -160,20 +193,23 @@ EST_TEX ::= 	RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			|   RNEG IGU BOL:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="negrita"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Negrita = verdadero/falso
 			|   RCUR IGU BOL:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="cursiva"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Cursiva = verdadero/falso
 			;			
-/*---------------------------- Estructura Control ----------------------------*/
+/*---------------------------- Estructura Control ----------------------------YA CON RECUPERACION DE ERRORES*/
 ES_CTR ::= ES_CTR1 Cuerpo_CTR_1 ;
 
 ES_CTR1 ::= MAY RCTR  EST_CTR_COM:e1 MEN {:Control v = new Control(); control=v; v.Analizar_Attributos(e1,errores); Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.controles.add(v);:} 
 		|	MAY RCTR error MEN 			{:Control v = new Control(); control=v;  Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.controles.add(v);:} 
-		|	MAY error MEN 				{:Control v = new Control(); control=v;  Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.controles.add(v);:} ;
+		;
 
+		
 Cuerpo_CTR_1 ::= Cuerpo_CTR ES_CTR2 {:control.Analizar_Lista_Datos(errores);:}
 			| ES_CTR2{:control.Analizar_Lista_Datos(errores);:};
+
 			
-ES_CTR2 ::= 	MAY  DIA   RCTR   MEN
+ES_CTR2 ::= 	MAY  DIA   RCTR   		MEN
 			|	MAY  DIA   error RCTR   MEN
 			|	MAY  error DIA   RCTR   MEN
-			|	MAY  DIA   RCTR  error  MEN;
+			|	MAY  DIA   RCTR  error  MEN
+			|	MAY  error  			MEN;
 			
 
 		//	<   Control  estructura  >               <   /   Control  >  			
@@ -204,31 +240,60 @@ Cuerpo_CTR ::= Cuerpo_CTR Tipos_CTR
 Tipos_CTR ::=	ES_LDA:e1 {:control.Datos=e1;:}
 			|	ES_DEF:e1 {:control.Defecto=e1;:}
 			;
-/*---------------------------- Etiqueta Lista Datos----------------------------*/
+/*---------------------------- Etiqueta Lista Datos----------------------------YA CON RECUPERACION DE ERRORES*/
 ES_LDA ::= 	MAY RLDA  EST_LDA_COM:e1 {:RESULT=e1;:};
 		//	<   Lista Datos  estructura   
-EST_LDA_COM ::= RACI IGU MORE:e2 MEN  Cuerpo_LDA:e1  MAY  DIA RLDA        MEN   {:e1.accion=e2.toString(); RESULT=e1;:}
+EST_LDA_COM ::= RACI IGU MORE:e2 MEN  Cuerpo_LDA:e1  ES_LDA2 {:e1.accion=e2.toString(); RESULT=e1;:}
 			//  Accion = {[^]} >                <   /   Lista Datos  >   
-			|	MEN  Cuerpo_LDA:e1  MAY DIA  RLDA        MEN   					{:RESULT=e1;:}
+			|	MEN  Cuerpo_LDA:e1  ES_LDA2					{:RESULT=e1;:}
+			| 	MEN  error 			ES_LDA2					{:ListaDatos nuevo = new ListaDatos(); RESULT=nuevo;:}
+			|	error MEN  Cuerpo_LDA:e1  ES_LDA2			{:RESULT=e1;:}
 			;	
 			//  >                <   /   Lista Datos  >  
+			
+ES_LDA2 ::= MAY  DIA RLDA   		MEN
+		|	MAY  DIA error 	RLDA   	MEN
+		|	MAY  DIA RLDA 	error  	MEN
+		|	MAY  DIA error 			MEN
+		|	MAY  error 				MEN
+			;
+			
 Cuerpo_LDA ::= 	Cuerpo_LDA:e2  ES_DA:e1		{:e2.Datos.add(e1); RESULT=e2;:} 
 			|	ES_DA:e1					{:ListaDatos nuevo = new ListaDatos(); nuevo.Datos.add(e1); RESULT=nuevo;:}
 			;
 
-/*---------------------------- Etiqueta Dato----------------------------*/	
+/*---------------------------- Etiqueta Dato----------------------------YA CON RECUPERACION DE ERRORES*/	
 ES_DA ::= 	MAY RDAT  EST_DA_COM:e1 {:RESULT=e1;:};
 		//	<   Dato  estructura   
-EST_DA_COM ::= REFE IGU CAD:e2       MEN SUM_TEXT:e1 {::}  MAY  DIA RDAT   MEN		{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e2left+1; nuevo.columna=e2right+1; nuevo.referencia=e2.toString(); RESULT=nuevo;:}
+EST_DA_COM ::= REFE IGU CAD:e2    	MEN SUM_TEXT:e1  	ES_DA2 	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e2left+1; nuevo.columna=e2right+1; nuevo.referencia=e2.toString(); RESULT=nuevo;:}
 			// REFERENCIA = "[^]" >             <   /      Dato  >
-			|MEN SUM_TEXT:e1 MAY  DIA RDAT   MEN									{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
-				;
-			
-/*---------------------------- Etiqueta Defecto----------------------------*/	
-ES_DEF ::= 	MAY RDEF   MEN  SUM_TEXT:e1 MAY DIA RDEF   MEN			{:EDato nuevo= new EDato(); nuevo.Dato=e1.trim(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:};
-		//	<   Defecto >         <   /   Defecto  > 		
-		
-/*---------------------------- Estructura Multimedia ----------------------------*/		
+			|						MEN SUM_TEXT:e1 	ES_DA2	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
+
+			| error ES_DA2	{:EDato nuevo= new EDato(); RESULT=nuevo;:};
+
+ES_DA2 ::= 	MAY  DIA RDAT   		MEN
+		|	MAY  DIA error 	RDAT   	MEN
+		|	MAY  DIA RDAT 	error  	MEN
+		|	MAY  DIA error 			MEN
+		|	MAY  error 				MEN
+			;
+/*---------------------------- Etiqueta Defecto---------------------------- YA CON RECUPERACION DE ERRORES*/	
+ES_DEF ::= 	ES_DEF1 ES_DEF2:e1 {:RESULT=e1;:};
+
+ES_DEF1 ::= MAY 		RDEF 	MEN 
+		|	MAY error 			MEN
+		|	MAY error 	RDEF 	MEN
+		|	MAY RDEF 	error 	MEN;
+
+ES_DEF2 ::= SUM_TEXT:e1 ES_DEF3 {:EDato nuevo= new EDato(); nuevo.Dato=e1.trim(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
+		|	error 		ES_DEF3 {:EDato nuevo= new EDato(); RESULT=nuevo;:};
+
+ES_DEF3 ::= MAY DIA 	RDEF   	MEN
+		|	MAY error 	MEN
+		|	MAY error 	DIA 	RDEF   MEN
+		|	MAY DIA 	error	RDEF   MEN
+		|	MAY DIA 	RDEF   	error  MEN;
+/*---------------------------- Estructura Multimedia ---------------------------- YA CON RECUPERACION DE ERRORES*/		
 ES_MUL ::= 	ES_MUL1 ES_MUL2;
 		//	<   Multime Estructura  >         <   /  Multime  > 
 		
@@ -240,7 +305,8 @@ ES_MUL2 ::=  error MAY DIA   RMUL   MEN
 			|MAY error DIA   RMUL   MEN
 			|MAY DIA   RMUL  error  MEN
 			|MAY DIA   error RMUL   MEN
-			|MAY DIA   RMUL   MEN;
+			|MAY DIA   RMUL   MEN
+			|MAY DIA   error  MEN;
 		
 EST_MUL_COM ::= EST_MUL_COM:e2 EST_MUL:e1		{:e2.listas.add(e1); RESULT=e2;:}
 			|	EST_MUL:e1 						{:NodoSGxml nuevo = new NodoSGxml("raiz"); nuevo.listas.add(e1);RESULT=nuevo;:}
@@ -255,7 +321,7 @@ EST_MUL 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			|	RANC IGU NUM:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Ancho"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Ancho  = Numero
 			|	RAUT IGU BOL:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="auto"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Auto-reproduccion  = verdadero/falso
 			;			
-/*---------------------------- Estructura Boton ----------------------------*/	
+/*---------------------------- Estructura Boton ---------------------------- YA CON RECUPERACION DE ERRORES*/	
 ES_BOT ::= 	ES_BOT1 Cuerpo_BOT {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:}
 ;
 
@@ -271,7 +337,8 @@ ES_BOT2 ::= MAY DIA RBOT   MEN
 		|	MAY error DIA RBOT   MEN
 		|	MAY DIA RBOT error   MEN
 		|	MAY DIA  error RBOT   MEN
-		;
+		|	MAY DIA  error  MEN;
+		
 
 		//	<   BOTON Estructura    >              <   /  Boton  > 
 
@@ -287,7 +354,7 @@ EST_BOT 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			|	RACI IGU MORE:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="accion"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion  = {"[^]"}
 				;
 
-/*---------------------------- Estructura Enviar ----------------------------*/	
+/*---------------------------- Estructura Enviar ----------------------------YA CON RECUPERACION DE ERRORES*/	
 ES_ENV ::= 	MAY RENV  EST_BOT_COM:e1 {:Boton v = new Boton("enviar"); v.Analizar_Attributos(e1,errores); botonaso=v;:} MEN Cuerpo_ENV {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:};
 
 Cuerpo_ENV ::= ES_TEX:e1	ES_ENV2 {:botonaso.Etexto=e1;:}//estructura texto
@@ -298,5 +365,6 @@ ES_ENV2 ::= MAY DIA RENV   MEN
 		|	MAY error DIA RENV   MEN
 		|	MAY DIA RENV error   MEN
 		|	MAY DIA  error RENV   MEN
-		;
+		|	MAY DIA  error  MEN;
+
 		

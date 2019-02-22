@@ -113,9 +113,13 @@ public class Pestania extends javax.swing.JPanel {
                 errores = miParser.errores;
                 lexicos = lex.Elista;
                 System.out.println("errores --->" + errores.size() + "--->" + miParser.errores.size());
+                System.out.println("lexicos--------->" + lex.Elista.size());
+                if (!(errores.size() > 0 || lexicos.size() > 0)) {
+                    System.out.println("no hay errores");
+                    Generar_Archivo_FS nuevo = new Generar_Archivo_FS(Raiz);
 
-                System.out.println("---------" + lex.Elista.size());
-                Raiz.Recorrer_Ventanas();
+                }
+                //Raiz.Recorrer_Ventanas();
             } catch (Exception ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -126,7 +130,7 @@ public class Pestania extends javax.swing.JPanel {
     public ArrayList<NodoError> dev_errores() {
         ArrayList<NodoError> total = new ArrayList();
         for (int i = 0; i < errores.size(); i++) {
-             total.add(errores.get(i));
+            total.add(errores.get(i));
         }
         for (int i = 0; i < lexicos.size(); i++) {
             total.add(lexicos.get(i));
