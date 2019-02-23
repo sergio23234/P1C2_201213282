@@ -24,6 +24,7 @@ public class Boton {
         x = y = 0;
         alto = ancho = 100;
         linea = columna = 0;
+        Etexto = new Texto();
         
     }
     public Boton(String tipo) {
@@ -32,6 +33,7 @@ public class Boton {
         alto = ancho = 100;
         linea = columna = 0;
         this.tipo = tipo;
+          Etexto = new Texto();
     }
 
     public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista/*, String texto*/) {

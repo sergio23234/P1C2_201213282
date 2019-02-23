@@ -180,7 +180,7 @@ public class Menu extends javax.swing.JFrame {
          //empezamos implementando la clase JFileChooser para abrir archivos
         JFileChooser JFC = new JFileChooser();
         //filtro que muestra solo los archivos con extension *.edu
-        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *.txt *.docx", "txt","doc"));
+        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *.gxml *.docx", "gxml","GXML"));
         //se comprueba si se ha dado al boton aceptar
         int abrir = JFC.showDialog(null, "Abrir");
         if (abrir == JFileChooser.APPROVE_OPTION) {
@@ -190,7 +190,7 @@ public class Menu extends javax.swing.JFrame {
                 //abro el fichero y creo un BufferedReader para hacer
                 File archivo = JFC.getSelectedFile();//abre un archivo .lengf
                 String PATH = JFC.getSelectedFile().getAbsolutePath();
-                if(PATH.toLowerCase().endsWith(".txt")||PATH.toLowerCase().endsWith(".docx")){
+                if(PATH.toLowerCase().endsWith(".fs")||PATH.toLowerCase().endsWith(".gxml")){
                     FR = new FileReader(archivo);
                     BR = new BufferedReader(FR);
                     

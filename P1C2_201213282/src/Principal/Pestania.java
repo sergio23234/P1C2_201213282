@@ -117,7 +117,9 @@ public class Pestania extends javax.swing.JPanel {
                 if (!(errores.size() > 0 || lexicos.size() > 0)) {
                     System.out.println("no hay errores");
                     Generar_Archivo_FS nuevo = new Generar_Archivo_FS(Raiz);
-
+                    String datos[] = path.split("/");
+                    String nombre = datos[datos.length-1];
+                    nuevo.Generar_archivo(nombre,path.replace(nombre,""));
                 }
                 //Raiz.Recorrer_Ventanas();
             } catch (Exception ex) {
