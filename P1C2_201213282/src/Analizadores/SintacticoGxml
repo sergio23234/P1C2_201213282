@@ -243,9 +243,7 @@ Tipos_CTR ::=	ES_LDA:e1 {:control.Datos=e1;:}
 /*---------------------------- Etiqueta Lista Datos----------------------------YA CON RECUPERACION DE ERRORES*/
 ES_LDA ::= 	MAY RLDA  EST_LDA_COM:e1 {:RESULT=e1;:};
 		//	<   Lista Datos  estructura   
-EST_LDA_COM ::= RACI IGU MORE:e2 MEN  Cuerpo_LDA:e1  ES_LDA2 {:e1.accion=e2.toString(); RESULT=e1;:}
-			//  Accion = {[^]} >                <   /   Lista Datos  >   
-			|	MEN  Cuerpo_LDA:e1  ES_LDA2					{:RESULT=e1;:}
+EST_LDA_COM ::= MEN  Cuerpo_LDA:e1  ES_LDA2					{:RESULT=e1;:}
 			| 	MEN  error 			ES_LDA2					{:ListaDatos nuevo = new ListaDatos(); RESULT=nuevo;:}
 			|	error MEN  Cuerpo_LDA:e1  ES_LDA2			{:RESULT=e1;:}
 			;	
@@ -265,11 +263,9 @@ Cuerpo_LDA ::= 	Cuerpo_LDA:e2  ES_DA:e1		{:e2.Datos.add(e1); RESULT=e2;:}
 /*---------------------------- Etiqueta Dato----------------------------YA CON RECUPERACION DE ERRORES*/	
 ES_DA ::= 	MAY RDAT  EST_DA_COM:e1 {:RESULT=e1;:};
 		//	<   Dato  estructura   
-EST_DA_COM ::= REFE IGU CAD:e2    	MEN SUM_TEXT:e1  	ES_DA2 	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e2left+1; nuevo.columna=e2right+1; nuevo.referencia=e2.toString(); RESULT=nuevo;:}
-			// REFERENCIA = "[^]" >             <   /      Dato  >
-			|						MEN SUM_TEXT:e1 	ES_DA2	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
-
-			| error ES_DA2	{:EDato nuevo= new EDato(); RESULT=nuevo;:};
+EST_DA_COM ::=		MEN SUM_TEXT:e1 	ES_DA2	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
+		| 	error 	MEN SUM_TEXT:e1 	ES_DA2	{:EDato nuevo= new EDato(); nuevo.Dato=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}
+		|			MEN  error 			ES_DA2	{:EDato nuevo= new EDato(); RESULT=nuevo;:};
 
 ES_DA2 ::= 	MAY  DIA RDAT   		MEN
 		|	MAY  DIA error 	RDAT   	MEN
@@ -352,7 +348,7 @@ EST_BOT 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			|	RANC IGU NUM:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Ancho"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Ancho  = Numero
 			|	REFE IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="referencia"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Referencia  = "[^]"
 			|	RACI IGU MORE:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="accion"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion  = {"[^]"}
-				;
+			;
 
 /*---------------------------- Estructura Enviar ----------------------------YA CON RECUPERACION DE ERRORES*/	
 ES_ENV ::= 	MAY RENV  EST_BOT_COM:e1 {:Boton v = new Boton("enviar"); v.Analizar_Attributos(e1,errores); botonaso=v;:} MEN Cuerpo_ENV {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:};

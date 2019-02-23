@@ -26,11 +26,13 @@ public class Control {
     public EDato Defecto;
 
     public Control() {
-        Nombre = Tipo = Fuente = "";
+        Nombre = Tipo =   "";
+        Fuente = "Arial";
         alto = ancho = 50;
-        tam = 12;
+        tam = 14;
         color = "#000000";
-        x = y = maximo = minimo = 0;
+        x = y =  0;
+        maximo = minimo = -1;
         negrita = cursiva = "falso";
         accion = "";
         Datos = null;
@@ -102,13 +104,13 @@ public class Control {
         }
         switch (actual.val.replace("\"", "").toLowerCase()) {
             case "texto":
-                Analizar_Attributos_Tipo_Texto(hijos, lista);
+                Analizar_Attributos_Tipo_Texto(hijos, lista,1);
                 break;
             case "numerico":
                 Analizar_Attributos_Tipo_Numerico(hijos, lista);
                 break;
             case "textoarea":
-                Analizar_Attributos_Tipo_Texto(hijos, lista);
+                Analizar_Attributos_Tipo_Texto(hijos, lista,0);
                 break;
             case "desplegable":
                 Analizar_Attributos_Tipo_desplegable(hijos, lista);
@@ -117,7 +119,7 @@ public class Control {
         }
     }
 
-    private void Analizar_Attributos_Tipo_Texto(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+    private void Analizar_Attributos_Tipo_Texto(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista,int tipo) {
         for (int i = 0; i < hijos.size(); i++) {
             NodoSGxml actual = hijos.get(i);
             NodoError error;
@@ -135,6 +137,15 @@ public class Control {
                     error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
                     error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto/textoarea";
                     lista.add(error);
+                    break;
+                case "accion":   
+                    if(tipo==1){
+                        error = new NodoError("semantico");
+                    error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
+                    error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
+                    error.descripcion = "El attributo Accion no esta permitido dentro del cotrol tipo texto";
+                    lista.add(error);
+                    }
                     break;
             }
         }

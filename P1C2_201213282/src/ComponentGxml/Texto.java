@@ -26,9 +26,10 @@ public class Texto {
 
     public Texto() {
         Nombre = "";
+        Fuente="Arial";
         color = "#000000";
         x = y = 0;
-        tam = 12;
+        tam = 14;
         negrita = cursiva = "falso";
         linea = columna = 0;
         Valor="";
