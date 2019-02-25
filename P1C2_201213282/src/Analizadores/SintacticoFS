@@ -101,7 +101,7 @@ Expresion ::=	Exp_Ari
 /*---------------------------- Estructura Imprimir ----------------------------*/
 Es_Impr ::= impr ipa Exp_Ari fpa pyc ;			/*Imprimir(EXPRESION);*/
 
-/*---------------------------- Estructura Imprimir ----------------------------*/
+/*---------------------------- Estructura Importar ----------------------------*/
 Es_Impo ::= impo ipa Exp_Ari fpa pyc ;			/*Importar(Expresion);*/
 
 /*---------------------------- Estructura Si ----------------------------*/
@@ -119,6 +119,15 @@ Es_DeAu ::=	idva pun mas mas pyc
 
 /*---------------------------- Estructura Retornar ----------------------------*/
 Es_reto ::= reto Expresion;
+
+/*---------------------------- Estructura Asignacion ----------------------------*/
+Es_asig ::= idva igu Exp_Ari									/*ID *= Expresion_Ar*/
+		|	idva igu Exp_Log									/*ID *= Expresion_Log*/
+		|	idva igu Exp_Log fin Expresion dop Expresion		/*ID *= Expresion_Log? Expresion:Expresion*/
+		|	idva por igu Exp_Ari								/*ID *= Expresion_Ar*/
+		|	idva div igu Exp_Ari								/*ID /= Expresion_Ar*/
+		|	idva mas igu Exp_Ari								/*ID += Expresion_Ar*/
+		|	idva men igu Exp_Ari;								/*ID -= Expresion_Ar*/
 
 /*---------------------------- Estructura Selecciona ----------------------------*/		
 		
