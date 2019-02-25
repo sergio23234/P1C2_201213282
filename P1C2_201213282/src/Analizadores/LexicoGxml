@@ -64,6 +64,7 @@ Numero = [0-9]+
 "Negrita"									{return new Symbol(sym.RNEG,yyline,yycolumn,yytext());}
 "Cursiva"									{return new Symbol(sym.RCUR,yyline,yycolumn,yytext());}
 "Ventana"									{return new Symbol(sym.RVEN,yyline,yycolumn,yytext());}
+"Control"									{return new Symbol(sym.RCTR,yyline,yycolumn,yytext());}
 "Defecto"									{return new Symbol(sym.RDEF,yyline,yycolumn,yytext());}
 "Importar"									{return new Symbol(sym.RIMP,yyline,yycolumn,yytext());}
 "Verdadero"									{return new Symbol(sym.RVER,yyline,yycolumn,yytext());}
@@ -73,7 +74,6 @@ Numero = [0-9]+
 "Multimedia"								{return new Symbol(sym.RMUL,yyline,yycolumn,yytext());}
 "AccionFinal"								{return new Symbol(sym.RAFI,yyline,yycolumn,yytext());}
 //"Desplegable"								{return new Symbol(sym.RDES,yyline,yycolumn,yytext());}
-"Controlador"								{return new Symbol(sym.RCTR,yyline,yycolumn,yytext());}
 "AccionInicial"								{return new Symbol(sym.RAIN,yyline,yycolumn,yytext());}
 "Auto-Reproduccion"							{return new Symbol(sym.RAUT,yyline,yycolumn,yytext());}
 (["\""]([^\"])+["\""])						{return new Symbol(sym.CAD,yyline,yycolumn,yytext());}
@@ -84,6 +84,7 @@ Numero = [0-9]+
 
 }
 <Stado>{
+
 ([^<>])+   									{yybegin(YYINITIAL); return new Symbol(sym.TEXT,yyline,yycolumn,yytext());}
 }
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}

@@ -49,15 +49,21 @@ Numero = [0-9]+
 "["											{return new Symbol(sym.ico,yyline,yycolumn,yytext());}
 "]"											{return new Symbol(sym.fco,yyline,yycolumn,yytext());}
 "?"											{return new Symbol(sym.fin,yyline,yycolumn,yytext());}
+"."											{return new Symbol(sym.pun,yyline,yycolumn,yytext());}
+","											{return new Symbol(sym.com,yyline,yycolumn,yytext());}
 ";"											{return new Symbol(sym.pyc,yyline,yycolumn,yytext());}
+":"											{return new Symbol(sym.dop,yyline,yycolumn,yytext());}
 "!"											{return new Symbol(sym.not,yyline,yycolumn,yytext());}
 "||"										{return new Symbol(sym.or,yyline,yycolumn,yytext());}
 "&&"										{return new Symbol(sym.and,yyline,yycolumn,yytext());}
 "var"										{return new Symbol(sym.var,yyline,yycolumn,yytext());}
+"verdadero"									{return new Symbol(sym.verd,yyline,yycolumn,yytext());}
+"falso"										{return new Symbol(sym.fals,yyline,yycolumn,yytext());}
 "imprimir"									{return new Symbol(sym.impr,yyline,yycolumn,yytext());}
 "importar"									{return new Symbol(sym.impo,yyline,yycolumn,yytext());}
 "detener"									{return new Symbol(sym.dete,yyline,yycolumn,yytext());}
 "retornar"									{return new Symbol(sym.reto,yyline,yycolumn,yytext());}
+"Sino"										{return new Symbol(sym.sino,yyline,yycolumn,yytext());}
 "Si"										{return new Symbol(sym.si,yyline,yycolumn,yytext());}
 "selecciona"								{return new Symbol(sym.sele,yyline,yycolumn,yytext());}
 "caso"										{return new Symbol(sym.caso,yyline,yycolumn,yytext());}
@@ -93,6 +99,12 @@ Numero = [0-9]+
 "AlClic"									{return new Symbol(sym.acli,yyline,yycolumn,yytext());}
 "AlCargar"									{return new Symbol(sym.acar,yyline,yycolumn,yytext());}
 "AlCerrar"									{return new Symbol(sym.acer,yyline,yycolumn,yytext());}
-({Numero})					    			{return new Symbol(sym.NUM,yyline,yycolumn,yytext());}	
+"nulo"										{return new Symbol(sym.nulo,yyline,yycolumn,yytext());}
+(([:jletter:]|_)([:jletter:]|[:jletterdigit:]|_)+)
+											{return new Symbol(sym.idva,yyline,yycolumn,yytext());}
+(["\""]([^\"])+["\""])						{return new Symbol(sym.cade,yyline,yycolumn,yytext());}	
+(["\'"]([^\"])+["'"])						{return new Symbol(sym.cade,yyline,yycolumn,yytext());}					
+({Numero}"."{Numero})					   	{return new Symbol(sym.deci,yyline,yycolumn,yytext());}	
+({Numero})					    			{return new Symbol(sym.nume,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
 .											{errorLexico(yytext(),yyline,yycolumn);}

@@ -26,35 +26,34 @@ public class Texto {
 
     public Texto() {
         Nombre = "";
-        Fuente="Arial";
+        Fuente = "Arial";
         color = "#000000";
         x = y = 0;
         tam = 14;
         negrita = cursiva = "falso";
         linea = columna = 0;
-        Valor="";
+        Valor = "";
     }
 
-    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {
+    public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista, int tipo) {
         Analizar_Attributos_repetidos(Nodo.listas, lista);
-        Analizar_Attributos_obligatorios(Nodo.listas, lista);
+        Analizar_Attributos_obligatorios(Nodo.listas, lista, tipo);
         //Analizar_Attributo_Borde(Nodo.listas, lista);
         //Analizar_Attributo_Numeros(Nodo.listas, lista);
         //Analizar_Attributo_Color(Nodo.listas,lista);
         Set_Attributos(Nodo.listas);
-        
+
     }
-    
-    public void Analizar_Valor(EDato Valor,ArrayList<NodoError> lista){
-        if(Valor.Dato.trim().contains("\n")){
-             NodoError error;
-                error = new NodoError("semantico");
-                error.linea = String.valueOf(Valor.linea);
-                error.columna = String.valueOf(Valor.columna);
-                error.descripcion = "la etiqueta tiene un salto de linea no valido en la etiqueta Texto";
-                lista.add(error);
-        }
-        else{
+
+    public void Analizar_Valor(EDato Valor, ArrayList<NodoError> lista) {
+        if (Valor.Dato.trim().contains("\n")) {
+            NodoError error;
+            error = new NodoError("semantico");
+            error.linea = String.valueOf(Valor.linea);
+            error.columna = String.valueOf(Valor.columna);
+            error.descripcion = "la etiqueta tiene un salto de linea no valido en la etiqueta Texto";
+            lista.add(error);
+        } else {
             this.Valor = Valor.Dato.trim();
         }
     }
@@ -73,7 +72,33 @@ public class Texto {
         }
     }
 
-    private void Analizar_Attributos_obligatorios(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+    private void Analizar_Attributos_obligatorios(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista, int tipo) {
+        if (tipo == 1) {
+            Analizar_Attributos_obligatorios_especial(hijos, lista);
+        } else {
+            Analizar_Attributos_obligatorios_normal(hijos, lista);
+        }
+    }
+
+    private void Analizar_Attributos_obligatorios_especial(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        boolean id = false;
+        for (int i = 0; i < hijos.size(); i++) {
+            if (hijos.get(i).tipo.equalsIgnoreCase("nombre")) {
+                id = true;
+            }
+        }
+        if (!id) {
+            NodoError error = new NodoError("semantico");
+            error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
+            error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
+            String tipoe;
+            tipoe = "Nombre";
+            error.descripcion = "No se encuentra el atributo: " + tipoe + " que es de caracter obligatorio en etiqueta Texto";
+            lista.add(error);
+        }
+    }
+
+    private void Analizar_Attributos_obligatorios_normal(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
         boolean id = false;
         boolean x = false, y = false;
         for (int i = 0; i < hijos.size(); i++) {

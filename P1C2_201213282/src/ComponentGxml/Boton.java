@@ -16,7 +16,6 @@ public class Boton {
 
     public String referencia, accion, Nombre, tipo;
     public int alto, ancho, x, y, linea, columna;
-    public String texto;
     public Texto Etexto;
     
     public Boton() {

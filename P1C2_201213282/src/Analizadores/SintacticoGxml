@@ -38,6 +38,7 @@ parser code {:
  private Control control = new Control();
  private Boton botonaso = new Boton();
  private ListaDatos lista = new ListaDatos();
+ private int textoinboton = 0;
  public ArrayList<NodoError> errores = new ArrayList();
  //public ArrayList<Nodo> e = new ArrayList<Nodo>();
 :}
@@ -123,7 +124,7 @@ Cuerpo_Vent ::= Cuerpo_Vent ES_CON
 			|	ES_CON;
 			
 /*---------------------------- Estructura Contenedor ----------------------------YA CON RECUPERACION DE ERRORES*/
-ES_CON ::= 	ES_CON1 ES_CON2{::};
+ES_CON ::= 	ES_CON1{:textoinboton =0;:} ES_CON2;
 		 //	<   contenedor estructura  >                 																												 <   /  contenedor  >  
 //estructura inicial del contenedor 
 ES_CON1::= MAY RCON EST_CON_COM:e1 MEN  {:Contenedor v = new Contenedor(); /*v.Imprimir_NodoS(e1);*/ v.Analizar_Attributos(e1,errores); Ventana actual=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); actual.contenedores.add(v);:} 
@@ -154,7 +155,7 @@ Cuerpo_CONTE ::= Cuerpo_CONTE Tipo_Conte
 				
 
 	
-Tipo_Conte ::=	ES_TEX:e1 	{:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Textos.add(e1); :}//texto
+Tipo_Conte ::=	ES_TEX:e1 	{: Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Textos.add(e1); :}//texto
 			|	ES_CTR 		{:	:}//control
 			|	ES_MUL 		{:	:}//multime
 			|	ES_BOT 		{:	:}//boton
@@ -165,7 +166,7 @@ ES_TEX ::= 	ES_TEX1:e1 ES_TEX2:e2 {: e1.Analizar_Valor(e2,errores); RESULT=e1;:}
 			;//	<   Texto  estructura  >          <   /   Texto  >  			
 
 //TIPO TEXTO		
-ES_TEX1 ::= MAY RTEX EST_TEX_COM:e1 MEN{:Texto v = new Texto();  	v.Analizar_Attributos(e1,errores); RESULT=v;:}
+ES_TEX1 ::= MAY RTEX EST_TEX_COM:e1 MEN{:Texto v = new Texto();  	v.Analizar_Attributos(e1,errores,textoinboton); RESULT=v;:}
 		|	MAY RTEX error 			MEN{:Texto v= new Texto(); RESULT = v;:}
 		;
 //TIPO EDATO
@@ -321,12 +322,12 @@ EST_MUL 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 ES_BOT ::= 	ES_BOT1 Cuerpo_BOT {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:}
 ;
 
-ES_BOT1 ::= MAY RBOT  EST_BOT_COM:e1  MEN {:Boton v = new Boton("boton"); v.Analizar_Attributos(e1,errores); botonaso=v;:}
-		|	MAY RBOT  error  MEN {:Boton v = new Boton("boton"); botonaso=v;:}
-		|	MAY RBOT   MEN {:Boton v = new Boton("boton"); botonaso=v;:};
+ES_BOT1 ::= MAY RBOT  EST_BOT_COM:e1  MEN {:Boton v = new Boton("boton"); v.Analizar_Attributos(e1,errores); botonaso=v; textoinboton =1;:}
+		|	MAY RBOT  error  MEN {:Boton v = new Boton("boton"); botonaso=v; textoinboton =1;:}
+		|	MAY RBOT   MEN {:Boton v = new Boton("boton"); botonaso=v; textoinboton =1;:};
 		
 Cuerpo_BOT ::= ES_TEX:e1	ES_BOT2 {:botonaso.Etexto=e1;:}//estructura texto
-			|  SUM_TEXT:e1 ES_BOT2	{:botonaso.texto=e1.replace("\"", "");:}//texto
+			|  SUM_TEXT:e1 ES_BOT2	{:botonaso.Etexto.Valor=e1.replace("\"", "");:}//texto
 			|  error ES_BOT2 ;	 
 
 ES_BOT2 ::= MAY DIA RBOT   MEN
@@ -351,10 +352,10 @@ EST_BOT 	::= RNOM IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="
 			;
 
 /*---------------------------- Estructura Enviar ----------------------------YA CON RECUPERACION DE ERRORES*/	
-ES_ENV ::= 	MAY RENV  EST_BOT_COM:e1 {:Boton v = new Boton("enviar"); v.Analizar_Attributos(e1,errores); botonaso=v;:} MEN Cuerpo_ENV {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:};
+ES_ENV ::= 	MAY RENV  EST_BOT_COM:e1 {:Boton v = new Boton("enviar"); v.Analizar_Attributos(e1,errores); botonaso=v; textoinboton =1;:} MEN Cuerpo_ENV {:Ventana actualv=RCCSS.Ventanas.get(RCCSS.Ventanas.size()-1); Contenedor actual =actualv.contenedores.get(actualv.contenedores.size()-1); actual.Botones.add(botonaso);:};
 
 Cuerpo_ENV ::= ES_TEX:e1	ES_ENV2 {:botonaso.Etexto=e1;:}//estructura texto
-			|  SUM_TEXT:e1 ES_ENV2	{:botonaso.texto=e1.replace("\"", "");:}//texto
+			|  SUM_TEXT:e1 ES_ENV2	{:botonaso.Etexto.Valor=e1.replace("\"", "");:}//texto
 			|  error ES_ENV2 ;	 
 
 ES_ENV2 ::= MAY DIA RENV   MEN

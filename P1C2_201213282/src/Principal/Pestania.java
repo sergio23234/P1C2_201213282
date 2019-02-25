@@ -100,7 +100,7 @@ public class Pestania extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
-        if (!path.equals("")) {
+        if (!path.equals("")&&(path.toLowerCase().endsWith(".gxml"))) {
             try {
                 errores.clear();
                 lexicos.clear();
@@ -120,6 +120,11 @@ public class Pestania extends javax.swing.JPanel {
                     String datos[] = path.split("/");
                     String nombre = datos[datos.length-1];
                     nuevo.Generar_archivo(nombre,path.replace(nombre,""));
+                }
+                else{
+                    for(int i=0;i<lexicos.size();i++){
+                        System.out.println(lexicos.get(i).linea+"--"+lexicos.get(i).columna+"---"+lexicos.get(i).descripcion);
+                    }
                 }
                 //Raiz.Recorrer_Ventanas();
             } catch (Exception ex) {

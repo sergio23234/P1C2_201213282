@@ -1,0 +1,124 @@
+package Analizadores;
+import java.io.FileReader;
+import java_cup.runtime.Symbol;
+import ComponentGxml.*;
+import Principal.NodoError;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+parser code {:
+    protected int error_sync_size () {
+       return 1;   
+    }
+
+    public void syntax_error(Symbol s){
+        System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right+1) +", Linea: "+(s.left+1)+ " no esperado"+s.sym);
+		NodoError Nerror = new NodoError("sintactico");
+		Nerror.descripcion = "caracter no reconocido: "+ s.value;
+		Nerror.linea = String.valueOf(s.left+1);
+		Nerror.columna = String.valueOf(s.right+1);
+		errores.add(Nerror);
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.err.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
+        /*Nodo_error nuevo = new Nodo_error();
+        nuevo.dato = String.valueOf(s.value);
+        nuevo.linea = (s.left+1);
+        nuevo.columna=(s.right);
+        Errores.add(nuevo);
+        errores=true;*/
+    }
+    public NodoGxml regresar_raiz(){
+        return RCCSS;
+    }
+	 public ArrayList<NodoError> errores = new ArrayList();
+	 :}
+action code {:
+    public String estado="";
+:}
+terminal mas,men,por,div,igu,pot,may,men,ill,fll,ipa,fpa,ico,fco,fin,pyc,not,or,and,var,pun,com,dop;// Terminales
+terminal impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,maxi,mini,busc,filt,idva,cade,deci,nume,verd,fals,sino;
+terminal map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
+non terminal  Start; //Nodos no terminales
+start with Start;
+
+
+
+/*---------------------------- Estructura Variable ----------------------------*/
+ES_VAR ::= var Lista_ID ES_VAR1 pyc ;
+
+ES_VAR1 ::= igu Expresion 	 						//id = expresion
+		|	igu ico fco 	 						//id = [];
+		|	igu ico Lista_Datos fco 	 			//id =[datos,datos,datos]
+		|	igu ill Lista_Objetos fll 				//id={dato:"",dato:"",dato:""}
+		|	igu Exp_Log fin Exp_Ari dop Exp_Ari 	//id = Logica? Dato : Dato ; 
+		
+Lista_Datos ::= Lista_Datos com Dato_Pri
+		|		Dato_Pri ;
+
+Lista_Objetos ::= Lista_Objetos com idva dop cade
+			|		idva dop cade;	
+
+Dato_Pri ::= 	nume			//numero
+		|	 	cade			//cadena
+		|		deci 			//decimales
+		|		verd			//verdadero
+		|		fals;			//falso
+
+Lista_ID ::=	Lista_ID com idva 	//id,id
+			|	idva;				//id
+		
+/*---------------------------- Estructura Operaciones ----------------------------*/
+Exp_Log ::=	Exp_Log:e1	or 	Exp_Log:e2 			/*LOG || LOG*/
+		|	Exp_Log:e1	and	Exp_Log:e2			/*LOG && LOG*/
+		|	not			Exp_Log:e1				/*! LOG*/
+		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/		
+		|	Exp_Com;							/*Aritmetica*/
+		
+Exp_Com ::=	Exp_Ari:e1 igu igu	Exp_Ari:e2		/*ARI == ARI*/	
+		|	Exp_Ari:e1 not igu	Exp_Ari:e2 		/*ARI != ARI*/
+		|	Exp_Ari:e1 Ex_may	Exp_Ari:e2 		/*ARI >= ARI*/
+		|	Exp_Ari:e1 Ex_men	Exp_Ari:e2 		/*ARI <= ARI*/
+		;
+									
+Ex_may ::=	may 								/* >  */
+		|	may igu	;							/* >= */
+		
+Ex_men ::=	men 								/* <  */
+		|	men igu	;							/* <= */
+		
+Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2			/*DATO + DATO*/
+		|	Exp_Ari:e1 men Exp_Ari:e2			/*DATO - DATO*/
+		|	Exp_Ari:e1 por Exp_Ari:e2			/*DATO * DATO*/
+		|	Exp_Ari:e1 div Exp_Ari:e2			/*DATO / DATO*/
+		|	Exp_Ari:e1 pot Exp_Ari:e2			/*DATO ^ DATO*/
+		|	ipa 	Exp_Ari:e1 	fpa				/*(	Dato  )*/
+		|	men		Exp_Ari:e1					/*-Dato*/
+		|	Dato_Pos;
+
+Expresion ::=	Exp_Ari
+		|		Exp_Log;
+/*---------------------------- Estructura Imprimir ----------------------------*/
+Es_Impr ::= impr ipa Exp_Ari fpa pyc ;			/*Imprimir(EXPRESION);*/
+
+/*---------------------------- Estructura Imprimir ----------------------------*/
+Es_Impo ::= impo ipa Exp_Ari fpa pyc ;			/*Importar(Expresion);*/
+
+/*---------------------------- Estructura Si ----------------------------*/
+Es_Si ::=	si ipa Exp_Log fpa ill /*Cuerpo*/ fll; 
+
+Es_sino ::= sino ill /*Cuerpo*/ fll;		
+
+Estru_si ::= Estru_si sino Es_Si
+			|Estru_si Es_sino
+			|Es_Si;
+/*---------------------------- Estructura Aumento/Decremento ----------------------------*/
+Es_DeAu ::=	idva pun mas mas pyc
+		|	idva ico Exp_Ari fco mas mas pyc 
+		|	idva pun idva mas mas pyc ;
+
+/*---------------------------- Estructura Retornar ----------------------------*/
+Es_reto ::= reto Expresion;
+
+/*---------------------------- Estructura Selecciona ----------------------------*/		
+		

@@ -138,7 +138,7 @@ public class Generar_Archivo_FS {
 
     private void Crear_Boton(Boton raiz, String name_raiz) {
         String nuevo = "var ";
-        nuevo += raiz.Nombre + "= " + name_raiz + ".CrearBoton(" + raiz.Etexto.Fuente + "," + raiz.Etexto.tam + "," + raiz.Etexto.color + "," + raiz.x + "," + raiz.y + "," + raiz.Etexto.Valor + ");\n";
+        nuevo += raiz.Nombre + "= " + name_raiz + ".CrearBoton(" + raiz.Etexto.Fuente + "," + raiz.Etexto.tam + "," + raiz.Etexto.color + "," + raiz.x + "," + raiz.y + "," + raiz.Etexto.Valor.trim() + ");\n";
         Datos.add(nuevo);
     }
 
