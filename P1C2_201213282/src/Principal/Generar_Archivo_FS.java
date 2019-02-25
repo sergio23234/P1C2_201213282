@@ -113,13 +113,13 @@ public class Generar_Archivo_FS {
 
     private void Caja_Texto(Control raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\""+ raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Caja_AreaTexto(Control raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\""+raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
