@@ -208,6 +208,7 @@ public class Menu extends javax.swing.JFrame {
                         int num = Pestanias.getSelectedIndex();
                         Pestania actual = Lista.get(num);
                         actual.path = archivo.getAbsolutePath();
+                        actual.ABpath =archivo.getParent();
                         actual.Editor.setText("");//limpiamos el textArea antes de sobreescribir
                         while((linea=BR.readLine())!=null){ //cuando termina el texto del archivo?
                             actual.Editor.append(linea+"\n");//utilizamos append para escribir en el textArea
@@ -256,11 +257,7 @@ public class Menu extends javax.swing.JFrame {
             int num = Pestanias.getSelectedIndex();
         if (num >= 0) {
             Pestania pest = Lista.get(num);
-            ArrayList<NodoError> lexicos=pest.dev_errores();
-                for (int i = 0; i <lexicos.size(); i++) {
-                    NodoError actual = lexicos.get(i);
-                    System.out.println(actual.tipo + "->" + actual.descripcion + "->" + actual.linea + "->" + actual.columna);
-                }
+
         }
     }//GEN-LAST:event_erroresActionPerformed
 

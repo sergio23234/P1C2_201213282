@@ -17,10 +17,12 @@ public class NodoGxml {
     public ArrayList<Ventana> Ventanas;
     public ArrayList<EDato> Importaciones;
     public Ventana actual;
+    public ArrayList<NodoError> errores;
 
     public NodoGxml() {
         Ventanas = new ArrayList();
         Importaciones = new ArrayList();
+        errores =new ArrayList();
     }
 
     public void Recorrer_Ventanas() {
