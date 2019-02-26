@@ -27,8 +27,9 @@ public class Boton {
         
     }
     public Boton(String tipo) {
-        referencia = Nombre = "";
+         Nombre = "";
         x = y = 0;
+        referencia = "nulo";
         alto = ancho = 100;
         linea = columna = 0;
         this.tipo = tipo;
