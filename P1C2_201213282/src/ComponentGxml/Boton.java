@@ -17,7 +17,7 @@ public class Boton {
     public String referencia, accion, Nombre, tipo;
     public int alto, ancho, x, y, linea, columna;
     public Texto Etexto;
-    
+        
     public Boton() {
         referencia = Nombre = "";
         x = y = 0;
@@ -27,7 +27,7 @@ public class Boton {
         
     }
     public Boton(String tipo) {
-         Nombre = "";
+         Nombre=accion= "";
         x = y = 0;
         referencia = "nulo";
         alto = ancho = 100;

@@ -21,12 +21,15 @@ public class Generar_Archivo_FS {
     //private NodoGxml raiz;
     private ArrayList<String> Datos;
     private ArrayList<NodoGxml> Raices;
+    private ArrayList<String> Metodos;
 
     public Generar_Archivo_FS(ArrayList<NodoGxml> raiz) {
         //this.raiz = raiz;
         Datos = new ArrayList();
         Raices = new ArrayList();
+        Metodos = new ArrayList();
         Raices = raiz;
+
     }
 
     private void inicio(NodoGxml raiz) {
@@ -49,8 +52,8 @@ public class Generar_Archivo_FS {
             NodoGxml raiz = Raices.get(i);
             Recorrer_ventanas(raiz);
         }
-        nombre = nombre.replace(".gxml", "").replace("GXML", "").replace("\\","");
-        Crear_archivo("\\Traduccion_"+nombre, ruta);
+        nombre = nombre.replace(".gxml", "").replace("GXML", "").replace("\\", "");
+        Crear_archivo("\\Traduccion_" + nombre, ruta);
     }
 
     private void Recorrer_ventanas(NodoGxml raiz) {
@@ -76,25 +79,25 @@ public class Generar_Archivo_FS {
     }
 
     private void Crear_Ventana(Ventana raiz) {
-        String nuevo = "var ";
+        String nuevo = "var ven_";
         nuevo += raiz.Id + "= CrearVentana(\"" + raiz.color + "\");\n";
         Datos.add(nuevo);
         for (int i = 0; i < raiz.contenedores.size(); i++) {
             Crear_Contenedor(raiz.contenedores.get(i), raiz.Id);
         }
         if (!raiz.accionI.equalsIgnoreCase("")) {
-            String linea = "AlCargar(" + raiz.accionI.replace("{", "").replace("}", "").trim() + ");\n";
+            String linea = "ven_" + raiz.Id + ".AlCargar(" + raiz.accionI.replace("{", "").replace("}", "").trim() + ");\n";
             Datos.add(linea);
         }
         if (!raiz.accionF.equalsIgnoreCase("")) {
-            String linea = "AlCerrar(" + raiz.accionI.replace("{", "").replace("}", "").trim() + ");\n";
+            String linea = "ven_" + raiz.Id + ".AlCerrar(" + raiz.accionF.replace("{", "").replace("}", "").trim() + ");\n";
             Datos.add(linea);
         }
     }
 
     private void Crear_Contenedor(Contenedor raiz, String name_raiz) {
         String nuevo = "var ";
-        nuevo += raiz.Id + "= " + name_raiz + ".CrearContenedor(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.color + "\"," + raiz.Borde + "," + raiz.x + "," + raiz.y + ");\n";
+        nuevo += raiz.Id + "_" + name_raiz + "= " + name_raiz + ".CrearContenedor(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.color + "\"," + raiz.Borde + "," + raiz.x + "," + raiz.y + ");\n";
         Datos.add(nuevo);
         for (int i = 0; i < raiz.Textos.size(); i++) {
             Crear_Texto(raiz.Textos.get(i), raiz.Id);
@@ -106,7 +109,7 @@ public class Generar_Archivo_FS {
             Crear_Multi(raiz.Multi.get(i), raiz.Id);
         }
         for (int i = 0; i < raiz.Botones.size(); i++) {
-            Crear_Boton(raiz.Botones.get(i), raiz.Id);
+            Crear_Boton(raiz.Botones.get(i), raiz.Id, name_raiz);
         }
     }
 
@@ -129,39 +132,73 @@ public class Generar_Archivo_FS {
 
     private void Crear_Texto(Texto raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearTexto(" + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ", \""+raiz.Nombre+"\");\n";
+        nuevo += name_raiz + ".CrearTexto(" + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ", \"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Caja_Texto(Control raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + "," + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\""+raiz.Defecto.Dato+"\",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + "," + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Caja_AreaTexto(Control raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + "," + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.x + "," + raiz.y + "," + raiz.negrita + "," + raiz.cursiva + ",\""+raiz.Defecto.Dato.replace("\r\n", "\\n")+"\",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + "," + raiz.Fuente + "," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Defecto.Dato.replace("\r\n", "\\n").replace("\t", "") + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Control_Numerico(Control raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearControlNumerico(" + raiz.alto + "," + raiz.ancho + "," + raiz.maximo + "," + raiz.minimo + "," + raiz.x + "," + raiz.y + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearControlNumerico(" + raiz.alto + "," + raiz.ancho + "," + raiz.maximo + "," + raiz.minimo + "," + raiz.y + "," + raiz.x + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Control_Desplegable(Control raiz, String name_raiz) {
         /*NO IMPLEMENTADO AUN*/
         String nuevo = "";
-        nuevo += name_raiz + ".CrearControlDesplegable(" + raiz.alto + "," + raiz.ancho + "," + raiz.maximo + "," + raiz.minimo + "," + raiz.x + "," + raiz.y + ",\"" + raiz.Nombre + "\");\n";
+        String lista ="lista_"+raiz.Nombre+"_"+name_raiz;
+        String variable ="var "+lista+" = "+lista_Datos(raiz.Datos.Datos);
+        nuevo += name_raiz + ".CrearControlDesplegable(" + raiz.alto + "," + raiz.ancho + "," + lista + "," + raiz.x + "," + raiz.y + ",\"" + raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
+        Datos.add(variable);
         Datos.add(nuevo);
     }
 
-    private void Crear_Boton(Boton raiz, String name_raiz) {
+    private String lista_Datos(ArrayList<EDato> Datos){
+        String dato ="[";
+        for(int i=0;i<Datos.size();i++){
+           if(i==0){
+                dato += "\""+Datos.get(i).Dato+"\"";
+           }else{
+               dato += ",\""+Datos.get(i).Dato+"\"";
+           }
+        }
+        dato += "];\n";
+        return dato;
+    }
+    
+    private void Crear_Boton(Boton raiz, String name_raiz, String super_Raiz) {
         String nuevo = "var ";
-        nuevo += raiz.Nombre + "= " + name_raiz + ".CrearBoton(" + raiz.Etexto.Fuente + "," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.x + "," + raiz.y + ",\"" + raiz.Etexto.Valor.trim() + "\");\n";
+        if (raiz.referencia.equalsIgnoreCase("nulo")) {
+            nuevo += raiz.Nombre + "_" + super_Raiz + "= " + name_raiz + ".CrearBoton(\"" + raiz.Etexto.Fuente + "\"," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.y + "," + raiz.x + ",nulo,\"" + raiz.Etexto.Valor.trim() + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
+        } else {
+            String metodo = "CargarVentana_" + super_Raiz + "()";
+            nuevo += raiz.Nombre + "_" + super_Raiz + "= " + name_raiz + ".CrearBoton(\"" + raiz.Etexto.Fuente + "\"," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.y + "," + raiz.x + "," + metodo + ",\"" + raiz.Etexto.Valor.trim() + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
+            Crear_metodo(metodo, super_Raiz, 0);
+        }
         Datos.add(nuevo);
+        if (!raiz.accion.equalsIgnoreCase("") || raiz.tipo.equalsIgnoreCase("enviar")) {
+            if (raiz.tipo.equalsIgnoreCase("enviar")) {
+                String metodo = "Guardar_" + super_Raiz + "()";
+                String dato = raiz.Nombre + "_" + super_Raiz + ".AlClic(" + metodo + ");\n";
+                Datos.add(dato);
+                Crear_metodo(metodo, super_Raiz, 1);
+            } else {
+                String dato = raiz.Nombre + "_" + super_Raiz + ".AlClic(" + raiz.accion.replace("{", "").replace("}", "").trim() + ");\n";
+                Datos.add(dato);
+
+            }
+        }
     }
 
     private void Crear_Multi(Multimedia raiz, String name_raiz) {
@@ -180,41 +217,63 @@ public class Generar_Archivo_FS {
 
     private void Crear_Imagen(Multimedia raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearImagen(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\""+raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearImagen(\"" + raiz.Path + "\"," + raiz.y + "," + raiz.x + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Crear_Reproductor(Multimedia raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearReproductor(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\""+raiz.Nombre + "\");\n";
+        nuevo += name_raiz + ".CrearReproductor(\"" + raiz.Path + "\"," + raiz.y + "," + raiz.x + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Crear_Video(Multimedia raiz, String name_raiz) {
         String nuevo = "";
-        nuevo += name_raiz + ".CrearVideo(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" +raiz.Nombre+ "\");\n";
+        nuevo += name_raiz + ".CrearVideo(\"" + raiz.Path + "\"," + raiz.y + "," + raiz.x + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Crear_archivo(String Nombre, String ruta) {
         try {
-            System.out.println(ruta+Nombre+".fs RESULTADO");
+            System.out.println(ruta + Nombre + ".fs RESULTADO");
             File archivo = new File(ruta + Nombre + ".fs");
             BufferedWriter bw;
             if (archivo.exists()) {
                 bw = new BufferedWriter(new FileWriter(archivo));
                 for (int i = 0; i < Datos.size(); i++) {
                     bw.write(Datos.get(i));
+                    bw.write("\n");
+                }
+                for (int i = 0; i < Metodos.size(); i++) {
+                    bw.write(Metodos.get(i));
+                    bw.write("\n");
                 }
             } else {
                 bw = new BufferedWriter(new FileWriter(archivo));
                 for (int i = 0; i < Datos.size(); i++) {
                     bw.write(Datos.get(i));
+                    bw.write("\n");
+                }
+                for (int i = 0; i < Metodos.size(); i++) {
+                    bw.write(Metodos.get(i));
+                    bw.write("\n");
                 }
             }
             bw.close();
         } catch (IOException e) {
-                System.err.println(e.getCause());
+            System.err.println(e.getCause());
         }
     }
+
+    private void Crear_metodo(String Nombre, String raiz, int tipo) {
+        String metodo;
+        if (tipo == 0) {
+            metodo = "funcion " + Nombre + "{\nVen_" + raiz + ".AlCargar();\n}\n";
+        } else {
+            metodo = "funcion " + Nombre + "{\nVen_" + raiz + ".crearArrayDesdeArchivo();\n}\n";
+        }
+        Metodos.add(metodo);
+       
+    }
+
 }

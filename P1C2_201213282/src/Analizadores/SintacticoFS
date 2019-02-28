@@ -52,6 +52,9 @@ ES_VAR1 ::= igu Expresion 	 						//id = expresion
 		|	igu ico Lista_Datos fco 	 			//id =[datos,datos,datos]
 		|	igu ill Lista_Objetos fll 				//id={dato:"",dato:"",dato:""}
 		|	igu Exp_Log fin Exp_Ari dop Exp_Ari 	//id = Logica? Dato : Dato ; 
+		|	igu Acc_venta							// id = crear ventana 
+		|	igu Acc_conte							// id = crear contenedor
+		|	igu Acc_boton							// id = crear boton
 		
 Lista_Datos ::= Lista_Datos com Dato_Pri
 		|		Dato_Pri ;
@@ -130,4 +133,79 @@ Es_asig ::= idva igu Exp_Ari									/*ID *= Expresion_Ar*/
 		|	idva men igu Exp_Ari;								/*ID -= Expresion_Ar*/
 
 /*---------------------------- Estructura Selecciona ----------------------------*/		
+Es_sele ::= sele ipa Exp_Ari fpa ill Cuerpo_sele fll;
+
+Cuerpo_sele ::= Cuerpo_sele tipo_sele
+		|		tipo_sele;
+
+tipo_sele ::= caso Exp_Ari dop ill /*Cuerpo seleccion*/ fll
+			|	defe dop ill /*Cuerpo defecto*/ fll;
+			
+/*---------------------------- Estructura funcion ----------------------------*/			
+Es_func ::= func idva	ipa  Es_fun1;
+
+Es_fun1 ::=  Lista_parametros fpa	ill	/*IN_FUNCION*/	fll
+			|	fpa		ill					/*IN_FUNCION*/ 	fll ;
+			
+
+/*---------------------------- Funciones de Arreglos ----------------------------*/	
+
+
+/*---------------------------- Funciones Navitas de arreglos ----------------------------*/	
+func_nat ::= Tipo_Fun ipa idva fpa ;
+			|Tipos_Acc_Ord ipa fpa ;
+
+Tipo_Fun ::= filt		/*Funcion Filtrar*/
+		|	 busc		/*Funcion buscar*/
+		|	 map		/*Funcion map*/
+		|	 redu		/*Funcion reduce*/
+		|	 todo		/*Funcion todos*/
+		|	 algu;		/*Funcion algunos*/
 		
+Tipos_Acc_Ord ::= 	desc  		/*Descendente */
+				|	asce  		/*Ascendente */
+				|	inve 		/*Invertir */
+				|	maxi 		/*Maximo */
+				|	mini ;		/*Minimo */
+				
+func_leer ::= lgxm ipa Exp_Ari fpa ;		/*LeerGxml();*/
+
+func_gxml ::= cada ipa Exp_Ari fpa  		/*Creararraydesdearchivo();*/
+			| cada ipa fpa ;
+			
+func_Obte ::= Tipo_Obte ipa Exp_Ari fpa ; 		/*Funciones de obtencion*/
+		
+Tipo_Obte ::= 	opet		/*ObtenerporEtiqueta();*/
+			|	opid		/*ObtenerporId();*/
+			|	opno		/*ObtenerporNombre();*/
+			
+/*---------------------------- Acciones de 	Crear ----------------------------*/				
+Acc_venta ::= cven ipa Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*CrearVentana */ 
+
+Acc_conte ::= ccon	ipa Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear contenedor*/
+
+Acc_boton ::= cbot  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear boton*/
+
+Acc_texto ::= ctex  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear texto*/
+
+Acc_ctext ::= ccte  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear Caja texto*/
+
+Acc_Atext ::= cate  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Area texto*/
+
+Acc_Cnume ::= ccnu  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear control numerico*/
+
+Acc_despl ::= cdes  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear desplegable*/
+
+
+Acc_image ::= cima  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Imagen*/
+
+Acc_video ::= cvid  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Video*/
+
+Acc_repro ::= crep  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Reproductor*/
+
+/*---------------------------- Acciones de Botones y otros ----------------------------*/
+Acc_alcar ::= acar ipa LLamada_Meto fpa
+			| acar ipa fpa ;
+			
+Acc_alcer ::= acer ipa LLamada_Meto fpa
+			| acer ipa fpa ;
