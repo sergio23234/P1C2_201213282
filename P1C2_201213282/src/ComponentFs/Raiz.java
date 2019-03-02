@@ -10,5 +10,11 @@ package ComponentFs;
  * @author sergi
  */
 public class Raiz {
-    
+
+    private String tipo;
+
+    public Raiz() {
+        tipo = "";
+    }
+
 }

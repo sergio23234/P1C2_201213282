@@ -8,6 +8,7 @@ package Principal;
 import ComponentGxml.NodoGxml;
 import Analizadores.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -103,6 +104,23 @@ public class Pestania extends javax.swing.JPanel {
             Analizador_gxml analizador = new Analizador_gxml(path,ABpath);
             analizador.Analizar();
             System.out.println(analizador.dev_raices().size()+"total de archivos");
+        }
+        else if(!path.equals("")&&(path.toLowerCase().endsWith(".fs"))){
+            File archivo = new File(path);
+            FileReader fr;
+            try {
+                fr = new FileReader(archivo);
+                 LexicoFS lex = new LexicoFS(fr);
+            SintacticoFs miParser = new SintacticoFs(lex);
+            miParser.parse();
+            System.out.println(miParser.errores.size()+" <----cantidad de errores");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           
+    
         }
     }//GEN-LAST:event_analizarActionPerformed
 

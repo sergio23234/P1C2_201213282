@@ -1,7 +1,7 @@
 package Analizadores;
 import java.io.FileReader;
 import java_cup.runtime.Symbol;
-import ComponentFS.*;
+import ComponentFs.*;
 import Principal.NodoError;
 import java_cup.runtime.*;
 import java.util.ArrayList;
@@ -40,10 +40,10 @@ action code {:
 terminal mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,ico,fco,fin,pyc,not,or,and,var,pun,com,dop;// Terminales
 terminal impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,maxi,mini,busc,filt,idva,cade,deci,nume,verd,fals,sino;
 terminal map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
-non terminal accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2,Es_tipo_id1;
-non terminal Acc_repro,Acc_video,Acc_image,Acc_despl,Acc_Atext,Acc_Cnume,Acc_ctext,Acc_texto,Acc_boton,Acc_conte,Acc_venta;
-non terminal Tipo_Obte,func_gxml,func_leer,Tipos_Acc_Ord,Tipo_Fun,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_fun1,Es_func;
-non terminal tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_Dede,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
+non terminal accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2;
+non terminal Acc_repro,Acc_video,Acc_image,Acc_despl,Acc_Atext,Acc_Cnume,Acc_ctext,Acc_texto,Acc_boton,Acc_conte,Acc_venta,Acc_alcli;
+non terminal Tipo_Obte,func_gxml,func_leer,Tipos_Acc_Ord,Tipo_Fun,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_lla_fun1,Es_fun1,Es_func,Es_tipo_id1;
+non terminal tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
 non terminal Exp_Ari,Ex_men,Ex_may,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion;
 precedence left  mas,nos,por,div,pot,or,and;
 precedence right not;
@@ -59,19 +59,19 @@ inicio_p1 ::= 	inicio_p1 Es_Impo
 inicio_p2 ::=	Cuerpo_funcion;
 
 /*---------------------------- Estructura Variable ----------------------------*/
-ES_VAR ::= var Lista_ID ES_VAR1 pyc ;
+ES_VAR ::= var Lista_ID ES_VAR1 ;
 
-ES_VAR1 ::= igu Expresion 	 						//id = expresion
-		|	igu ico fco 	 						//id = [];
-		|	igu ico Lista_Datos fco 	 			//id =[datos,datos,datos]
-		|	igu ill Lista_Objetos fll 				//id={dato:"",dato:"",dato:""}
-		|	igu Exp_Log fin Exp_Ari dop Exp_Ari 	//id = Logica? Dato : Dato ; 
-		|	igu Acc_venta							// id = crear ventana 
-		|	igu Acc_conte							// id = crear contenedor
-		|	igu Acc_boton							// id = crear boton
-		| 	igu idva pun func_nat					// id = id.funcion_nativa
-		| 	igu func_nat;							// id = funcion_nativa
-
+ES_VAR1 ::= igu Exp_Log pyc	 						//id = expresion_Aritmetica
+		|	igu ico fco pyc	 						//id = [];
+		|	igu ico Lista_Datos fco pyc	 			//id =[datos,datos,datos]
+		|	igu ill Lista_Objetos fll pyc			//id={dato:"",dato:"",dato:""}
+		|	igu Exp_Log fin Exp_Ari dop Exp_Ari pyc	//id = Logica? Dato : Dato ; 
+		|	igu Acc_venta pyc						// id = crear ventana 
+		|	igu Acc_conte pyc						// id = crear contenedor
+		|	igu Acc_boton pyc						// id = crear boton
+		| 	igu idva pun func_nat pyc				// id = id.funcion_nativa
+		| 	igu func_nat1 pyc						// id = funcion_nativa
+		|	pyc ;
 		
 Lista_Datos ::= Lista_Datos com Exp_Ari				/* Exp , Exp*/
 		|		Exp_Ari ;							/* Exp*/
@@ -92,14 +92,14 @@ Lista_ID ::=	Lista_ID:e1 com idva	{::} 	//id,id
 Exp_Log ::=	Exp_Log:e1	or 	Exp_Log:e2 			/*LOG || LOG*/
 		|	Exp_Log:e1	and	Exp_Log:e2			/*LOG && LOG*/
 		|	not			Exp_Log:e1				/* ! LOG*/
-		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/		
-		|	Exp_Com;							/*Aritmetica*/
+/*		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/		
+		|	Exp_Com;							/*Comparacion*/
 		
-Exp_Com ::=	Exp_Ari:e1 igu igu	Exp_Ari:e2		/*ARI == ARI*/	
-		|	Exp_Ari:e1 not igu	Exp_Ari:e2 		/*ARI != ARI*/
-		|	Exp_Ari:e1 Ex_may	Exp_Ari:e2 		/*ARI >= ARI*/
-		|	Exp_Ari:e1 Ex_men	Exp_Ari:e2 		/*ARI <= ARI*/
-		;
+Exp_Com ::=	Exp_Ari:e1 igu igu		Exp_Ari:e2		/*ARI == ARI*/	
+		|	Exp_Ari:e1 not igu		Exp_Ari:e2 		/*ARI != ARI*/
+		|	Exp_Ari:e1 Ex_may:e3	Exp_Ari:e2 		/*ARI >= ARI*/
+		|	Exp_Ari:e1 Ex_men:e3	Exp_Ari:e2 		/*ARI <= ARI*/
+		|	Exp_Ari:e1;
 
 Ex_may ::=	may 		{:RESULT=">";:}			/* >  */
 		|	may igu		{:RESULT=">=";:};		/* >= */
@@ -114,15 +114,15 @@ Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2			/*DATO + DATO*/
 		|	Exp_Ari:e1 por Exp_Ari:e2			/*DATO * DATO*/
 		|	Exp_Ari:e1 div Exp_Ari:e2			/*DATO / DATO*/
 		|	Exp_Ari:e1 pot Exp_Ari:e2			/*DATO ^ DATO*/
-		|	ipa 	Exp_Ari:e1 	fpa				/*(	Dato  )*/
+		|	ipa 	Exp_Log:e1 	fpa				/*(	Dato  )*/
 		|	nos		Exp_Ari:e1					/*-Dato*/
 		|	Dato_Posfa;
 
 Dato_Posfa ::= Dato_Pri
-			|	Es_tipo_id;
+			|	Es_tipo_id
+			|	nulo
+			|	Es_lla_fun;
 
-Expresion ::=	Exp_Ari
-		|		Exp_Log;
 /*---------------------------- Estructura Imprimir ----------------------------*/
 Es_Impr ::= impr ipa Exp_Ari fpa pyc ;			/*Imprimir(EXPRESION);*/
 
@@ -141,23 +141,23 @@ Estru_si ::= Estru_si sino Es_Si			/*Si() sino si(){}*/
 
 
 /*---------------------------- Estructura Asignacion ----------------------------*/
-Es_asig ::= Es_tipo_id igu Exp_Ari									/*ID  = Expresion_Ar*/
-		|	Es_tipo_id igu Exp_Log									/*ID  = Expresion_Log*/
-		|	Es_tipo_id igu Exp_Log fin Expresion dop Expresion		/*ID  = Expresion_Log? Expresion:Expresion*/
-		|	Es_tipo_id por igu Exp_Ari								/*ID *= Expresion_Ar*/
-		|	Es_tipo_id div igu Exp_Ari								/*ID /= Expresion_Ar*/
-		|	Es_tipo_id mas igu Exp_Ari								/*ID += Expresion_Ar*/
-		|	Es_tipo_id men igu Exp_Ari								/*ID -= Expresion_Ar*/
-		|	Es_tipo_id igu idva pun func_nat						/*ID = ID.Funcion_nativa()	*/
-		|	Es_tipo_id mas mas 
-		|	Es_tipo_id nos nos  
-		|	Es_tipo_id igu func_nat1;								/*ID = Funcion_nativa()	*/ 
+Es_asig ::= Es_tipo_id igu Exp_Log	pyc								/*ID  = Expresion_Ar*/
+		|	Es_tipo_id igu Exp_Log fin Exp_Log dop Exp_Log pyc	/*ID  = Expresion_Log? Expresion:Expresion*/
+		|	Es_tipo_id por igu Exp_Ari	pyc							/*ID *= Expresion_Ar*/
+		|	Es_tipo_id div igu Exp_Ari	pyc							/*ID /= Expresion_Ar*/
+		|	Es_tipo_id mas igu Exp_Ari	pyc							/*ID += Expresion_Ar*/
+		|	Es_tipo_id nos igu Exp_Ari	pyc							/*ID -= Expresion_Ar*/
+		|	Es_tipo_id igu idva pun func_nat pyc					/*ID = ID.Funcion_nativa()	*/
+		|	Es_tipo_id mas mas	pyc									/*ID = ID++*/ 										
+		|	Es_tipo_id nos nos  pyc 								/*ID = ID--*/
+		|	Es_tipo_id igu func_nat1 pyc;							/*ID = Funcion_nativa()	*/ 
 		
-Es_tipo_id ::= 	idva 									/*ID*/
-		|		idva ico Exp_Ari fco; 					
-
-/*Es_tipo_id1 ::= pun idva								/*ID.id*/
-/*			|	; 						/*ID[NUM]*/
+Es_tipo_id ::= 	Es_tipo_id1 							/*ID*/
+	/*	|		idva pun idva 							/*ID.id*/
+		;
+		
+Es_tipo_id1 ::= idva ico Exp_Ari fco 					/*ID[num]*/
+		|		idva ;
 			
 /*---------------------------- Estructura Aumento/Decremento ----------------------------
 
@@ -179,12 +179,19 @@ tipo_sele ::= 	caso Exp_Ari dop ill Estu_Cuerpo fll		/*caso Exp_Ari : */
 			|	defe 		 dop ill Estu_Cuerpo fll;		/*defecto : */
 			
 /*---------------------------- Estructura funcion ----------------------------*/			
-Es_func ::= func idva	ipa  Es_fun1;									/*funcion id (*/
+Es_func ::= func idva ipa  Es_fun1;									/*funcion id (*/
 
 Es_fun1 ::=   Lista_parametros 	fpa	ill	Estu_Cuerpo	fll				/*parametros ) {}*/
 			| fpa				ill		Estu_Cuerpo fll ;			/*) {}*/
+
+Lista_parametros ::= Lista_parametros com var idva
+				|	 var idva;
 			
-Es_lla_fun ::= idva ipa Lista_Aritmetica fpa; 					/*ID(param,param,etc)  */
+/*LLamada de una funcion*/
+Es_lla_fun ::= idva ipa Es_lla_fun1; 					/*ID(param,param,etc)  */
+
+Es_lla_fun1 ::=  fpa 
+		|		Lista_Aritmetica fpa;
 		
 Lista_Aritmetica ::=	Lista_Aritmetica com Exp_Ari					/*Lista , param*/
 				|		Exp_Ari ;										/*param*/
@@ -195,8 +202,8 @@ func_nat ::= Tipo_Fun ipa idva fpa  				/*funciones de filtrar y otros--->Solo c
 			|Tipo_Obte ipa Exp_Ari fpa;				/*Funciones de obtencion--->Solo creacion o asignacio de variable*/
 			
 func_nat1 ::= func_leer								/*Crear array desde archivo--->Solo creacion o asignacio de variable */				
-			 |func_gxml								/*Leer Gxml --->Solo creacion o asignacio de variable*/
-			 |Es_lla_fun;							/*Funciones normales 	--->Solo creacion o asignacio de variable*/
+			 |func_gxml;								/*Leer Gxml --->Solo creacion o asignacio de variable*/
+	/*		 |Es_lla_fun;							*Funciones normales 	--->Solo creacion o asignacio de variable*/
 	
 Tipo_Fun ::= filt									/*Funcion Filtrar*/
 		|	 busc									/*Funcion buscar*/
@@ -223,15 +230,15 @@ Tipo_Obte ::= 	opet								/*ObtenerporEtiqueta();*/
 /*---------------------------- Acciones de 	Crear ----------------------------*/				
 Acc_venta ::= cven ipa Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*CrearVentana--->Solo creacion o asignacio de variable */ 
 
-Acc_conte ::= ccon	ipa Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear contenedor--->Solo creacion o asignacio de variable */
+Acc_conte ::= idva pun ccon	ipa Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear contenedor--->Solo creacion o asignacio de variable */
 
-Acc_boton ::= cbot  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear boton--->Solo creacion o asignacio de variable*/
+Acc_boton ::= idva pun cbot  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear boton--->Solo creacion o asignacio de variable*/
 
-Acc_texto ::= ctex  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear texto--->Solo accion sobre variable*/
+Acc_texto ::= ctex  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear texto--->Solo accion sobre variable*/
 
-Acc_ctext ::= ccte  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear Caja texto--->Solo accion sobre variable*/
+Acc_ctext ::= ccte  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear Caja texto--->Solo accion sobre variable*/
 
-Acc_Atext ::= cate  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Area texto--->Solo accion sobre variable*/
+Acc_Atext ::= cate  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Area texto--->Solo accion sobre variable*/
 
 Acc_Cnume ::= ccnu  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear control numerico--->Solo accion sobre variable*/
 
@@ -250,6 +257,8 @@ Acc_alcar ::= acar ipa Es_lla_fun fpa				/*Alcargar(Metodo)--->Solo accion sobre
 Acc_alcer ::= acer ipa Es_lla_fun fpa				/*Alcerrar(Metodo)--->Solo accion sobre variable*/
 			| acer ipa fpa ;						/*Alcerrar()--->Solo accion sobre variable*/
 			
+Acc_alcli ::= acli ipa Es_lla_fun fpa ;				/*Alclick(Metodo)--->Solo accion sobre variable*/
+			
 /*---------------------------- Estructura del cuerpo ----------------------------*/			
 Cuerpo_general ::= 	ES_VAR				/*Estructura variable*/
 			|		Es_Impr				/*Estructura imprimir*/
@@ -267,7 +276,7 @@ Estu_Cuerpo ::=  Estu_Cuerpo Cuerpo_general		/*Estructura Cuerpo*/
 				;
 				
 /*---------------------------- Estructura acciones ID ----------------------------*/				
-Es_acc_ID ::= Es_tipo_id pun accion_ID pyc ; /*ID . Accion ID*/
+Es_acc_ID ::= Es_tipo_id1 pun accion_ID pyc ; /*ID . Accion ID*/
 
 accion_ID ::= 	Acc_texto
 			|	Acc_ctext
@@ -279,6 +288,7 @@ accion_ID ::= 	Acc_texto
 			|	Acc_repro
 			|	cada ipa fpa		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
 			|	Acc_alcar
+			|	Acc_alcli
 			|	Acc_alcer; 
 
 Cuerpo_funcion ::= Cuerpo_funcion Es_DeAu
