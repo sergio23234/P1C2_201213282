@@ -1,0 +1,13 @@
+SET JAVA_HOME="C:\Program Files\Java\jdk1.8.0_77\bin"
+SET PATH=%JAVA_HOME%;%PATH%
+SET CLASSPATH=C:\Fuentes\jflex-1.6.1.jar;
+cd C:\Users\sergi\Documents\GitHub\P1C2_201213282\P1C2_201213282\src\Analizadores
+java -jar C:\Fuentes\jflex-1.6.1.jar LexicoFs.txt 
+pause
+
+SET JAVA_HOME="C:\Program Files\Java\jdk1.8.0_77\bin"
+SET PATH=%JAVA_HOME%;%PATH%
+SET CLASSPATH= C:\Fuentes\java-cup-11b.jar
+cd C:\Users\sergi\Documents\GitHub\P1C2_201213282\P1C2_201213282\src\Analizadores
+java -jar C:\Fuentes\java-cup-11b.jar -parser SintacticoFs  -symbols symf SintacticoFs
+pause

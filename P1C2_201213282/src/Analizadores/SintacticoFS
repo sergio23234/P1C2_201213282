@@ -1,7 +1,7 @@
 package Analizadores;
 import java.io.FileReader;
 import java_cup.runtime.Symbol;
-import ComponentGxml.*;
+import ComponentFS.*;
 import Principal.NodoError;
 import java_cup.runtime.*;
 import java.util.ArrayList;
@@ -28,21 +28,35 @@ parser code {:
         Errores.add(nuevo);
         errores=true;*/
     }
-    public NodoGxml regresar_raiz(){
+    public Raiz regresar_raiz(){
         return RCCSS;
     }
 	 public ArrayList<NodoError> errores = new ArrayList();
+	 public Raiz RCCSS;
 	 :}
 action code {:
     public String estado="";
 :}
-terminal mas,men,por,div,igu,pot,may,men,ill,fll,ipa,fpa,ico,fco,fin,pyc,not,or,and,var,pun,com,dop;// Terminales
+terminal mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,ico,fco,fin,pyc,not,or,and,var,pun,com,dop;// Terminales
 terminal impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,maxi,mini,busc,filt,idva,cade,deci,nume,verd,fals,sino;
 terminal map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
-non terminal  Start; //Nodos no terminales
+non terminal accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2,Es_tipo_id1;
+non terminal Acc_repro,Acc_video,Acc_image,Acc_despl,Acc_Atext,Acc_Cnume,Acc_ctext,Acc_texto,Acc_boton,Acc_conte,Acc_venta;
+non terminal Tipo_Obte,func_gxml,func_leer,Tipos_Acc_Ord,Tipo_Fun,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_fun1,Es_func;
+non terminal tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_Dede,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
+non terminal Exp_Ari,Ex_men,Ex_may,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion;
+precedence left  mas,nos,por,div,pot,or,and;
+precedence right not;
 start with Start;
 
 
+/*---------------------------- Inicio ----------------------------*/
+Start ::= inicio_p1 inicio_p2;
+
+inicio_p1 ::= 	inicio_p1 Es_Impo
+		|		Es_Impo;
+
+inicio_p2 ::=	Cuerpo_funcion;
 
 /*---------------------------- Estructura Variable ----------------------------*/
 ES_VAR ::= var Lista_ID ES_VAR1 pyc ;
@@ -55,12 +69,15 @@ ES_VAR1 ::= igu Expresion 	 						//id = expresion
 		|	igu Acc_venta							// id = crear ventana 
 		|	igu Acc_conte							// id = crear contenedor
 		|	igu Acc_boton							// id = crear boton
-		
-Lista_Datos ::= Lista_Datos com Dato_Pri
-		|		Dato_Pri ;
+		| 	igu idva pun func_nat					// id = id.funcion_nativa
+		| 	igu func_nat;							// id = funcion_nativa
 
-Lista_Objetos ::= Lista_Objetos com idva dop cade
-			|		idva dop cade;	
+		
+Lista_Datos ::= Lista_Datos com Exp_Ari				/* Exp , Exp*/
+		|		Exp_Ari ;							/* Exp*/
+
+Lista_Objetos ::= Lista_Objetos com idva dop cade 	/* Objetos , id : "objeto"*/
+			|		idva dop cade;					/* id : "objeto"*/
 
 Dato_Pri ::= 	nume			//numero
 		|	 	cade			//cadena
@@ -68,13 +85,13 @@ Dato_Pri ::= 	nume			//numero
 		|		verd			//verdadero
 		|		fals;			//falso
 
-Lista_ID ::=	Lista_ID com idva 	//id,id
-			|	idva;				//id
+Lista_ID ::=	Lista_ID:e1 com idva	{::} 	//id,id
+			|	idva					{::};	//id
 		
-/*---------------------------- Estructura Operaciones ----------------------------*/
+/*!---------------------------- Estructura Operaciones ----------------------------!*/
 Exp_Log ::=	Exp_Log:e1	or 	Exp_Log:e2 			/*LOG || LOG*/
 		|	Exp_Log:e1	and	Exp_Log:e2			/*LOG && LOG*/
-		|	not			Exp_Log:e1				/*! LOG*/
+		|	not			Exp_Log:e1				/* ! LOG*/
 		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/		
 		|	Exp_Com;							/*Aritmetica*/
 		
@@ -83,21 +100,26 @@ Exp_Com ::=	Exp_Ari:e1 igu igu	Exp_Ari:e2		/*ARI == ARI*/
 		|	Exp_Ari:e1 Ex_may	Exp_Ari:e2 		/*ARI >= ARI*/
 		|	Exp_Ari:e1 Ex_men	Exp_Ari:e2 		/*ARI <= ARI*/
 		;
-									
-Ex_may ::=	may 								/* >  */
-		|	may igu	;							/* >= */
+
+Ex_may ::=	may 		{:RESULT=">";:}			/* >  */
+		|	may igu		{:RESULT=">=";:};		/* >= */
 		
-Ex_men ::=	men 								/* <  */
-		|	men igu	;							/* <= */
+
+Ex_men ::=	men 		{:RESULT="<";:}			/* <  */
+		|	men igu		{:RESULT="<=";:};		/* <= */
 		
+
 Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2			/*DATO + DATO*/
-		|	Exp_Ari:e1 men Exp_Ari:e2			/*DATO - DATO*/
+		|	Exp_Ari:e1 nos Exp_Ari:e2			/*DATO - DATO*/
 		|	Exp_Ari:e1 por Exp_Ari:e2			/*DATO * DATO*/
 		|	Exp_Ari:e1 div Exp_Ari:e2			/*DATO / DATO*/
 		|	Exp_Ari:e1 pot Exp_Ari:e2			/*DATO ^ DATO*/
 		|	ipa 	Exp_Ari:e1 	fpa				/*(	Dato  )*/
-		|	men		Exp_Ari:e1					/*-Dato*/
-		|	Dato_Pos;
+		|	nos		Exp_Ari:e1					/*-Dato*/
+		|	Dato_Posfa;
+
+Dato_Posfa ::= Dato_Pri
+			|	Es_tipo_id;
 
 Expresion ::=	Exp_Ari
 		|		Exp_Log;
@@ -108,104 +130,159 @@ Es_Impr ::= impr ipa Exp_Ari fpa pyc ;			/*Imprimir(EXPRESION);*/
 Es_Impo ::= impo ipa Exp_Ari fpa pyc ;			/*Importar(Expresion);*/
 
 /*---------------------------- Estructura Si ----------------------------*/
-Es_Si ::=	si ipa Exp_Log fpa ill /*Cuerpo*/ fll; 
 
-Es_sino ::= sino ill /*Cuerpo*/ fll;		
+Es_Si ::=	si ipa Exp_Log fpa ill Estu_Cuerpo fll; 			/*si (Exp_log){CUERPO}*/
 
-Estru_si ::= Estru_si sino Es_Si
-			|Estru_si Es_sino
-			|Es_Si;
-/*---------------------------- Estructura Aumento/Decremento ----------------------------*/
-Es_DeAu ::=	idva pun mas mas pyc
-		|	idva ico Exp_Ari fco mas mas pyc 
-		|	idva pun idva mas mas pyc ;
+Es_sino ::= sino ill Estu_Cuerpo fll;						/*sino {CUERPO}*/
 
-/*---------------------------- Estructura Retornar ----------------------------*/
-Es_reto ::= reto Expresion;
+Estru_si ::= Estru_si sino Es_Si			/*Si() sino si(){}*/
+			|Estru_si Es_sino				/*Si() sino {}*/
+			|Es_Si;							/*Si()*/
+
 
 /*---------------------------- Estructura Asignacion ----------------------------*/
-Es_asig ::= idva igu Exp_Ari									/*ID *= Expresion_Ar*/
-		|	idva igu Exp_Log									/*ID *= Expresion_Log*/
-		|	idva igu Exp_Log fin Expresion dop Expresion		/*ID *= Expresion_Log? Expresion:Expresion*/
-		|	idva por igu Exp_Ari								/*ID *= Expresion_Ar*/
-		|	idva div igu Exp_Ari								/*ID /= Expresion_Ar*/
-		|	idva mas igu Exp_Ari								/*ID += Expresion_Ar*/
-		|	idva men igu Exp_Ari;								/*ID -= Expresion_Ar*/
+Es_asig ::= Es_tipo_id igu Exp_Ari									/*ID  = Expresion_Ar*/
+		|	Es_tipo_id igu Exp_Log									/*ID  = Expresion_Log*/
+		|	Es_tipo_id igu Exp_Log fin Expresion dop Expresion		/*ID  = Expresion_Log? Expresion:Expresion*/
+		|	Es_tipo_id por igu Exp_Ari								/*ID *= Expresion_Ar*/
+		|	Es_tipo_id div igu Exp_Ari								/*ID /= Expresion_Ar*/
+		|	Es_tipo_id mas igu Exp_Ari								/*ID += Expresion_Ar*/
+		|	Es_tipo_id men igu Exp_Ari								/*ID -= Expresion_Ar*/
+		|	Es_tipo_id igu idva pun func_nat						/*ID = ID.Funcion_nativa()	*/
+		|	Es_tipo_id mas mas 
+		|	Es_tipo_id nos nos  
+		|	Es_tipo_id igu func_nat1;								/*ID = Funcion_nativa()	*/ 
+		
+Es_tipo_id ::= 	idva 									/*ID*/
+		|		idva ico Exp_Ari fco; 					
 
+/*Es_tipo_id1 ::= pun idva								/*ID.id*/
+/*			|	; 						/*ID[NUM]*/
+			
+/*---------------------------- Estructura Aumento/Decremento ----------------------------
+
+Es_DeAu ::=	idva  	 mas mas 					/*ID++;*
+		|	idva ico Exp_Ari fco mas mas		/*ID[NUM]++;*
+		|	idva pun idva mas mas  ;			/*ID.ID++;*
+
+Es_Dede ::=	idva  	 men men 					/*ID++;*
+		|	idva ico Exp_Ari fco men men		/*ID[NUM]++;*
+		|	idva pun idva men men  ;			/*ID.ID++;*
+*/
 /*---------------------------- Estructura Selecciona ----------------------------*/		
-Es_sele ::= sele ipa Exp_Ari fpa ill Cuerpo_sele fll;
+Es_sele ::= sele ipa Exp_Ari fpa ill Cuerpo_sele fll;	/*seleciona (Exp_Ari){ casos}*/
 
 Cuerpo_sele ::= Cuerpo_sele tipo_sele
 		|		tipo_sele;
 
-tipo_sele ::= caso Exp_Ari dop ill /*Cuerpo seleccion*/ fll
-			|	defe dop ill /*Cuerpo defecto*/ fll;
+tipo_sele ::= 	caso Exp_Ari dop ill Estu_Cuerpo fll		/*caso Exp_Ari : */
+			|	defe 		 dop ill Estu_Cuerpo fll;		/*defecto : */
 			
 /*---------------------------- Estructura funcion ----------------------------*/			
-Es_func ::= func idva	ipa  Es_fun1;
+Es_func ::= func idva	ipa  Es_fun1;									/*funcion id (*/
 
-Es_fun1 ::=  Lista_parametros fpa	ill	/*IN_FUNCION*/	fll
-			|	fpa		ill					/*IN_FUNCION*/ 	fll ;
+Es_fun1 ::=   Lista_parametros 	fpa	ill	Estu_Cuerpo	fll				/*parametros ) {}*/
+			| fpa				ill		Estu_Cuerpo fll ;			/*) {}*/
 			
-
-/*---------------------------- Funciones de Arreglos ----------------------------*/	
-
-
-/*---------------------------- Funciones Navitas de arreglos ----------------------------*/	
-func_nat ::= Tipo_Fun ipa idva fpa ;
-			|Tipos_Acc_Ord ipa fpa ;
-
-Tipo_Fun ::= filt		/*Funcion Filtrar*/
-		|	 busc		/*Funcion buscar*/
-		|	 map		/*Funcion map*/
-		|	 redu		/*Funcion reduce*/
-		|	 todo		/*Funcion todos*/
-		|	 algu;		/*Funcion algunos*/
+Es_lla_fun ::= idva ipa Lista_Aritmetica fpa; 					/*ID(param,param,etc)  */
 		
-Tipos_Acc_Ord ::= 	desc  		/*Descendente */
-				|	asce  		/*Ascendente */
-				|	inve 		/*Invertir */
-				|	maxi 		/*Maximo */
-				|	mini ;		/*Minimo */
+Lista_Aritmetica ::=	Lista_Aritmetica com Exp_Ari					/*Lista , param*/
+				|		Exp_Ari ;										/*param*/
 				
-func_leer ::= lgxm ipa Exp_Ari fpa ;		/*LeerGxml();*/
-
-func_gxml ::= cada ipa Exp_Ari fpa  		/*Creararraydesdearchivo();*/
-			| cada ipa fpa ;
+/*---------------------------- Funciones Navitas de arreglos ----------------------------*/	
+func_nat ::= Tipo_Fun ipa idva fpa  				/*funciones de filtrar y otros--->Solo creacion o asignacio de variable*/
+			|Tipos_Acc_Ord ipa fpa  				/* funciones de ordenamiento--->Solo creacion o asignacio de variable*/
+			|Tipo_Obte ipa Exp_Ari fpa;				/*Funciones de obtencion--->Solo creacion o asignacio de variable*/
 			
-func_Obte ::= Tipo_Obte ipa Exp_Ari fpa ; 		/*Funciones de obtencion*/
+func_nat1 ::= func_leer								/*Crear array desde archivo--->Solo creacion o asignacio de variable */				
+			 |func_gxml								/*Leer Gxml --->Solo creacion o asignacio de variable*/
+			 |Es_lla_fun;							/*Funciones normales 	--->Solo creacion o asignacio de variable*/
+	
+Tipo_Fun ::= filt									/*Funcion Filtrar*/
+		|	 busc									/*Funcion buscar*/
+		|	 map									/*Funcion map*/
+		|	 redu									/*Funcion reduce*/
+		|	 todo									/*Funcion todos*/
+		|	 algu;									/*Funcion algunos*/
 		
-Tipo_Obte ::= 	opet		/*ObtenerporEtiqueta();*/
-			|	opid		/*ObtenerporId();*/
-			|	opno		/*ObtenerporNombre();*/
+Tipos_Acc_Ord ::= 	desc  							/*Descendente */
+				|	asce  							/*Ascendente */
+				|	inve 							/*Invertir */
+				|	maxi 							/*Maximo */
+				|	mini ;							/*Minimo */
+				
+func_leer ::= lgxm ipa Exp_Ari fpa ;				/*LeerGxml(expresion);*/
+
+func_gxml ::= cada ipa Exp_Ari fpa ;				/*Creararraydesdearchivo(expresion);*/					
+			
+		
+Tipo_Obte ::= 	opet								/*ObtenerporEtiqueta();*/
+			|	opid								/*ObtenerporId();*/
+			|	opno;								/*ObtenerporNombre();*/
 			
 /*---------------------------- Acciones de 	Crear ----------------------------*/				
-Acc_venta ::= cven ipa Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*CrearVentana */ 
+Acc_venta ::= cven ipa Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*CrearVentana--->Solo creacion o asignacio de variable */ 
 
-Acc_conte ::= ccon	ipa Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear contenedor*/
+Acc_conte ::= ccon	ipa Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear contenedor--->Solo creacion o asignacio de variable */
 
-Acc_boton ::= cbot  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear boton*/
+Acc_boton ::= cbot  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear boton--->Solo creacion o asignacio de variable*/
 
-Acc_texto ::= ctex  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear texto*/
+Acc_texto ::= ctex  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear texto--->Solo accion sobre variable*/
 
-Acc_ctext ::= ccte  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear Caja texto*/
+Acc_ctext ::= ccte  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ; /*Crear Caja texto--->Solo accion sobre variable*/
 
-Acc_Atext ::= cate  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Area texto*/
+Acc_Atext ::= cate  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Area texto--->Solo accion sobre variable*/
 
-Acc_Cnume ::= ccnu  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear control numerico*/
+Acc_Cnume ::= ccnu  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear control numerico--->Solo accion sobre variable*/
 
-Acc_despl ::= cdes  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear desplegable*/
+Acc_despl ::= cdes  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear desplegable--->Solo accion sobre variable*/
 
+Acc_image ::= cima  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Imagen--->Solo accion sobre variable*/
 
-Acc_image ::= cima  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Imagen*/
+Acc_video ::= cvid  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Video--->Solo accion sobre variable*/
 
-Acc_video ::= cvid  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Video*/
-
-Acc_repro ::= crep  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Reproductor*/
+Acc_repro ::= crep  ipa  Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari com Exp_Ari fpa ;/*Crear Reproductor--->Solo accion sobre variable*/
 
 /*---------------------------- Acciones de Botones y otros ----------------------------*/
-Acc_alcar ::= acar ipa LLamada_Meto fpa
-			| acar ipa fpa ;
+Acc_alcar ::= acar ipa Es_lla_fun fpa				/*Alcargar(Metodo)--->Solo accion sobre variable*/
+			| acar ipa fpa ;						/*Alcargar()--->Solo accion sobre variable*/
 			
-Acc_alcer ::= acer ipa LLamada_Meto fpa
-			| acer ipa fpa ;
+Acc_alcer ::= acer ipa Es_lla_fun fpa				/*Alcerrar(Metodo)--->Solo accion sobre variable*/
+			| acer ipa fpa ;						/*Alcerrar()--->Solo accion sobre variable*/
+			
+/*---------------------------- Estructura del cuerpo ----------------------------*/			
+Cuerpo_general ::= 	ES_VAR				/*Estructura variable*/
+			|		Es_Impr				/*Estructura imprimir*/
+			|		Estru_si			/*Estructura si*/
+			| 		Es_sele				/*Estructura Selecciona*/
+		/*	|		Es_DeAu 			/*Estructura de aumento*/
+		/*	|		Es_Dede 			/*Estructura de decremento*/
+			|		Es_asig				/*Estructura de asignacion */
+			|		Es_acc_ID			/*Estructura acciones ID */
+			|		reto Exp_Ari pyc	/*Retornar expresion*/
+			| 		dete pyc;			/*Detener ;*/
+
+Estu_Cuerpo ::=  Estu_Cuerpo Cuerpo_general		/*Estructura Cuerpo*/
+				| Cuerpo_general				/*Cuerpo */	
+				;
+				
+/*---------------------------- Estructura acciones ID ----------------------------*/				
+Es_acc_ID ::= Es_tipo_id pun accion_ID pyc ; /*ID . Accion ID*/
+
+accion_ID ::= 	Acc_texto
+			|	Acc_ctext
+			|	Acc_Atext
+			|	Acc_Cnume
+			|	Acc_despl
+			|	Acc_image
+			|	Acc_video
+			|	Acc_repro
+			|	cada ipa fpa		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
+			|	Acc_alcar
+			|	Acc_alcer; 
+
+Cuerpo_funcion ::= Cuerpo_funcion Es_DeAu
+				|  Es_DeAu;
+				
+Es_DeAu ::= Cuerpo_general
+		|	Es_func;
