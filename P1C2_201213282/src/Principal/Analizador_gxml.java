@@ -24,11 +24,13 @@ public class Analizador_gxml {
     private String path;
     private String parent;
     private ArrayList<NodoGxml> raices;
+    private ArrayList<String> pats;
 
-    public Analizador_gxml(String path,String parent) {
+    public Analizador_gxml(String path, String parent) {
         this.path = path;
         raices = new ArrayList();
         this.parent = parent;
+        pats= new ArrayList();
     }
 
     public void Analizar() {
@@ -42,17 +44,18 @@ public class Analizador_gxml {
             Raiz.errores = com_errores(miParser.errores, lex.Elista);
             System.out.println("errores --->" + Raiz.errores.size() + "--->" + miParser.errores.size());
             raices.add(Raiz);
+            pats.add(path);
             Analizar_Imports(Raiz);
             Verificar_Ventanas();
             if (!ver_errores()) {
                 System.out.println("no hay errores");
                 Generar_Archivo_FS nuevo = new Generar_Archivo_FS(raices);
                 String datos[] = path.split("/");
-                String nombre = path.replace(parent,"");
-                nuevo.Generar_archivo(nombre,parent);
-            
+                String nombre = path.replace(parent, "");
+                nuevo.Generar_archivo(nombre, parent);
+
             } else {
-                }
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,17 +81,22 @@ public class Analizador_gxml {
         for (int i = 0; i < raiz.Importaciones.size(); i++) {
             if (raiz.Importaciones.get(i).Dato.toLowerCase().endsWith(".gxml")) {
                 try {
-                    String path = parent+raiz.Importaciones.get(i).Dato.trim();
-                    File archivo = new File(path);
-                    FileReader fr = new FileReader(archivo);
-                    LexicoGxml lex = new LexicoGxml(fr);
-                    SintacticoGxml miParser = new SintacticoGxml(lex);
-                    miParser.parse();
-                    NodoGxml Raiz = miParser.RCCSS;
-                    Raiz.errores = com_errores(miParser.errores, lex.Elista);
-                    System.out.println(Raiz.Ventanas.get(0).Id + "Esto devolvio");
-                    raices.add(Raiz);
-                } catch (Exception ex ) {
+                    String path = parent + raiz.Importaciones.get(i).Dato.trim();
+                    if (comprobar_pat(path)) {
+                        File archivo = new File(path);
+                        FileReader fr = new FileReader(archivo);
+                        LexicoGxml lex = new LexicoGxml(fr);
+                        SintacticoGxml miParser = new SintacticoGxml(lex);
+                        miParser.parse();
+                        NodoGxml Raiz = miParser.RCCSS;
+                        Raiz.errores = com_errores(miParser.errores, lex.Elista);
+                        System.out.println(Raiz.Ventanas.get(0).Id + "Esto devolvio");
+                        raices.add(Raiz);
+                         pats.add(path);
+                        Analizar_Imports(Raiz);
+                    }
+
+                } catch (Exception ex) {
                     Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } else {
@@ -116,12 +124,22 @@ public class Analizador_gxml {
         }
     }
 
-    private boolean ver_errores(){
-        for(int i=0;i<raices.size();i++){
-            if(!raices.get(i).errores.isEmpty()){
+    private boolean ver_errores() {
+        for (int i = 0; i < raices.size(); i++) {
+            if (!raices.get(i).errores.isEmpty()) {
                 return true;
             }
         }
         return false;
     }
+
+    private boolean comprobar_pat(String direc){
+        for(int i=0;i<pats.size();i++){
+            if(pats.get(i).equalsIgnoreCase(direc)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
 }

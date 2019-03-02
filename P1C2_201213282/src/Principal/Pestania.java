@@ -21,8 +21,7 @@ import java.util.logging.Logger;
 public class Pestania extends javax.swing.JPanel {
 
     public String path;
-   public String ABpath;
-
+    public String ABpath;
 
     /**
      * Creates new form Pestania
@@ -100,30 +99,27 @@ public class Pestania extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
-        if (!path.equals("")&&(path.toLowerCase().endsWith(".gxml"))) {
-            Analizador_gxml analizador = new Analizador_gxml(path,ABpath);
+        if (!path.equals("") && (path.toLowerCase().endsWith(".gxml"))) {
+            Analizador_gxml analizador = new Analizador_gxml(path, ABpath);
             analizador.Analizar();
-            System.out.println(analizador.dev_raices().size()+"total de archivos");
-        }
-        else if(!path.equals("")&&(path.toLowerCase().endsWith(".fs"))){
+            System.out.println(analizador.dev_raices().size() + "total de archivos");
+        } else if (!path.equals("") && (path.toLowerCase().endsWith(".fs"))) {
             File archivo = new File(path);
             FileReader fr;
             try {
                 fr = new FileReader(archivo);
-                 LexicoFS lex = new LexicoFS(fr);
-            SintacticoFs miParser = new SintacticoFs(lex);
-            miParser.parse();
-            System.out.println(miParser.errores.size()+" <----cantidad de errores");
+                LexicoFS lex = new LexicoFS(fr);
+                SintacticoFs miParser = new SintacticoFs(lex);
+                miParser.parse();
+                System.out.println(miParser.errores.size() + " <----cantidad de errores");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             }
-           
-    
+
         }
     }//GEN-LAST:event_analizarActionPerformed
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
