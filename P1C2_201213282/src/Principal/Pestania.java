@@ -7,6 +7,8 @@ package Principal;
 
 import ComponentGxml.NodoGxml;
 import Analizadores.*;
+import ComponentFs.Reproductor_musica;
+import ComponentFs.ventana;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -118,6 +120,12 @@ public class Pestania extends javax.swing.JPanel {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             }
 
+        }
+        else{
+            /*ventana ven = new ventana(300,300);
+            ven.show();
+            ven.mostrar_reproductor("C:\\Users\\SergioFernando\\Desktop\\Pruebas\\Lone Digger.mp3", true,100,200);
+            */
         }
     }//GEN-LAST:event_analizarActionPerformed
 

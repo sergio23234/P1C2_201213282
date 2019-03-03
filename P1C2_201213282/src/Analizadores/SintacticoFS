@@ -216,7 +216,7 @@ func_nat ::= Tipo_Fun ipa idva fpa  				/*funciones de filtrar y otros--->Solo c
 			|opno ipa Exp_Ari com Exp_Ari fpa ;		/*ObtenerporNombre("nombre",id);*/
 			
 func_nat1 ::= func_leer								/*Crear array desde archivo--->Solo creacion o asignacio de variable */				
-			 |func_gxml;								/*Leer Gxml --->Solo creacion o asignacio de variable*/
+			 |func_gxml;							/*Leer Gxml --->Solo creacion o asignacio de variable*/
 	/*		 |Es_lla_fun;							*Funciones normales 	--->Solo creacion o asignacio de variable*/
 	
 Tipo_Fun ::= filt									/*Funcion Filtrar*/
