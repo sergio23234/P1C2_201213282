@@ -22,6 +22,7 @@ public class Ventana {
     public String accionF;
     public ArrayList<Contenedor> contenedores;
     public int linea,columna;
+    public int alto,ancho;
     
     public Ventana() {
         contenedores = new ArrayList();
@@ -30,6 +31,7 @@ public class Ventana {
         color = "#ffffff";
         accionI = "";
         accionF = "";
+        alto=ancho=0;
     }
 
     public void Imprimir_NodoS(NodoSGxml nodo) {
@@ -66,21 +68,31 @@ public class Ventana {
     private void Analizar_Attributos_obligatorios(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
         boolean id = false;
         boolean tipo = false;
+        boolean alto = false,ancho = false;
         for (int i = 0; i < hijos.size(); i++) {
             if (hijos.get(i).tipo.equalsIgnoreCase("id")) {
                 id = true;
             } else if (hijos.get(i).tipo.equalsIgnoreCase("tipo")) {
                 tipo = true;
+            } else if (hijos.get(i).tipo.equalsIgnoreCase("alto")) {
+                alto = true;
+            } else if (hijos.get(i).tipo.equalsIgnoreCase("ancho")) {
+                ancho = true;
             }
         }
-        if (!id || !tipo) {
+        if (!id || !tipo|| !alto|| !ancho) {
             NodoError error = new NodoError("semantico");
             error.linea = String.valueOf(hijos.get(hijos.size()-1).linea);
             error.columna = String.valueOf(hijos.get(hijos.size()-1).columna);
             String tipoe;
             if(!id){
                 tipoe="ID";
-            }else{
+            }else if(!alto){
+                tipoe="Alto";
+            }else if(!ancho){
+                tipoe="Ancho";
+            }
+            else{
                 tipoe="Tipo";
             }
             error.descripcion = "No se encuentra el atributo: " + tipoe+" que es de caracter obligatorio en esta etiqueta";
@@ -139,6 +151,8 @@ public class Ventana {
                 case "color":this.color=val.replace("\"", ""); break;
                 case "inicial":this.accionI=val; break;
                 case "final": this.accionF=val; break;
+                case "alto": this.alto = Integer.valueOf(val); break;
+                case "ancho": this.ancho = Integer.valueOf(val); break;
         }
           }
     }

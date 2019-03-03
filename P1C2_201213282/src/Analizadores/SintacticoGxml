@@ -115,6 +115,8 @@ EST_VEN_COM ::= EST_VEN_COM:e2 EST_VEN:e1		{:e2.listas.add(e1); RESULT=e2;:}
 EST_VEN ::= 	RID  IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="ID"; 		nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// ID  = "[^]" 
 			|	RTIP IGU CAD:e1 	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Tipo"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Tipo  = "[^]"
 			|	RCOL IGU CAD:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Color"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Color  = "[^]"
+			|   RALT IGU NUM:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Alto"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Inicial  = {[^]}
+			|   RANC IGU NUM:e1		{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Ancho"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Inicial  = {[^]}
 			|   RAIN IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Inicial"; nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Inicial  = {[^]}
 			|   RAFI IGU MORE:e1	{: NodoSGxml nuevo = new NodoSGxml(); nuevo.tipo="Final"; 	nuevo.val =e1.toString(); nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}// Accion Final  = {[^]}
 			;			
