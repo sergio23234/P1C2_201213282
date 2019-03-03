@@ -138,13 +138,23 @@ public class Generar_Archivo_FS {
 
     private void Caja_Texto(Control raiz, String name_raiz,String raiz_padre) {
         String nuevo = "";
-        nuevo += name_raiz+"_"+raiz_padre + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
+        String defecto ="";
+        if(raiz.Defecto!=null)
+        {
+            defecto = raiz.Defecto.Dato.replace("\r\n", "\\n").replace("\t", "");
+        }
+        nuevo += name_raiz+"_"+raiz_padre + ".CrearCajaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + defecto + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
     private void Caja_AreaTexto(Control raiz, String name_raiz,String raiz_padre) {
         String nuevo = "";
-        nuevo += name_raiz+"_"+raiz_padre + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + raiz.Defecto.Dato.replace("\r\n", "\\n").replace("\t", "") + "\",\"" + raiz.Nombre + "\");\n";
+        String defecto ="";
+        if(raiz.Defecto!=null)
+        {
+            defecto = raiz.Defecto.Dato.replace("\r\n", "\\n").replace("\t", "");
+        }
+        nuevo += name_raiz+"_"+raiz_padre + ".CrearAreaTexto(" + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Fuente + "\"," + raiz.tam + ",\"" + raiz.color + "\"," + raiz.y + "," + raiz.x + "," + raiz.negrita + "," + raiz.cursiva + ",\"" + defecto + "\",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
@@ -167,7 +177,12 @@ public class Generar_Archivo_FS {
         String nuevo = "";
         String lista ="lista_"+raiz.Nombre+"_"+name_raiz+"_"+raiz_padre;
         String variable ="var "+lista+" = "+lista_Datos(raiz.Datos.Datos);
-        nuevo += name_raiz+"_"+raiz_padre + ".CrearControlDesplegable(" + raiz.alto + "," + raiz.ancho + "," + lista + "," + raiz.x + "," + raiz.y + ",\"" + raiz.Defecto.Dato + "\",\"" + raiz.Nombre + "\");\n";
+        String defecto ="nulo";
+        if(raiz.Defecto!=null)
+        {
+            defecto = "\""+raiz.Defecto.Dato+"\"";
+        }
+        nuevo += name_raiz+"_"+raiz_padre + ".CrearControlDesplegable(" + raiz.alto + "," + raiz.ancho + "," + lista + "," + raiz.x + "," + raiz.y + "," + defecto + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(variable);
         Datos.add(nuevo);
     }

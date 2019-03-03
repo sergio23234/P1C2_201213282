@@ -20,6 +20,8 @@ public class ListaDatos {
 
     public ListaDatos() {
         Datos = new ArrayList();
+        accion="nulo";
+        linea = columna = 0;
     }
 
     public void verficar_datos_repetidos(ArrayList<NodoError> lista) {

@@ -104,7 +104,7 @@ public class Pestania extends javax.swing.JPanel {
         if (!path.equals("") && (path.toLowerCase().endsWith(".gxml"))) {
             Analizador_gxml analizador = new Analizador_gxml(path, ABpath);
             analizador.Analizar();
-            System.out.println(analizador.dev_raices().size() + "total de archivos");
+                
         } else if (!path.equals("") && (path.toLowerCase().endsWith(".fs"))) {
             File archivo = new File(path);
             FileReader fr;

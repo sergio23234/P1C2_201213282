@@ -30,7 +30,7 @@ public class Analizador_gxml {
         this.path = path;
         raices = new ArrayList();
         this.parent = parent;
-        pats= new ArrayList();
+        pats = new ArrayList();
     }
 
     public void Analizar() {
@@ -48,13 +48,14 @@ public class Analizador_gxml {
             Analizar_Imports(Raiz);
             Verificar_Ventanas();
             if (!ver_errores()) {
-                System.out.println("no hay errores");
+                System.out.println("no hay errores" + raices.size());
                 Generar_Archivo_FS nuevo = new Generar_Archivo_FS(raices);
                 String datos[] = path.split("/");
                 String nombre = path.replace(parent, "");
                 nuevo.Generar_archivo(nombre, parent);
 
             } else {
+                   imp_errores();
             }
 
         } catch (Exception ex) {
@@ -92,7 +93,7 @@ public class Analizador_gxml {
                         Raiz.errores = com_errores(miParser.errores, lex.Elista);
                         System.out.println(Raiz.Ventanas.get(0).Id + "Esto devolvio");
                         raices.add(Raiz);
-                         pats.add(path);
+                        pats.add(path);
                         Analizar_Imports(Raiz);
                     }
 
@@ -133,13 +134,22 @@ public class Analizador_gxml {
         return false;
     }
 
-    private boolean comprobar_pat(String direc){
-        for(int i=0;i<pats.size();i++){
-            if(pats.get(i).equalsIgnoreCase(direc)){
+    private void imp_errores() {
+        for (int i = 0; i < raices.size(); i++) {
+            for(int j=0;j<raices.get(i).errores.size();j++) {
+                NodoError nuevo=raices.get(i).errores.get(j);
+                System.out.println(nuevo.tipo+"--"+nuevo.linea+"--"+nuevo.columna+"--"+nuevo.descripcion);
+            }
+        }
+    }
+
+    private boolean comprobar_pat(String direc) {
+        for (int i = 0; i < pats.size(); i++) {
+            if (pats.get(i).equalsIgnoreCase(direc)) {
                 return false;
             }
         }
         return true;
     }
-    
+
 }

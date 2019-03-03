@@ -36,6 +36,7 @@ public class Control {
         negrita = cursiva = "falso";
         accion = "";
         Datos = null;
+        Defecto = null;
     }
 
     public void Analizar_Attributos(NodoSGxml Nodo, ArrayList<NodoError> lista) {

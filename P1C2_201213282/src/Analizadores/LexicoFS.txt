@@ -54,7 +54,7 @@ Numero = [0-9]+
 ";"											{return new Symbol(symf.pyc,yyline,yycolumn,yytext());}
 ":"											{return new Symbol(symf.dop,yyline,yycolumn,yytext());}
 "!"											{return new Symbol(symf.not,yyline,yycolumn,yytext());}
-"||"										{return new Symbol(symf.or,yyline,yycolumn,yytext());}
+"|""|"										{return new Symbol(symf.or,yyline,yycolumn,yytext());}
 "&&"										{return new Symbol(symf.and,yyline,yycolumn,yytext());}
 "var"										{return new Symbol(symf.var,yyline,yycolumn,yytext());}
 "verdadero"									{return new Symbol(symf.verd,yyline,yycolumn,yytext());}
@@ -100,7 +100,7 @@ Numero = [0-9]+
 ".AlCargar"									{return new Symbol(symf.acar,yyline,yycolumn,yytext());}
 ".AlCerrar"									{return new Symbol(symf.acer,yyline,yycolumn,yytext());}
 "nulo"										{return new Symbol(symf.nulo,yyline,yycolumn,yytext());}
-(([:jletter:]|_)([:jletter:]|[:jletterdigit:]|_)+)
+(([:jletter:]|_)([:jletter:]|[:jletterdigit:]|_)*)
 											{return new Symbol(symf.idva,yyline,yycolumn,yytext());}
 (["\""]([^\"])+["\""])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}	
 (["\'"]([^\"])+["'"])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}					
