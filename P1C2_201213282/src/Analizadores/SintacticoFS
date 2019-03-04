@@ -92,8 +92,8 @@ Lista_ID ::=	Lista_ID:e1 com idva	{::} 	//id,id
 /*!---------------------------- Estructura Operaciones ----------------------------!*/
 /*Exp_log1 ::= Exp_Log2
 */
-Exp_Log1 ::= 	Exp_Log	fin Exp_Ari dop Exp_Ari /*Exp_log? Num : num*/
-		|	  	Exp_Log 		
+Exp_Log1 ::= 	Exp_Log	
+		//|	  	Exp_Log fin Exp_Ari dop Exp_Ari /*Exp_log? Num : num*/		
 		;
 Exp_Log ::=	Exp_Log:e1	or 	Exp_Log:e2 			/*LOG || LOG*/
 		|	Exp_Log:e1	and	Exp_Log:e2			/*LOG && LOG*/
@@ -105,7 +105,7 @@ Exp_Com ::=	Exp_Ari:e1 igu igu		Exp_Ari:e2		/*ARI == ARI*/
 		|	Exp_Ari:e1 not igu		Exp_Ari:e2 		/*ARI != ARI*/
 		|	Exp_Ari:e1 Ex_may:e3	Exp_Ari:e2 		/*ARI >= ARI*/
 		|	Exp_Ari:e1 Ex_men:e3	Exp_Ari:e2 		/*ARI <= ARI*/
-		|	Dato_Posfa:e1;
+		|	Exp_Ari:e1{:System.out.println("Entro a La ultima Expresion");:};
 
 Ex_may ::=	may 		{:RESULT=">";:}			/* >  */
 		|	may igu		{:RESULT=">=";:};		/* >= */
@@ -115,7 +115,7 @@ Ex_men ::=	men 		{:RESULT="<";:}			/* <  */
 		|	men igu		{:RESULT="<=";:};		/* <= */
 		
 
-Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2			/*DATO + DATO*/
+Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2	{:System.out.println("reconocio datos1");:} 		/*DATO + DATO*/
 		|	Exp_Ari:e1 nos Exp_Ari:e2			/*DATO - DATO*/
 		|	Exp_Ari:e1 por Exp_Ari:e2			/*DATO * DATO*/
 		|	Exp_Ari:e1 div Exp_Ari:e2			/*DATO / DATO*/
@@ -126,11 +126,11 @@ Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2			/*DATO + DATO*/
 		|	Es_tipo_id:e1 nos nos  				/*ID--*/
 		|	Dato_Posfa;
 
-Dato_Posfa ::= Dato_Pri
-			|	Es_tipo_id
-			|	nulo
-			|	Es_lla_fun
-			|	idva recur_nat;
+Dato_Posfa ::= Dato_Pri					{:System.out.println("entro a este estado primario");:}
+			|	Es_tipo_id				{:System.out.println("entro a este estado de tipos ID");:}
+			|	nulo					{:System.out.println("entro a este estado de nulo");:}
+			|	Es_lla_fun				{:System.out.println("entro a este estado de llamada a funcion");:}
+			|	idva recur_nat	{:System.out.println("entro a este estado de id.funcionesnativas");:};
 
 /*---------------------------- Estructura Imprimir ----------------------------*/
 Es_Impr ::= impr ipa Exp_Log1 fpa pyc ;			/*Imprimir(EXPRESION);*/
