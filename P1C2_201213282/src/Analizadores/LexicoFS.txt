@@ -54,7 +54,9 @@ Numero = [0-9]+
 ";"											{return new Symbol(symf.pyc,yyline,yycolumn,yytext());}
 ":"											{return new Symbol(symf.dop,yyline,yycolumn,yytext());}
 "!"											{return new Symbol(symf.not,yyline,yycolumn,yytext());}
-"|""|"										{return new Symbol(symf.or,yyline,yycolumn,yytext());}
+"++"										{return new Symbol(symf.dmas,yyline,yycolumn,yytext());}
+"--"										{return new Symbol(symf.dnos,yyline,yycolumn,yytext());}
+"||"										{return new Symbol(symf.or,yyline,yycolumn,yytext());}
 "&&"										{return new Symbol(symf.and,yyline,yycolumn,yytext());}
 "var"										{return new Symbol(symf.var,yyline,yycolumn,yytext());}
 "verdadero"									{return new Symbol(symf.verd,yyline,yycolumn,yytext());}
@@ -100,10 +102,12 @@ Numero = [0-9]+
 ".AlCargar"									{return new Symbol(symf.acar,yyline,yycolumn,yytext());}
 ".AlCerrar"									{return new Symbol(symf.acer,yyline,yycolumn,yytext());}
 "nulo"										{return new Symbol(symf.nulo,yyline,yycolumn,yytext());}
-(([:jletter:]|_)([:jletter:]|[:jletterdigit:]|_)*)
+(([_]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
 											{return new Symbol(symf.idva,yyline,yycolumn,yytext());}
-(["\""]([^\"])+["\""])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}	
-(["\'"]([^\"])+["'"])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}					
+"."(([_]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
+											{return new Symbol(symf.idpu,yyline,yycolumn,yytext());}
+(["\""]([^\"])*["\""])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}	
+(["\'"]([^\"])*["'"])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}					
 ({Numero}"."{Numero})					   	{return new Symbol(symf.deci,yyline,yycolumn,yytext());}	
 ({Numero})					    			{return new Symbol(symf.nume,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}

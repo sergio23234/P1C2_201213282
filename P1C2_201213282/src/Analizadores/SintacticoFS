@@ -37,7 +37,7 @@ parser code {:
 action code {:
     public String estado="";
 :}
-terminal mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,ico,fco,fin,pyc,not,or,and,var,pun,com,dop;// Terminales
+terminal mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,idpu,ico,fco,fin,pyc,not,or,and,var,pun,com,dop,dmas,dnos;// Terminales
 terminal impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,maxi,mini,busc,filt,idva,cade,deci,nume,verd,fals,sino;
 terminal map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
 non terminal accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2;
@@ -80,11 +80,6 @@ Lista_Datos ::= Lista_Datos com Exp_Ari				/* Exp , Exp*/
 Lista_Objetos ::= Lista_Objetos com idva dop cade 	/* Objetos , id : "objeto"*/
 			|		idva dop cade;					/* id : "objeto"*/
 
-Dato_Pri ::= 	nume			//numero
-		|	 	cade			//cadena
-		|		deci 			//decimales
-		|		verd			//verdadero
-		|		fals;			//falso
 
 Lista_ID ::=	Lista_ID:e1 com idva	{::} 	//id,id
 			|	idva					{::};	//id
@@ -92,14 +87,17 @@ Lista_ID ::=	Lista_ID:e1 com idva	{::} 	//id,id
 /*!---------------------------- Estructura Operaciones ----------------------------!*/
 /*Exp_log1 ::= Exp_Log2
 */
-Exp_Log1 ::= 	Exp_Log	
-		//|	  	Exp_Log fin Exp_Ari dop Exp_Ari /*Exp_log? Num : num*/		
+Exp_Log1 ::= 	Exp_Log	 
+		/*|	  	Exp_Log	fin Exp_Ari dop Exp_Ari /*Exp_log? Num : num*/		
 		;
+		
 Exp_Log ::=	Exp_Log:e1	or 	Exp_Log:e2 			/*LOG || LOG*/
 		|	Exp_Log:e1	and	Exp_Log:e2			/*LOG && LOG*/
 		|	not			Exp_Log:e1				/* ! LOG*/
-/*		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/		
-		|	Exp_Com;							/*Comparacion*/
+/*		|	ipa 		Exp_Log:e1 fpa			/*(	Dato  )*/	
+		|	Exp_Log	fin Exp_Ari dop Exp_Ari
+		|	Exp_Com;							/*Comparacion*/	
+		
 		
 Exp_Com ::=	Exp_Ari:e1 igu igu		Exp_Ari:e2		/*ARI == ARI*/	
 		|	Exp_Ari:e1 not igu		Exp_Ari:e2 		/*ARI != ARI*/
@@ -122,15 +120,22 @@ Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2	{:System.out.println("reconocio datos1");:
 		|	Exp_Ari:e1 pot Exp_Ari:e2			/*DATO ^ DATO*/
 		|	ipa 	Exp_Log:e1 	fpa				/*(	Dato  )*/
 		|	nos		Exp_Ari:e1					/*-Dato*/
-		|	Es_tipo_id:e1 mas mas 				/*ID ++*/
-		|	Es_tipo_id:e1 nos nos  				/*ID--*/
 		|	Dato_Posfa;
 
 Dato_Posfa ::= Dato_Pri					{:System.out.println("entro a este estado primario");:}
 			|	Es_tipo_id				{:System.out.println("entro a este estado de tipos ID");:}
 			|	nulo					{:System.out.println("entro a este estado de nulo");:}
 			|	Es_lla_fun				{:System.out.println("entro a este estado de llamada a funcion");:}
-			|	idva recur_nat	{:System.out.println("entro a este estado de id.funcionesnativas");:};
+			|	idva recur_nat	{:System.out.println("entro a este estado de id.funcionesnativas");:}
+			|	Es_tipo_id:e1 dmas 					/*ID ++*/
+			|	Es_tipo_id:e1 dnos  				/*ID--*/
+		;
+
+Dato_Pri ::= 	nume			{:System.out.println("Redujo numero");:}//numero
+		|	 	cade			{:System.out.println("Redujo cadena");:}//cadena
+		|		deci 			{:System.out.println("Redujo decimal");:}//decimales
+		|		verd			{:System.out.println("Redujo falso");:}//verdadero
+		|		fals			{:System.out.println("Redujo verdadero");:};//falso
 
 /*---------------------------- Estructura Imprimir ----------------------------*/
 Es_Impr ::= impr ipa Exp_Log1 fpa pyc ;			/*Imprimir(EXPRESION);*/
@@ -161,13 +166,11 @@ Es_asig ::= Es_tipo_id igu Exp_Log1	pyc								/*ID  = Expresion_Ar*/
 		|	Es_tipo_id nos nos  pyc 								/*ID--;*/
 		|	Es_tipo_id igu func_nat1 pyc;							/*ID = Funcion_nativa()	*/ 
 		
-Es_tipo_id ::= 	Es_tipo_id1 							/*ID*/
-		|		Es_tipo_id1 pun idva 					/*ID.id*/
-		;
 		
-Es_tipo_id1 ::= idva ico Exp_Ari fco 					/*ID[num]*/
-		|		idva ;
-			
+Es_tipo_id ::= idva ico Exp_Ari fco 					/*ID[num]*/
+		|		idva 
+		|		idva idpu
+		|		idva ico Exp_Ari fco  idpu;	
 /*---------------------------- Estructura Selecciona ----------------------------*/		
 Es_sele ::= sele ipa Exp_Ari fpa ill Cuerpo_sele fll;	/*seleciona (Exp_Ari){ casos}*/
 
@@ -280,7 +283,7 @@ Estu_Cuerpo ::=  Estu_Cuerpo Cuerpo_general		/*Estructura Cuerpo*/
 				;
 				
 /*---------------------------- Estructura acciones ID ----------------------------*/				
-Es_acc_ID ::= Es_tipo_id1 accion_ID pyc ; /*ID . Accion ID*/
+Es_acc_ID ::= Es_tipo_id accion_ID pyc ; /*ID . Accion ID*/
 
 accion_ID ::= 	Acc_texto
 			|	Acc_ctext
