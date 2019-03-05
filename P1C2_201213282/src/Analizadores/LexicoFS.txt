@@ -56,7 +56,7 @@ Numero = [0-9]+
 "!"											{return new Symbol(symf.not,yyline,yycolumn,yytext());}
 "++"										{return new Symbol(symf.dmas,yyline,yycolumn,yytext());}
 "--"										{return new Symbol(symf.dnos,yyline,yycolumn,yytext());}
-"||"										{return new Symbol(symf.or,yyline,yycolumn,yytext());}
+"||"									    {return new Symbol(symf.Sor,yyline,yycolumn,yytext());}
 "&&"										{return new Symbol(symf.and,yyline,yycolumn,yytext());}
 "var"										{return new Symbol(symf.var,yyline,yycolumn,yytext());}
 "verdadero"									{return new Symbol(symf.verd,yyline,yycolumn,yytext());}
