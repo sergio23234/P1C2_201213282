@@ -7,6 +7,7 @@ package Principal;
 
 import ComponentGxml.NodoGxml;
 import Analizadores.*;
+import ComponentFs.NodoFs;
 import ComponentFs.Reproductor_musica;
 import ComponentFs.ventana;
 import java.io.File;
@@ -113,6 +114,9 @@ public class Pestania extends javax.swing.JPanel {
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
                 miParser.parse();
+                NodoFs nuevo = miParser.regresar_raiz();
+                Consola.setText("");
+                recorrer_FS(nuevo,"");
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
@@ -130,6 +134,26 @@ public class Pestania extends javax.swing.JPanel {
     }//GEN-LAST:event_analizarActionPerformed
 
 
+    private void recorrer_FS(NodoFs raiz,String tabs){
+        String linea = tabs+raiz.Tipo+"->"+raiz.valor+"\r\n";
+        Consola.append(linea);
+        Consola.append(tabs+"---------------------------------------------------------\r\n");
+        
+        for(int i=0;i<raiz.hijos.size();i++){
+             Consola.append(tabs+raiz.hijos.size()+"\r\n");
+            recorrer_FS(raiz.hijos.get(i),tabs+"\t");
+        }
+        if(!raiz.lista.isEmpty()){
+            Consola.append(tabs+"----------------Lista-----\r\n");
+        for(int i=0;i<raiz.lista.size();i++){
+            
+            Consola.append(tabs+"\t"+raiz.lista.get(i)+"\r\n");
+        }
+        }
+         Consola.append(tabs+"---------------------------------------------------------\r\n");
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
     public javax.swing.JTextArea Editor;

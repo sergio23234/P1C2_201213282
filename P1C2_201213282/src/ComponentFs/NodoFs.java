@@ -15,15 +15,21 @@ public class NodoFs {
 
     public String Tipo;
     public ArrayList<NodoFs> hijos;
+    public ArrayList<String> lista;
     public String valor;
-    
+
     public NodoFs(String tipo) {
         this.Tipo = tipo;
+        valor="";
         hijos = new ArrayList();
+        lista = new ArrayList();
     }
 
     public void add_NodoFs(NodoFs hijos) {
         this.hijos.add(hijos);
     }
 
+    public void add_ListaFs(String hijos) {
+        this.lista.add(hijos);
+    }
 }
