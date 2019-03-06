@@ -120,7 +120,7 @@ Dato_Posfa ::= 	Dato_Pri:e1						{:RESULT=e1;:}
 			|	Es_tipo_id:e1					{:RESULT=e1;:}
 			|	nulo:e1							{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}
 			|	Es_lla_fun:e1					{:RESULT=e1;:}
-			|	idva recur_nat:e1				{:RESULT=e1;:}
+			|	idva:e2 recur_nat:e1			{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
 			|	Es_tipo_id:e1 dmas 				{:NodoFs nuevo = new NodoFs("Autoincremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID ++*/
 			|	Es_tipo_id:e1 dnos  			{:NodoFs nuevo = new NodoFs("Autodecremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID--*/
 		;
@@ -279,7 +279,13 @@ Cuerpo_general ::= 	ES_VAR:e1							{:RESULT=e1;:}/*Estructura variable*/
 
 Estu_Cuerpo ::=  Estu_Cuerpo:e2 Cuerpo_general:e1		{:e2.add_NodoFs(e1); RESULT=e2;:}/*Estructura Cuerpo*/
 				| Cuerpo_general:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Cuerpo */	
+
+/*---------------------------- Estructura Cuerpo Principal*/	
+Cuerpo_funcion ::= Cuerpo_funcion:e1 Es_DeAu:e2		{:e1.add_NodoFs(e2);RESULT=e1;:}
+				|  Es_DeAu:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};
 				
+Es_DeAu ::= Cuerpo_general:e1 	{:RESULT=e1;:}
+		|	Es_func:e1			{:RESULT=e1;:};				
 				
 /*---------------------------- Estructura acciones ID ----------------------------*/				
 Es_acc_ID ::= Es_tipo_id:e1 accion_ID:e2 pyc	{:NodoFs nuevo = new NodoFs("ID_ACCION");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}; /*ID . Accion ID*/
@@ -298,9 +304,3 @@ accion_ID ::= 	Acc_texto:e1			{:RESULT=e1;:}
 			|	recur_nat:e1			{:RESULT=e1;:}
 			|	Acc_alcer:e1			{:RESULT=e1;:}
 				;
-
-Cuerpo_funcion ::= Cuerpo_funcion:e1 Es_DeAu:e2		{:e1.add_NodoFs(e2);RESULT=e1;:}
-				|  Es_DeAu:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};
-				
-Es_DeAu ::= Cuerpo_general:e1 	{:RESULT=e1;:}
-		|	Es_func:e1			{:RESULT=e1;:};

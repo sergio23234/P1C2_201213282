@@ -23,34 +23,32 @@ public class Pasada1 {
     }
 
     public TablaSimbolos analizar(ArrayList<NodoError> errores) {
-        analizar(raiz,errores);
+        analizar(raiz, errores);
         return tabla;
     }
 
-    private void analizar(NodoFs raiz,ArrayList<NodoError> errores) {
+    private void analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         if (raiz.Tipo.equalsIgnoreCase("inicio")) {
-            for(int i=0;i<raiz.hijos.size();i++){
-                analizar(raiz.hijos.get(i),errores);
+            for (int i = 0; i < raiz.hijos.size(); i++) {
+                analizar(raiz.hijos.get(i), errores);
             }
-        }
-        else if(raiz.Tipo.equalsIgnoreCase("Cuerpo")){
-            for(int i=0;i<raiz.hijos.size();i++){
-                analizar(raiz.hijos.get(i),errores);
+        } else if (raiz.Tipo.equalsIgnoreCase("Cuerpo")) {
+            for (int i = 0; i < raiz.hijos.size(); i++) {
+                analizar(raiz.hijos.get(i), errores);
             }
-        }
-        else if(raiz.Tipo.equalsIgnoreCase("funcion")){
-            if(verificar_funcion_repetida(errores,raiz.valor)){
-                NodoTabla tabla = new NodoTabla(raiz,"funcion",raiz.valor);
+        } else if (raiz.Tipo.equalsIgnoreCase("funcion")) {
+            if (verificar_funcion_repetida(errores, raiz.valor)) {
+                NodoTabla tabla = new NodoTabla(raiz, "funcion", raiz.valor);
                 this.tabla.Tabla.add(tabla);
             }
         }
     }
-    
-    private boolean verificar_funcion_repetida(ArrayList<NodoError> errores,String nombre){
-        for(int i=0;i<tabla.Tabla.size();i++){
-            if(tabla.Tabla.get(i).nombre.equalsIgnoreCase(nombre)){
+
+    private boolean verificar_funcion_repetida(ArrayList<NodoError> errores, String nombre) {
+        for (int i = 0; i < tabla.Tabla.size(); i++) {
+            if (tabla.Tabla.get(i).nombre.equalsIgnoreCase(nombre)) {
                 NodoError error = new NodoError("semantico");
-                error.descripcion ="error la funcion:"+nombre+" ya se encuentra repetido en este documento";
+                error.descripcion = "error la funcion:" + nombre + " ya se encuentra repetido en este documento";
                 errores.add(error);
                 return false;
             }

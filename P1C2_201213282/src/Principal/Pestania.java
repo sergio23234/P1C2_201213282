@@ -117,6 +117,8 @@ public class Pestania extends javax.swing.JPanel {
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
                 TablaSimbolos tabla=pasada.analizar(errores);
+                Inicio ini = new Inicio(tabla);
+                ini.Analizar(nuevo, errores);
                 //recorrer_FS(nuevo,"");
                 recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
@@ -159,7 +161,7 @@ public class Pestania extends javax.swing.JPanel {
         Consola.append(tabla.ambito+":\r\n");
         for(int i=0;i<tabla.Tabla.size();i++){
             NodoTabla actual = tabla.Tabla.get(i);
-            Consola.append(actual.nombre+"  Parametros: "+actual.nodo_raiz.lista.size()+" Cuerpo: "+actual.nodo_raiz.hijos.size()+"\r\n");
+            Consola.append(actual.nombre+"  Valor: "+actual.valor+" tipo: "+actual.tipo+"\r\n");
         }
     }
     

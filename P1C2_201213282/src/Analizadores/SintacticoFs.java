@@ -79,12 +79,12 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\026\006\000\002\005\003\000\002\005\003\000\002\005" +
     "\003\000\002\005\003\000\002\005\003\000\002\005\003" +
     "\000\002\005\005\000\002\005\004\000\002\005\004\000" +
-    "\002\004\004\000\002\004\003\000\002\003\005\000\002" +
+    "\002\004\004\000\002\004\003\000\002\072\004\000\002" +
+    "\072\003\000\002\047\003\000\002\047\003\000\002\003" +
+    "\005\000\002\002\003\000\002\002\003\000\002\002\003" +
+    "\000\002\002\003\000\002\002\003\000\002\002\003\000" +
+    "\002\002\003\000\002\002\003\000\002\002\006\000\002" +
     "\002\003\000\002\002\003\000\002\002\003\000\002\002" +
-    "\003\000\002\002\003\000\002\002\003\000\002\002\003" +
-    "\000\002\002\003\000\002\002\006\000\002\002\003\000" +
-    "\002\002\003\000\002\002\003\000\002\002\003\000\002" +
-    "\072\004\000\002\072\003\000\002\047\003\000\002\047" +
     "\003" });
 
   /** Access to production table. */
@@ -95,8 +95,8 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     unpackFromStrings(new String[] {
     "\000\u01e3\000\024\030\032\036\026\037\031\040\006\041" +
     "\034\042\033\043\023\046\015\057\005\001\002\000\024" +
-    "\002\uff63\030\uff63\036\uff63\040\uff63\041\uff63\042\uff63\043" +
-    "\uff63\046\uff63\057\uff63\001\002\000\112\004\uffb9\006\uffb9" +
+    "\002\uff71\030\uff71\036\uff71\040\uff71\041\uff71\042\uff71\043" +
+    "\uff71\046\uff71\057\uff71\001\002\000\112\004\uffb9\006\uffb9" +
     "\007\uffb9\010\uffb9\013\uffb9\016\134\020\152\021\143\031" +
     "\uffb9\034\uffb9\035\uffb9\047\uffb9\050\uffb9\052\uffb9\053\uffb9" +
     "\054\uffb9\055\uffb9\056\uffb9\066\uffb9\067\uffb9\070\uffb9\071" +
@@ -122,12 +122,12 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\040\uff7c\041\uff7c\042\uff7c\043\uff7c\046\uff7c\057\uff7c\001" +
     "\002\000\026\002\uff7b\015\uff7b\030\uff7b\036\uff7b\040\uff7b" +
     "\041\uff7b\042\uff7b\043\uff7b\046\uff7b\057\uff7b\001\002\000" +
-    "\024\002\uff65\030\uff65\036\uff65\040\uff65\041\uff65\042\uff65" +
-    "\043\uff65\046\uff65\057\uff65\001\002\000\004\002\u0118\001" +
+    "\024\002\uff73\030\uff73\036\uff73\040\uff73\041\uff73\042\uff73" +
+    "\043\uff73\046\uff73\057\uff73\001\002\000\004\002\u0118\001" +
     "\002\000\004\016\u0105\001\002\000\026\002\uff7e\015\uff7e" +
     "\030\uff7e\036\uff7e\040\uff7e\041\uff7e\042\uff7e\043\uff7e\046" +
-    "\uff7e\057\uff7e\001\002\000\024\002\uff64\030\uff64\036\uff64" +
-    "\040\uff64\041\uff64\042\uff64\043\uff64\046\uff64\057\uff64\001" +
+    "\uff7e\057\uff7e\001\002\000\024\002\uff72\030\uff72\036\uff72" +
+    "\040\uff72\041\uff72\042\uff72\043\uff72\046\uff72\057\uff72\001" +
     "\002\000\004\016\u0101\001\002\000\004\024\u0100\001\002" +
     "\000\024\030\ufffd\036\ufffd\037\ufffd\040\ufffd\041\ufffd\042" +
     "\ufffd\043\ufffd\046\ufffd\057\ufffd\001\002\000\004\016\374" +
@@ -553,23 +553,23 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\uffb1\030\uffb1\036\uffb1\040\uffb1\041\uffb1\042\uffb1\043\uffb1" +
     "\046\uffb1\057\uffb1\001\002\000\004\002\000\001\002\000" +
     "\024\030\ufffe\036\ufffe\037\ufffe\040\ufffe\041\ufffe\042\ufffe" +
-    "\043\ufffe\046\ufffe\057\ufffe\001\002\000\024\002\uff66\030" +
-    "\uff66\036\uff66\040\uff66\041\uff66\042\uff66\043\uff66\046\uff66" +
-    "\057\uff66\001\002\000\004\016\u01e2\001\002\000\004\016" +
-    "\u01d3\001\002\000\004\024\uff72\001\002\000\004\024\uff6a" +
+    "\043\ufffe\046\ufffe\057\ufffe\001\002\000\024\002\uff74\030" +
+    "\uff74\036\uff74\040\uff74\041\uff74\042\uff74\043\uff74\046\uff74" +
+    "\057\uff74\001\002\000\004\016\u01e2\001\002\000\004\016" +
+    "\u01d3\001\002\000\004\024\uff6e\001\002\000\004\024\uff66" +
     "\001\002\000\004\016\u01cf\001\002\000\004\016\u01b8\001" +
-    "\002\000\040\024\uff68\047\156\050\153\052\145\053\144" +
+    "\002\000\040\024\uff64\047\156\050\153\052\145\053\144" +
     "\054\146\055\137\056\150\066\157\067\141\070\140\071" +
     "\155\073\142\074\133\075\147\001\002\000\004\016\u01ab" +
-    "\001\002\000\004\024\uff70\001\002\000\004\024\uff71\001" +
+    "\001\002\000\004\024\uff6c\001\002\000\004\024\uff6d\001" +
     "\002\000\004\016\u0194\001\002\000\004\016\u018f\001\002" +
-    "\000\004\024\uff73\001\002\000\004\010\u018c\001\002\000" +
+    "\000\004\024\uff6f\001\002\000\004\010\u018c\001\002\000" +
     "\004\024\u018b\001\002\000\004\010\u0188\001\002\000\004" +
-    "\024\uff6c\001\002\000\004\016\u017b\001\002\000\004\024" +
-    "\uff69\001\002\000\004\051\u0178\001\002\000\004\024\u0177" +
-    "\001\002\000\004\024\uff6f\001\002\000\004\024\uff6d\001" +
-    "\002\000\004\024\uff6e\001\002\000\004\010\u0174\001\002" +
-    "\000\004\024\uff67\001\002\000\004\024\u0173\001\002\000" +
+    "\024\uff68\001\002\000\004\016\u017b\001\002\000\004\024" +
+    "\uff65\001\002\000\004\051\u0178\001\002\000\004\024\u0177" +
+    "\001\002\000\004\024\uff6b\001\002\000\004\024\uff69\001" +
+    "\002\000\004\024\uff6a\001\002\000\004\010\u0174\001\002" +
+    "\000\004\024\uff63\001\002\000\004\024\u0173\001\002\000" +
     "\004\016\u0166\001\002\000\004\016\u0157\001\002\000\004" +
     "\010\u0154\001\002\000\004\016\u0143\001\002\000\032\013" +
     "\066\016\062\025\065\051\071\057\114\060\070\061\067" +
@@ -649,10 +649,10 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\067\062\055\063\060\064\064\114\074\001\002\000\012" +
     "\023\113\024\u0176\026\111\027\112\001\002\000\026\002" +
     "\uffbe\015\uffbe\030\uffbe\036\uffbe\040\uffbe\041\uffbe\042\uffbe" +
-    "\043\uffbe\046\uffbe\057\uffbe\001\002\000\026\002\uff74\015" +
-    "\uff74\030\uff74\036\uff74\040\uff74\041\uff74\042\uff74\043\uff74" +
-    "\046\uff74\057\uff74\001\002\000\004\016\u0179\001\002\000" +
-    "\004\017\u017a\001\002\000\004\024\uff6b\001\002\000\026" +
+    "\043\uffbe\046\uffbe\057\uffbe\001\002\000\026\002\uff70\015" +
+    "\uff70\030\uff70\036\uff70\040\uff70\041\uff70\042\uff70\043\uff70" +
+    "\046\uff70\057\uff70\001\002\000\004\016\u0179\001\002\000" +
+    "\004\017\u017a\001\002\000\004\024\uff67\001\002\000\026" +
     "\013\066\016\062\025\065\057\114\060\070\061\067\062" +
     "\055\063\060\064\064\114\074\001\002\000\012\023\113" +
     "\026\111\027\112\032\u017d\001\002\000\026\013\066\016" +
@@ -1830,10 +1830,13 @@ class CUP$SintacticoFs$actions {
           case 48: // Dato_Posfa ::= idva recur_nat 
             {
               NodoFs RESULT =null;
+		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
+		String e2 = (String)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
 		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
+		NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2;nuevo.add_NodoFs(e1); RESULT=nuevo;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Dato_Posfa",49, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
@@ -3180,175 +3183,7 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 141: // Es_acc_ID ::= Es_tipo_id accion_ID pyc 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).value;
-		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
-		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
-		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("ID_ACCION");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Es_acc_ID",1, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 142: // accion_ID ::= Acc_texto 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 143: // accion_ID ::= Acc_ctext 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 144: // accion_ID ::= Acc_Atext 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 145: // accion_ID ::= Acc_Cnume 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 146: // accion_ID ::= Acc_despl 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 147: // accion_ID ::= Acc_image 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 148: // accion_ID ::= Acc_video 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 149: // accion_ID ::= Acc_repro 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 150: // accion_ID ::= pun cada ipa fpa 
-            {
-              NodoFs RESULT =null;
-		NodoFs nuevo = new NodoFs("arrayarchivo"); RESULT=nuevo;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 151: // accion_ID ::= Acc_alcar 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 152: // accion_ID ::= Acc_alcli 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 153: // accion_ID ::= recur_nat 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 154: // accion_ID ::= Acc_alcer 
-            {
-              NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
-		RESULT=e1;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
-            }
-          return CUP$SintacticoFs$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 155: // Cuerpo_funcion ::= Cuerpo_funcion Es_DeAu 
+          case 141: // Cuerpo_funcion ::= Cuerpo_funcion Es_DeAu 
             {
               NodoFs RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
@@ -3363,7 +3198,7 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 156: // Cuerpo_funcion ::= Es_DeAu 
+          case 142: // Cuerpo_funcion ::= Es_DeAu 
             {
               NodoFs RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
@@ -3375,7 +3210,7 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 157: // Es_DeAu ::= Cuerpo_general 
+          case 143: // Es_DeAu ::= Cuerpo_general 
             {
               NodoFs RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
@@ -3387,7 +3222,7 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 158: // Es_DeAu ::= Es_func 
+          case 144: // Es_DeAu ::= Es_func 
             {
               NodoFs RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
@@ -3395,6 +3230,174 @@ class CUP$SintacticoFs$actions {
 		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
 		RESULT=e1;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Es_DeAu",37, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 145: // Es_acc_ID ::= Es_tipo_id accion_ID pyc 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
+		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
+		NodoFs nuevo = new NodoFs("ID_ACCION");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Es_acc_ID",1, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-2)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 146: // accion_ID ::= Acc_texto 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 147: // accion_ID ::= Acc_ctext 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 148: // accion_ID ::= Acc_Atext 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 149: // accion_ID ::= Acc_Cnume 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 150: // accion_ID ::= Acc_despl 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 151: // accion_ID ::= Acc_image 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 152: // accion_ID ::= Acc_video 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 153: // accion_ID ::= Acc_repro 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 154: // accion_ID ::= pun cada ipa fpa 
+            {
+              NodoFs RESULT =null;
+		NodoFs nuevo = new NodoFs("arrayarchivo"); RESULT=nuevo;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 155: // accion_ID ::= Acc_alcar 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 156: // accion_ID ::= Acc_alcli 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 157: // accion_ID ::= recur_nat 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+            }
+          return CUP$SintacticoFs$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 158: // accion_ID ::= Acc_alcer 
+            {
+              NodoFs RESULT =null;
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.peek()).value;
+		RESULT=e1;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("accion_ID",0, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
 
