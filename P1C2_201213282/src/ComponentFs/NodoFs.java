@@ -17,6 +17,7 @@ public class NodoFs {
     public ArrayList<NodoFs> hijos;
     public ArrayList<String> lista;
     public String valor;
+    public int linea,columna;
 
     public NodoFs(String tipo) {
         this.Tipo = tipo;

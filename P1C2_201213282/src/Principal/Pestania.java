@@ -7,9 +7,7 @@ package Principal;
 
 import ComponentGxml.NodoGxml;
 import Analizadores.*;
-import ComponentFs.NodoFs;
-import ComponentFs.Reproductor_musica;
-import ComponentFs.ventana;
+import ComponentFs.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -114,9 +112,13 @@ public class Pestania extends javax.swing.JPanel {
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
                 miParser.parse();
+                ArrayList<NodoError> errores=miParser.errores;
                 NodoFs nuevo = miParser.regresar_raiz();
                 Consola.setText("");
-                recorrer_FS(nuevo,"");
+                Pasada1 pasada = new Pasada1(nuevo);
+                TablaSimbolos tabla=pasada.analizar(errores);
+                //recorrer_FS(nuevo,"");
+                recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
@@ -153,6 +155,13 @@ public class Pestania extends javax.swing.JPanel {
          Consola.append(tabs+"---------------------------------------------------------\r\n");
     }
     
+    private void recorrer_Tabla(TablaSimbolos tabla){
+        Consola.append(tabla.ambito+":\r\n");
+        for(int i=0;i<tabla.Tabla.size();i++){
+            NodoTabla actual = tabla.Tabla.get(i);
+            Consola.append(actual.nombre+"  Parametros: "+actual.nodo_raiz.lista.size()+" Cuerpo: "+actual.nodo_raiz.hijos.size()+"\r\n");
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
