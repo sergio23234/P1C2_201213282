@@ -103,7 +103,7 @@ public class Pestania extends javax.swing.JPanel {
         if (!path.equals("") && (path.toLowerCase().endsWith(".gxml"))) {
             Analizador_gxml analizador = new Analizador_gxml(path, ABpath);
             analizador.Analizar();
-                
+
         } else if (!path.equals("") && (path.toLowerCase().endsWith(".fs"))) {
             File archivo = new File(path);
             FileReader fr;
@@ -112,11 +112,11 @@ public class Pestania extends javax.swing.JPanel {
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
                 miParser.parse();
-                ArrayList<NodoError> errores=miParser.errores;
+                ArrayList<NodoError> errores = miParser.errores;
                 NodoFs nuevo = miParser.regresar_raiz();
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
-                TablaSimbolos tabla=pasada.analizar(errores);
+                TablaSimbolos tabla = pasada.analizar(errores);
                 Inicio ini = new Inicio(tabla);
                 ini.Analizar(nuevo, errores);
                 //recorrer_FS(nuevo,"");
@@ -128,43 +128,49 @@ public class Pestania extends javax.swing.JPanel {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-        }
-        else{
+        } else {
             /*ventana ven = new ventana(300,300);
             ven.show();
             ven.mostrar_reproductor("C:\\Users\\SergioFernando\\Desktop\\Pruebas\\Lone Digger.mp3", true,100,200);
-            */
+             */
         }
     }//GEN-LAST:event_analizarActionPerformed
 
-
-    private void recorrer_FS(NodoFs raiz,String tabs){
-        String linea = tabs+raiz.Tipo+"->"+raiz.valor+"\r\n";
+    private void recorrer_FS(NodoFs raiz, String tabs) {
+        String linea = tabs + raiz.Tipo + "->" + raiz.valor + "\r\n";
         Consola.append(linea);
-        Consola.append(tabs+"---------------------------------------------------------\r\n");
-        
-        for(int i=0;i<raiz.hijos.size();i++){
-             Consola.append(tabs+raiz.hijos.size()+"\r\n");
-            recorrer_FS(raiz.hijos.get(i),tabs+"\t");
+        Consola.append(tabs + "---------------------------------------------------------\r\n");
+
+        for (int i = 0; i < raiz.hijos.size(); i++) {
+            Consola.append(tabs + raiz.hijos.size() + "\r\n");
+            recorrer_FS(raiz.hijos.get(i), tabs + "\t");
         }
-        if(!raiz.lista.isEmpty()){
-            Consola.append(tabs+"----------------Lista-----\r\n");
-        for(int i=0;i<raiz.lista.size();i++){
-            
-            Consola.append(tabs+"\t"+raiz.lista.get(i)+"\r\n");
+        if (!raiz.lista.isEmpty()) {
+            Consola.append(tabs + "----------------Lista-----\r\n");
+            for (int i = 0; i < raiz.lista.size(); i++) {
+
+                Consola.append(tabs + "\t" + raiz.lista.get(i) + "\r\n");
+            }
         }
-        }
-         Consola.append(tabs+"---------------------------------------------------------\r\n");
+        Consola.append(tabs + "---------------------------------------------------------\r\n");
     }
-    
-    private void recorrer_Tabla(TablaSimbolos tabla){
-        Consola.append(tabla.ambito+":\r\n");
-        for(int i=0;i<tabla.Tabla.size();i++){
+
+    private void recorrer_Tabla(TablaSimbolos tabla) {
+        Consola.append(tabla.ambito + ":\r\n");
+        for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
-            Consola.append(actual.nombre+"  Valor: "+actual.valor+" tipo: "+actual.tipo+"\r\n");
+            if (actual.tipo.equalsIgnoreCase("vector")) {
+                String valor = "";
+                for (int j = 0; j < actual.valores.size(); j++) {
+                    valor += "---"+actual.valores.get(j);
+                }
+                Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
+            } else {
+                Consola.append(actual.nombre + "  Valor: " + actual.valor + " tipo: " + actual.tipo + "\r\n");
+            }
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
     public javax.swing.JTextArea Editor;

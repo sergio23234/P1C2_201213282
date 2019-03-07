@@ -46,7 +46,10 @@ non terminal NodoFs func_gxml,func_leer,func_nat,func_nat1,Lista_Aritmetica,Es_l
 non terminal NodoFs tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_asig1	,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
 non terminal NodoFs recur_nat,Exp_Ari,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion;
 non terminal String Tipo_Obte,Ex_men,Ex_may,Tipos_Acc_Ord,Tipo_Fun;
-precedence left  mas,nos,por,div,pot,Sor,and;
+precedence left mas,nos;
+precedence left por,div;
+precedence left pot;
+precedence left Sor,and;
 precedence right fin,not;
 start with Start;
 
@@ -186,8 +189,8 @@ Es_func ::= func idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("fu
 Es_fun1 ::=   Lista_parametros:e1 	fpa	ill	Estu_Cuerpo:e2	fll		{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}		/*parametros ) {}*/
 			| fpa				ill		Estu_Cuerpo:e1 fll 			{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*) {}*/
 
-Lista_parametros ::= Lista_parametros:e1 com var idva:e2			{:e1.add_ListaFs(e2); RESULT=e1;:}/*Lista prametros com var id*/
-				|	 var idva:e1									{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
+Lista_parametros ::= Lista_parametros:e1 com idva:e2				{:e1.add_ListaFs(e2); RESULT=e1;:}/*Lista prametros com var id*/
+				|	 idva:e1										{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
 			
 /*LLamada de una funcion*/
 Es_lla_fun ::= idva:e1 ipa Es_lla_fun1:e2 							{:e2.valor=e1; RESULT=e2;:};/*ID(param,param,etc)  */

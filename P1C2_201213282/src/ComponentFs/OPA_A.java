@@ -28,7 +28,7 @@ public class OPA_A {
             return error;
         }
         NodoRespuesta resp = Accion_A(uno, raiz.valor, dos, errores);
-        System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
+        //System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
         return resp;
     }
 
@@ -78,7 +78,12 @@ public class OPA_A {
         if (relizar) {
             return realizar_OP(Izq.resultado, tipo_izq, tipo, Der.resultado, tipo_der);
         } else {
-            return Izq;
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "erro tipos incompatibles no se puede: "+tipo+" con: "+tipo_izq+" y "+tipo_der;
+            System.out.println(error.descripcion);
+            System.out.println(Izq.resultado+"---"+Der.resultado);
+            errores.add(error);
+            return new NodoRespuesta(true);
         }
     }
 
