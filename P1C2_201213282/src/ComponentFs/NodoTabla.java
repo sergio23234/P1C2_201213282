@@ -13,18 +13,17 @@ import java.util.ArrayList;
  */
 public class NodoTabla {
 
-    public String valor;
+    public Object valor;
     public String tipo;
     public NodoFs nodo_raiz;
     public String nombre;
-    public ArrayList<String> valores;
+
 
     public NodoTabla(NodoFs raiz, String tipo, String nombre) {
         valor = "";
         this.tipo = tipo;
         this.nodo_raiz = raiz;
         this.nombre = nombre;
-        valores = new ArrayList();
     }
 
     public NodoTabla(String tipo, String nombre) {
@@ -32,7 +31,6 @@ public class NodoTabla {
         this.tipo = tipo;
         this.nodo_raiz = new NodoFs("");
         this.nombre = nombre;
-        valores = new ArrayList();
     }
 
 }

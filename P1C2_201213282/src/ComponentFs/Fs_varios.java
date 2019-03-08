@@ -5,28 +5,43 @@
  */
 package ComponentFs;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sergi
  */
 public class Fs_varios {
-    
+
     public Fs_varios() {
-        
+
     }
-    
+
     public NodoRespuesta ret_ID_Tabla(String nombre, TablaSimbolos tabla) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
                 NodoRespuesta retorno = new NodoRespuesta(actual.valor);
                 retorno.dato = actual.nombre;
+                retorno.tipo = actual.tipo;
                 return retorno;
             } else if (nombre.contains(actual.nombre) && nombre.contains("[") && actual.tipo.equalsIgnoreCase("vector")) {
+                String super_name = nombre;
                 String nombre_var = actual.nombre;
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 int num = Integer.valueOf(pos_num);
-                return new NodoRespuesta(actual.valores.get(num));
+                ArrayList<String> valores = (ArrayList<String>) actual.valor;
+                NodoRespuesta retorno = new NodoRespuesta(valores.get(num));
+                retorno.dato = super_name;
+                retorno.tipo = "variable";
+                return retorno;
+            } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("vector")) {
+                String super_name = nombre;
+                ArrayList<String> valores = (ArrayList<String>) actual.valor;
+                NodoRespuesta retorno = new NodoRespuesta(valores);
+                retorno.dato = super_name;
+                retorno.tipo = actual.tipo;
+                return retorno;
             }
         }
         if (tabla.padre != null) {
@@ -34,7 +49,7 @@ public class Fs_varios {
         }
         return null;
     }
-    
+
     public Boolean ret_Existencia_ID(String nombre, TablaSimbolos tabla) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
@@ -45,10 +60,13 @@ public class Fs_varios {
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 try {
                     int num = Integer.valueOf(pos_num);
-                    return num < actual.valores.size()&&num>=0;
+                    ArrayList<String> valores = (ArrayList<String>) actual.valor;
+                    return num < valores.size() && num >= 0;
                 } catch (Exception e) {
                     return false;
                 }
+            } else if (nombre.equalsIgnoreCase(actual.nombre) &&actual.tipo.equalsIgnoreCase("vector")) {
+                return true;
             }
         }
         if (tabla.padre != null) {
@@ -56,7 +74,7 @@ public class Fs_varios {
         }
         return false;
     }
-    
+
     public Boolean set_Nuevoval_ID(String valor, String nombre, TablaSimbolos tabla) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
@@ -67,7 +85,9 @@ public class Fs_varios {
                 String nombre_var = actual.nombre;
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 int num = Integer.valueOf(pos_num);
-                actual.valores.set(num, valor);
+                ArrayList<String> valores = (ArrayList<String>) actual.valor;
+                valores.set(num, valor);
+                actual.valor = valores;
                 return true;
             }
         }

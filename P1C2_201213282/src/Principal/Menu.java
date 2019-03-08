@@ -26,10 +26,9 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    ArrayList<Pestania> Lista;
+    public static ArrayList<Pestania> Lista= new ArrayList();;
     public Menu() {
         initComponents();
-        Lista= new ArrayList();
         Crear_Pestania("nueva");
     }
 
@@ -313,7 +312,7 @@ public class Menu extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void Crear_Pestania(String dato) {
-        Pestania nueva = new Pestania();
+        Pestania nueva = new Pestania(Lista.size());
         Lista.add(nueva);
         Pestanias.add(nueva,dato+Lista.size());
         repaint();    

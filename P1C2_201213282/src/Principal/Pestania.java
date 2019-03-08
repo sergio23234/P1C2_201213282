@@ -23,14 +23,16 @@ public class Pestania extends javax.swing.JPanel {
 
     public String path;
     public String ABpath;
-
+    private int num;
     /**
      * Creates new form Pestania
+     * @param num
      */
-    public Pestania() {
+    public Pestania(int num) {
         initComponents();
         path = "";
         ABpath = "";
+        this.num = num;
     }
 
     /**
@@ -51,7 +53,7 @@ public class Pestania extends javax.swing.JPanel {
 
         jToggleButton1.setText("jToggleButton1");
 
-        setBackground(new java.awt.Color(153, 153, 255));
+        setBackground(new java.awt.Color(204, 204, 204));
 
         Editor.setColumns(20);
         Editor.setRows(5);
@@ -117,7 +119,7 @@ public class Pestania extends javax.swing.JPanel {
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
                 TablaSimbolos tabla = pasada.analizar(errores);
-                Inicio ini = new Inicio(tabla);
+                Inicio ini = new Inicio(tabla,tabla,num);
                 ini.Analizar(nuevo, errores);
                 //recorrer_FS(nuevo,"");
                 recorrer_Tabla(tabla);
@@ -161,8 +163,9 @@ public class Pestania extends javax.swing.JPanel {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.tipo.equalsIgnoreCase("vector")) {
                 String valor = "";
-                for (int j = 0; j < actual.valores.size(); j++) {
-                    valor += "---"+actual.valores.get(j);
+                ArrayList<String> valores=(ArrayList<String>) actual.valor;
+                for (int j = 0; j < valores.size(); j++) {
+                    valor += "---"+valores.get(j);
                 }
                 Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
             } else {

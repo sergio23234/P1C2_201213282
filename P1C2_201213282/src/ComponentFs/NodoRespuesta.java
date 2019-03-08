@@ -10,21 +10,24 @@ package ComponentFs;
  * @author sergi
  */
 public class NodoRespuesta {
-    public boolean error;
-    public String resultado;
-    public String dato;
-    public NodoFs raiz;
+    public boolean  error;
+    public Object   resultado;
+    public String   tipo;
+    public String   dato;
+    public NodoFs   raiz;
     
-    public NodoRespuesta(String resultado){
+    public NodoRespuesta(Object resultado){
         this.resultado = resultado;
         error = false;
         dato = "";
         raiz = new NodoFs("");
+        tipo="";
     }
     public NodoRespuesta(boolean resultado){
         this.error = resultado;
         dato ="";
         this.resultado="";
+         tipo="";
         raiz = new NodoFs("");
     }
 }

@@ -15,9 +15,11 @@ import java.util.ArrayList;
 public class OPA_A {
 
     TablaSimbolos tabla;
+    TablaSimbolos global;
 
-    public OPA_A(TablaSimbolos tabla) {
+    public OPA_A(TablaSimbolos tabla, TablaSimbolos global) {
         this.tabla = tabla;
+        this.global = global;
     }
 
     public NodoRespuesta Analizar_OPA(NodoFs raiz, ArrayList<NodoError> errores) {
@@ -38,9 +40,10 @@ public class OPA_A {
             case "ope_l":
                 break;
             case "ope_c":
-                break;
+                OPA_C operac = new OPA_C(tabla, global);
+                return operac.Analizar_OPC(raiz, errores);
             case "ope_a":
-                OPA_A operacon = new OPA_A(tabla);
+                OPA_A operacon = new OPA_A(tabla, global);
                 return operacon.Analizar_OPA(raiz, errores);
 
             case "dato":
@@ -51,11 +54,11 @@ public class OPA_A {
                 return nuevo;
 
             case "autoincremento":
-                ES_ID retorno = new ES_ID(tabla);
+                ES_ID retorno = new ES_ID(tabla, global);
                 return retorno.autoincrementar(raiz, errores);
 
             case "autodecremento":
-                retorno = new ES_ID(tabla);
+                retorno = new ES_ID(tabla, global);
                 return retorno.autodecrementar(raiz, errores);
 
             case "nativas":
@@ -63,7 +66,7 @@ public class OPA_A {
             case "llamadafun":
                 break;
             case "id":
-                ES_ID id = new ES_ID(tabla);
+                ES_ID id = new ES_ID(tabla, global);
                 return id.Analizar(raiz, errores);
 
         }
@@ -72,16 +75,27 @@ public class OPA_A {
     }
 
     private NodoRespuesta Accion_A(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores) {
-        String tipo_izq = ret_tipo(Izq.resultado);
-        String tipo_der = ret_tipo(Der.resultado);
+        String tipo_izq = ret_tipo(Izq.resultado.toString());
+        String tipo_der = ret_tipo(Der.resultado.toString());
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
-            return realizar_OP(Izq.resultado, tipo_izq, tipo, Der.resultado, tipo_der);
+            if (Izq.tipo.equalsIgnoreCase("vector")) {
+                System.out.println("izquiera es vector"+tipo_der);
+                if (tipo_der.equalsIgnoreCase("numero") || tipo_der.equalsIgnoreCase("decimal") || tipo_der.equalsIgnoreCase("boleano")) {
+                    return new NodoRespuesta(true);
+                }
+            } else if (Der.tipo.equalsIgnoreCase("vector")) {
+                 System.out.println("Derecha es vector"+tipo_izq);
+                if (tipo_izq.equalsIgnoreCase("numero") || tipo_izq.equalsIgnoreCase("decimal") || tipo_izq.equalsIgnoreCase("boleano")) {
+                    return new NodoRespuesta(true);
+                }
+            }
+            return realizar_OP(Izq.resultado.toString(), tipo_izq, tipo, Der.resultado.toString(), tipo_der);
         } else {
             NodoError error = new NodoError("semantico");
-            error.descripcion = "erro tipos incompatibles no se puede: "+tipo+" con: "+tipo_izq+" y "+tipo_der;
+            error.descripcion = "erro tipos incompatibles no se puede: " + tipo + " con: " + tipo_izq + " y " + tipo_der;
             System.out.println(error.descripcion);
-            System.out.println(Izq.resultado+"---"+Der.resultado);
+            System.out.println(Izq.resultado + "---" + Der.resultado);
             errores.add(error);
             return new NodoRespuesta(true);
         }
@@ -171,18 +185,23 @@ public class OPA_A {
         switch (tipo) {
             case "+":
                 nuevo = new NodoRespuesta(realizar_suma(izq, tipo_i, der, tipo_d));
+                nuevo.tipo="variable";
                 return nuevo;
             case "-":
                 nuevo = new NodoRespuesta(realizar_resta(izq, tipo_i, der, tipo_d));
+                                nuevo.tipo="variable";
                 return nuevo;
             case "*":
                 nuevo = new NodoRespuesta(realizar_mul(izq, tipo_i, der, tipo_d));
+                                nuevo.tipo="variable";
                 return nuevo;
             case "/":
                 nuevo = new NodoRespuesta(realizar_div(izq, tipo_i, der, tipo_d));
+                                nuevo.tipo="variable";
                 return nuevo;
             case "^":
                 nuevo = new NodoRespuesta(realizar_pot(izq, tipo_i, der, tipo_d));
+                                nuevo.tipo="variable";
                 return nuevo;
         }
         nuevo = new NodoRespuesta(true);
@@ -335,9 +354,10 @@ public class OPA_A {
     }
 
     public NodoRespuesta sumar_uno(NodoRespuesta dato, ArrayList<NodoError> errores, TablaSimbolos tabla) {
-        String tipo = ret_tipo(dato.resultado);
+        System.out.println(dato.dato + dato.error + dato.resultado);
+        String tipo = ret_tipo(dato.resultado.toString());
         if (tipo.equalsIgnoreCase("decimal") || tipo.equalsIgnoreCase("numero")) {
-            String resultado = realizar_suma(dato.resultado, tipo, "1", "numero");
+            String resultado = realizar_suma(dato.resultado.toString(), tipo, "1", "numero");
             Fs_varios fs = new Fs_varios();
             fs.set_Nuevoval_ID(resultado, dato.dato, tabla);
             return new NodoRespuesta(false);
@@ -351,9 +371,9 @@ public class OPA_A {
     }
 
     public NodoRespuesta restar_uno(NodoRespuesta dato, ArrayList<NodoError> errores, TablaSimbolos tabla) {
-        String tipo = ret_tipo(dato.resultado);
+        String tipo = ret_tipo(dato.resultado.toString());
         if (tipo.equalsIgnoreCase("decimal") || tipo.equalsIgnoreCase("numero")) {
-            String resultado = realizar_resta(dato.resultado, tipo, "1", "numero");
+            String resultado = realizar_resta(dato.resultado.toString(), tipo, "1", "numero");
             Fs_varios fs = new Fs_varios();
             fs.set_Nuevoval_ID(resultado, dato.dato, tabla);
             return new NodoRespuesta(false);
