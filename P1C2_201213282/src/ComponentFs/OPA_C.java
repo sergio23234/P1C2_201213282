@@ -38,7 +38,8 @@ public class OPA_C {
         NodoRespuesta nuevo;
         switch (raiz.Tipo.toLowerCase()) {
             case "ope_l":
-                break;
+                OPA_L operal = new OPA_L(tabla, global);
+                return operal.Analizar_OPL(raiz, errores);
             case "ope_c":
                 OPA_C operac = new OPA_C(tabla, global);
                 return operac.Analizar_OPC(raiz, errores);
@@ -318,14 +319,14 @@ public class OPA_C {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
-            if (num >= numd) {
+            if (num <= numd) {
                 return "verdadero";
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
             int numd = Integer.valueOf(der);
-            if (num >= numd) {
+            if (num <= numd) {
                 return "verdadero";
             }
             return "falso";
@@ -345,7 +346,7 @@ public class OPA_C {
             if (der.equalsIgnoreCase("verdadero")) {
                 numd = 1;
             }
-            if (num >= numd) {
+            if (num <= numd) {
                 return "verdadero";
             }
             return "falso";

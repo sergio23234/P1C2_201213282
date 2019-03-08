@@ -38,7 +38,8 @@ public class OPA_A {
         NodoRespuesta nuevo;
         switch (raiz.Tipo.toLowerCase()) {
             case "ope_l":
-                break;
+                OPA_L operal = new OPA_L(tabla, global);
+                return operal.Analizar_OPL(raiz, errores);
             case "ope_c":
                 OPA_C operac = new OPA_C(tabla, global);
                 return operac.Analizar_OPC(raiz, errores);
@@ -80,12 +81,12 @@ public class OPA_A {
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
             if (Izq.tipo.equalsIgnoreCase("vector")) {
-                System.out.println("izquiera es vector"+tipo_der);
+                System.out.println("izquiera es vector" + tipo_der);
                 if (tipo_der.equalsIgnoreCase("numero") || tipo_der.equalsIgnoreCase("decimal") || tipo_der.equalsIgnoreCase("boleano")) {
                     return new NodoRespuesta(true);
                 }
             } else if (Der.tipo.equalsIgnoreCase("vector")) {
-                 System.out.println("Derecha es vector"+tipo_izq);
+                System.out.println("Derecha es vector" + tipo_izq);
                 if (tipo_izq.equalsIgnoreCase("numero") || tipo_izq.equalsIgnoreCase("decimal") || tipo_izq.equalsIgnoreCase("boleano")) {
                     return new NodoRespuesta(true);
                 }
@@ -185,23 +186,23 @@ public class OPA_A {
         switch (tipo) {
             case "+":
                 nuevo = new NodoRespuesta(realizar_suma(izq, tipo_i, der, tipo_d));
-                nuevo.tipo="variable";
+                nuevo.tipo = "variable";
                 return nuevo;
             case "-":
                 nuevo = new NodoRespuesta(realizar_resta(izq, tipo_i, der, tipo_d));
-                                nuevo.tipo="variable";
+                nuevo.tipo = "variable";
                 return nuevo;
             case "*":
                 nuevo = new NodoRespuesta(realizar_mul(izq, tipo_i, der, tipo_d));
-                                nuevo.tipo="variable";
+                nuevo.tipo = "variable";
                 return nuevo;
             case "/":
                 nuevo = new NodoRespuesta(realizar_div(izq, tipo_i, der, tipo_d));
-                                nuevo.tipo="variable";
+                nuevo.tipo = "variable";
                 return nuevo;
             case "^":
                 nuevo = new NodoRespuesta(realizar_pot(izq, tipo_i, der, tipo_d));
-                                nuevo.tipo="variable";
+                nuevo.tipo = "variable";
                 return nuevo;
         }
         nuevo = new NodoRespuesta(true);

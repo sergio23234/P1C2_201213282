@@ -26,7 +26,8 @@ public class Es_Imprimir {
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta resultado = Cuerpo_Imp(raiz.hijos.get(0),errores);
         if(!resultado.error){
-           Principal.Menu.Lista.get(num).Consola.append(resultado.resultado.toString().replace("\"","")+"\n");
+            String impri =resultado.resultado.toString().replace("\"","")+"\n";
+           Principal.Menu.Lista.get(num).Consola.append(impri);
         }
         return resultado;
     }
@@ -35,7 +36,9 @@ public class Es_Imprimir {
         NodoRespuesta nuevo;
         switch (raiz.Tipo.toLowerCase()) {
             case "ope_l":
-                break;
+                OPA_L operal = new OPA_L(tabla, global);
+                return operal.Analizar_OPL(raiz, errores);
+                
             case "ope_c":
                 OPA_C operac = new OPA_C(tabla, global);
                 return operac.Analizar_OPC(raiz, errores);
