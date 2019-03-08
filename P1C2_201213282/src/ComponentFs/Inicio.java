@@ -40,6 +40,7 @@ public class Inicio {
     private NodoRespuesta Analizar_Cuerpo(NodoFs raiz, ArrayList<NodoError> errores) {
         switch (raiz.Tipo.toLowerCase()) {
             case "dec_var":
+                /*!Estructura Declaracion de variables!*/
                 Declarar_variables nnuevo = new Declarar_variables(tabla,global);
                 nnuevo.Analizar(raiz, errores);/*!Estructura variable!*/
                 break;

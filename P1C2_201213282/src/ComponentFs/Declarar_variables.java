@@ -17,11 +17,10 @@ public class Declarar_variables {
     TablaSimbolos tabla;
     TablaSimbolos global;
 
-    public Declarar_variables(TablaSimbolos tabla,TablaSimbolos global) {
+    public Declarar_variables(TablaSimbolos tabla, TablaSimbolos global) {
         this.tabla = tabla;
         this.global = global;
     }
-
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoFs raices = raiz.hijos.get(0);
@@ -52,12 +51,25 @@ public class Declarar_variables {
             case "nada":
                 break;
             case "ope_l":
-                break;
+                OPA_L operal = new OPA_L(tabla, global);
+                nuevo = operal.Analizar_OPL(raiz, errores);
+                if (!nuevo.error) {
+                    Add_var_Tabla_variable(raices, nuevo);
+                    return new NodoRespuesta(false);
+                }
+                return new NodoRespuesta(true);
+
             case "ope_c":
-                 OPA_C operac = new OPA_C(tabla, global);
-                return operac.Analizar_OPC(raiz, errores);
+                OPA_C operac = new OPA_C(tabla, global);
+                nuevo = operac.Analizar_OPC(raiz, errores);
+                if (!nuevo.error) {
+                    Add_var_Tabla_variable(raices, nuevo);
+                    return new NodoRespuesta(false);
+                }
+                return new NodoRespuesta(true);
+
             case "ope_a":
-                OPA_A operacon = new OPA_A(tabla,global);
+                OPA_A operacon = new OPA_A(tabla, global);
                 nuevo = operacon.Analizar_OPA(raiz, errores);
                 if (!nuevo.error) {
                     Add_var_Tabla_variable(raices, nuevo);
@@ -75,7 +87,7 @@ public class Declarar_variables {
                 nuevo = new NodoRespuesta("-" + raiz.valor);
                 return nuevo;
             case "autoincremento":
-                ES_ID retorno = new ES_ID(tabla,global);
+                ES_ID retorno = new ES_ID(tabla, global);
                 retorn = retorno.autoincrementar(raiz, errores);
                 if (!retorn.error) {
                     Add_var_Tabla_variable(raices, retorn);
@@ -84,7 +96,7 @@ public class Declarar_variables {
                 return new NodoRespuesta(true);
 
             case "autodecremento":
-                retorno = new ES_ID(tabla,global);
+                retorno = new ES_ID(tabla, global);
                 retorn = retorno.autodecrementar(raiz, errores);
                 if (!retorn.error) {
                     Add_var_Tabla_variable(raices, retorn);
@@ -96,7 +108,7 @@ public class Declarar_variables {
             case "llamadafun":
                 break;
             case "id":
-                ES_ID id = new ES_ID(tabla,global);
+                ES_ID id = new ES_ID(tabla, global);
                 nuevo = id.Analizar(raiz, errores);
                 if (!nuevo.error) {
                     Add_var_Tabla_variable(raices, nuevo);
@@ -132,8 +144,8 @@ public class Declarar_variables {
     }
 
     private void Add_var_Tabla_variable(NodoFs raices, NodoRespuesta respuesta) {
-        String tipos ="variable";
-        if(respuesta.tipo.equalsIgnoreCase("vector")){
+        String tipos = "variable";
+        if (respuesta.tipo.equalsIgnoreCase("vector")) {
             tipos = "vector";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
@@ -141,15 +153,14 @@ public class Declarar_variables {
             tabla.Tabla.add(nodo);
         }
         NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(raices.lista.size() - 1));
-        if(tipos.equalsIgnoreCase("vector")){
+        if (tipos.equalsIgnoreCase("vector")) {
             ArrayList<String> valores = (ArrayList<String>) respuesta.resultado;
             ArrayList<String> nuevo = new ArrayList();
-            for(int i=0;i<valores.size();i++){
+            for (int i = 0; i < valores.size(); i++) {
                 nuevo.add(valores.get(i));
             }
             nodo.valor = nuevo;
-        }
-        else{
+        } else {
             nodo.valor = respuesta.resultado;
         }
         tabla.Tabla.add(nodo);
@@ -166,7 +177,7 @@ public class Declarar_variables {
                 return new NodoRespuesta(true);
             }
         }
-        Add_vect_Tabla(raices,valores);
+        Add_vect_Tabla(raices, valores);
         return new NodoRespuesta(false);
     }
 
@@ -178,7 +189,7 @@ public class Declarar_variables {
             case "ope_c":
                 break;
             case "ope_a":
-                OPA_A operacon = new OPA_A(tabla,global);
+                OPA_A operacon = new OPA_A(tabla, global);
                 return operacon.Analizar_OPA(raiz, errores);
             case "dato":
                 nuevo = new NodoRespuesta(raiz.valor);
@@ -187,18 +198,18 @@ public class Declarar_variables {
                 nuevo = new NodoRespuesta("-" + raiz.valor);
                 return nuevo;
             case "autoincremento":
-                ES_ID retorno = new ES_ID(tabla,global);
+                ES_ID retorno = new ES_ID(tabla, global);
                 return retorno.autoincrementar(raiz, errores);
 
             case "autodecremento":
-                retorno = new ES_ID(tabla,global);
+                retorno = new ES_ID(tabla, global);
                 return retorno.autodecrementar(raiz, errores);
             case "nativas":
                 break;
             case "llamadafun":
                 break;
             case "id":
-                ES_ID id = new ES_ID(tabla,global);
+                ES_ID id = new ES_ID(tabla, global);
                 return id.Analizar(raiz, errores);
         }
         return new NodoRespuesta(true);
