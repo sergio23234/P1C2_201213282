@@ -40,7 +40,7 @@ public class llamada_fun {
                 if (raiz.hijos.size() > 0) {
                     actual = raiz.hijos.get(0);
                     for (int i = 0; i < actual.hijos.size(); i++) {
-                        Cuerpo_op OP = new Cuerpo_op(tabla, global,num);
+                        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
                         NodoRespuesta condicion = OP.Cuerpo_G(actual.hijos.get(i), errores);
                         if (!condicion.error) {
                             resultados.add(condicion);
@@ -55,8 +55,8 @@ public class llamada_fun {
                                 retornara = Analizar_Cuerpo(actual.hijos.get(i), errores);
                                 if (retornara.error) {
                                     return retornara;
-                                }else if(retornara.es_retorno){
-                                    System.out.println("es vector o no:"+retornara.tipo);
+                                } else if (retornara.es_retorno) {
+                                    System.out.println("retorno dato"+retornara.resultado);
                                     return retornara;
                                 }
                             }
@@ -93,9 +93,9 @@ public class llamada_fun {
     private NodoRespuesta Analizar_Cuerpo(NodoFs raiz, ArrayList<NodoError> errores) {
         switch (raiz.Tipo.toLowerCase()) {
             case "dec_var":
-                Declarar_variables nnuevo = new Declarar_variables(tabla, global,num);
+                Declarar_variables nnuevo = new Declarar_variables(tabla, global, num);
                 NodoRespuesta ret = nnuevo.Analizar(raiz, errores);
-                System.out.println(ret.resultado+" resultado");
+                //System.out.println(ret.resultado + " resultado");
                 return ret;/*!Estructura variable!*/
             case "imprimir":
                 /*!Estructura imprimir!*/
@@ -110,7 +110,9 @@ public class llamada_fun {
                 break;
             case "es_sel":
                 /*!Estructura seleccionar!*/
-                break;
+                Est_sel sel = new Est_sel(tabla, global, num);
+                return sel.analizar(raiz, errores);
+
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
@@ -121,9 +123,9 @@ public class llamada_fun {
                 break;
             case "retornar":
                 /*!Estructura de retornar!*/
-                Est_return retorno = new Est_return(tabla,global,num);
+                Est_return retorno = new Est_return(tabla, global, num);
                 return retorno.Analizar(raiz, errores);
-               
+
             case "detener":
                 /*!Estructura de detener!*/ break;
         }

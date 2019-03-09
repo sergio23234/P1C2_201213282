@@ -52,6 +52,7 @@ public class Inicio {
             case "est_si":
                 /*!Estructura si!*/
                 Est_Si est = new Est_Si(tabla, global, num);
+                est.in_global = true;
                 est.Analizar(raiz, errores);
                 break;
             case "as_id":
@@ -59,7 +60,9 @@ public class Inicio {
                 break;
             case "es_sel":
                 /*!Estructura seleccionar!*/
-                break;
+                Est_sel sel = new Est_sel(tabla, global, num);
+                return sel.analizar(raiz, errores);
+
             case "llamadafun":/*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
                 return funcion.analizar(raiz, errores);
@@ -69,9 +72,9 @@ public class Inicio {
                 break;
             case "retornar":
                 /*!Estructura de retornar!*/
-                Est_return retorno = new Est_return(tabla,global,num);
-                return retorno.Analizar(raiz, errores);
-               
+                Est_return retorno = new Est_return(tabla, global, num);
+                return new NodoRespuesta(true);
+
             case "detener":
                 /*!Estructura de detener!*/ break;
         }

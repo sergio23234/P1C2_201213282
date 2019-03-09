@@ -178,8 +178,8 @@ Cuerpo_sele ::= Cuerpo_sele:e1 tipo_sele:e2						{:e1.add_NodoFs(e2); RESULT=e1;
 		|		tipo_sele:e1									{:NodoFs nuevo = new NodoFs("CU_SEL"); 	nuevo.add_NodoFs(e1); RESULT=nuevo;:}
 		;
 
-tipo_sele ::= 	caso Exp_Ari:e1 dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("caso"); 	nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*caso Exp_Ari : */
-			|	defe 		    dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("defecto"); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*defecto : */
+tipo_sele ::= 	caso Exp_Ari:e1 dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("caso"); 	nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*caso Exp_Ari : */
+			|	defe 		    dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("defecto"); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*defecto : */
 			;
 			
 /*---------------------------- Estructura funcion ----------------------------*/			

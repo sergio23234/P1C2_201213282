@@ -17,6 +17,8 @@ public class Est_Si {
     TablaSimbolos tabla;
     TablaSimbolos global;
     int num;
+    boolean in_seleccionar;
+    boolean in_global;
 
     public Est_Si(TablaSimbolos tabla, TablaSimbolos global, int num) {
         TablaSimbolos nueva = new TablaSimbolos("Si");
@@ -24,6 +26,8 @@ public class Est_Si {
         this.tabla = nueva;
         this.num = num;
         this.global = global;
+        in_seleccionar = false;
+        in_global = false;
     }
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
@@ -41,6 +45,8 @@ public class Est_Si {
                             if (condicion.error) {
                                 condicion.tipo = "si";
                                 return condicion;
+                            }else if(condicion.es_retorno){
+                                return condicion;
                             }
                         }
                         return new NodoRespuesta(false, "si");
@@ -53,7 +59,9 @@ public class Est_Si {
                     condicion = Analizar_Cuerpo(newactual.hijos.get(j), errores);
                     if (condicion.error) {
                         return condicion;
-                    }
+                    }else if(condicion.es_retorno){
+                                return condicion;
+                            }
                 }
                 return new NodoRespuesta(false, "si");
             }
@@ -79,7 +87,9 @@ public class Est_Si {
                 break;
             case "es_sel":
                 /*!Estructura seleccionar!*/
-                break;
+                Est_sel sel = new Est_sel(tabla,global,num);
+                return sel.analizar(raiz, errores);
+
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
@@ -94,7 +104,8 @@ public class Est_Si {
                 return retorno.Analizar(raiz, errores);
 
             case "detener":
-                /*!Estructura de detener!*/ break;
+                /*!Estructura de detener!*/ 
+                    return new NodoRespuesta(true);
         }
         return new NodoRespuesta(true);
     }

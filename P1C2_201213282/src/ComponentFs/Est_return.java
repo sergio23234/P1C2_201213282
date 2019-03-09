@@ -23,18 +23,19 @@ public class Est_return {
         this.global = global;
         this.num = num;
     }
-        public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
-        System.out.println("entro");            
-        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);        
+
+    public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
+        System.out.println("entro");
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta resultado = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         if (!resultado.error) {
-            System.out.println("retornara: "+resultado.resultado);
+            System.out.println("retornara: " + resultado.resultado);
             resultado.es_retorno = true;
-           return resultado;
-        }
-        else{
+            return resultado;
+        } else {
             System.out.println("hay error");
         }
         return resultado;
     }
+    
 }
