@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import Principal.NodoError;
 import java.util.ArrayList;
 
 /**
@@ -65,7 +66,7 @@ public class Fs_varios {
                 } catch (Exception e) {
                     return false;
                 }
-            } else if (nombre.equalsIgnoreCase(actual.nombre) &&actual.tipo.equalsIgnoreCase("vector")) {
+            } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("vector")) {
                 return true;
             }
         }
@@ -96,4 +97,31 @@ public class Fs_varios {
         }
         return false;
     }
+
+    public Boolean ret_Existencia_fun(String nombre, TablaSimbolos tabla) {
+        for (int i = 0; i < tabla.Tabla.size(); i++) {
+            NodoTabla actual = tabla.Tabla.get(i);
+            if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("funcion")) {
+                return true;
+            }
+        }
+        if (tabla.padre != null) {
+            return ret_Existencia_ID(nombre, tabla.padre);
+        }
+        return false;
+    }
+
+    public NodoFs ret_fun_Tabla(String nombre, TablaSimbolos tabla) {
+        for (int i = 0; i < tabla.Tabla.size(); i++) {
+            NodoTabla actual = tabla.Tabla.get(i);
+            if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("funcion")) {
+                return actual.nodo_raiz;
+            }
+        }
+        if (tabla.padre != null) {
+            return ret_fun_Tabla(nombre, tabla.padre);
+        }
+        return null;
+    }
+
 }

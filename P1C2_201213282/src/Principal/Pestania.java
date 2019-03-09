@@ -124,6 +124,7 @@ public class Pestania extends javax.swing.JPanel {
                 //recorrer_FS(nuevo,"");
                 recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
+                Imprimir_errores(miParser.errores);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -174,6 +175,16 @@ public class Pestania extends javax.swing.JPanel {
         }
     }
 
+    private void Imprimir_errores(ArrayList<NodoError> errores){
+       if(errores.size()>0){
+          System.out.println("---------- errores-------------");
+          for(int i=0;i<errores.size();i++){
+              NodoError actual = errores.get(i);
+              System.out.println(actual.descripcion+" ----  "+actual.tipo);
+          }  
+        System.out.println("---------- errores-------------");
+       }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
     public javax.swing.JTextArea Editor;

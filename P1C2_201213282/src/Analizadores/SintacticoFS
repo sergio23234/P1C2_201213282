@@ -184,7 +184,7 @@ tipo_sele ::= 	caso Exp_Ari:e1 dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new 
 			
 /*---------------------------- Estructura funcion ----------------------------*/			
 Es_func ::= func idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("funcion"); RESULT=e2;:}/*funcion id (*/
-		|	var  idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("funcionvar"); RESULT=e2;:};
+	/*	|	var  idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("funcionvar"); RESULT=e2;:}*/;
 		
 Es_fun1 ::=   Lista_parametros:e1 	fpa	ill	Estu_Cuerpo:e2	fll		{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}		/*parametros ) {}*/
 			| fpa				ill		Estu_Cuerpo:e1 fll 			{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*) {}*/

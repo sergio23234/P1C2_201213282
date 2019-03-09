@@ -15,11 +15,13 @@ import java.util.ArrayList;
 public class ES_ID {
 
     TablaSimbolos tabla;
+    int num;
     TablaSimbolos global;
 
-    public ES_ID(TablaSimbolos tabla, TablaSimbolos global) {
+    public ES_ID(TablaSimbolos tabla, TablaSimbolos global,int num) {
         this.tabla = tabla;
         this.global = global;
+        this.num = num;
     }
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
@@ -28,14 +30,15 @@ public class ES_ID {
             if (raiz.lista.size() > 0) {
 
             } else { //vector simple
-                uno = Cuerpo_A(raiz.hijos.get(0), errores);
+                Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+                uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
                 if (!uno.error) {
                     int num;
                     try {
                         String val = String.valueOf(uno.resultado);
                         num = Integer.valueOf(val);
                         String id = raiz.valor + "[" + num + "]";
-                        System.out.println("este es el ID: " + id);
+                        //System.out.println("este es el ID: " + id);
                         Fs_varios nuevo = new Fs_varios();
 
                         boolean existe = nuevo.ret_Existencia_ID(id, tabla);
@@ -48,11 +51,11 @@ public class ES_ID {
                                 uno = new NodoRespuesta(true);
                                 return uno;
                             } else {
-                                System.out.println(id + "resultado gb");
+                               // System.out.println(id + "resultado gb");
                                 return nuevo.ret_ID_Tabla(id, global);
                             }
                         } else {
-                            System.out.println(id + "resultado");
+                           // System.out.println(id + "resultado");
                             return nuevo.ret_ID_Tabla(id, tabla);
                         }
                     } catch (Exception e) {
@@ -90,9 +93,9 @@ public class ES_ID {
     public NodoRespuesta autoincrementar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta uno;
         uno = Analizar(raiz.hijos.get(0), errores);
-        System.out.println(uno.error + "_" + uno.resultado + "<---");
+        //System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
-            OPA_A nueva = new OPA_A(tabla, global);
+            OPA_A nueva = new OPA_A(tabla, global,num);
             NodoRespuesta dos = nueva.sumar_uno(uno, errores, tabla);
             if (dos.error) {
                 return dos;
@@ -103,10 +106,10 @@ public class ES_ID {
 
     public NodoRespuesta autodecrementar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta uno;
-        System.out.println(raiz.Tipo);
+       // System.out.println(raiz.Tipo);
         uno = Analizar(raiz.hijos.get(0), errores);
         if (!uno.error) {
-            OPA_A nueva = new OPA_A(tabla, global);
+            OPA_A nueva = new OPA_A(tabla, global,num);
             NodoRespuesta dos = nueva.restar_uno(uno, errores, tabla);
             if (dos.error) {
                 return dos;
@@ -115,44 +118,43 @@ public class ES_ID {
         return uno;
     }
 
-    private NodoRespuesta Cuerpo_A(NodoFs raiz, ArrayList<NodoError> errores) {
-        NodoRespuesta nuevo;
-        switch (raiz.Tipo.toLowerCase()) {
-            case "ope_l":
-                break;
-            case "ope_c":
-                OPA_C operac = new OPA_C(tabla, global);
-                return operac.Analizar_OPC(raiz, errores);
-            case "ope_a":
-                OPA_A operacon = new OPA_A(tabla, global);
-                return operacon.Analizar_OPA(raiz, errores);
-
-            case "dato":
-                nuevo = new NodoRespuesta(raiz.valor);
-                return nuevo;
-            case "dato negado":
-                nuevo = new NodoRespuesta("-" + raiz.valor);
-                return nuevo;
-
-            case "autoincremento":
-                ES_ID retorno = new ES_ID(tabla, global);
-                return retorno.autoincrementar(raiz, errores);
-
-            case "autodecremento":
-                retorno = new ES_ID(tabla, global);
-                return retorno.autodecrementar(raiz, errores);
-
-            case "nativas":
-                break;
-            case "llamadafun":
-                break;
-            case "id":
-                ES_ID id = new ES_ID(tabla, global);
-                return id.Analizar(raiz, errores);
-
-        }
-        nuevo = new NodoRespuesta(true);
-        return nuevo;
-    }
-
 }
+//    private NodoRespuesta Cuerpo_A(NodoFs raiz, ArrayList<NodoError> errores) {
+//        NodoRespuesta nuevo;
+//        switch (raiz.Tipo.toLowerCase()) {
+//            case "ope_l":
+//                break;
+//            case "ope_c":
+//                OPA_C operac = new OPA_C(tabla, global,num);
+//                return operac.Analizar_OPC(raiz, errores);
+//            case "ope_a":
+//                OPA_A operacon = new OPA_A(tabla, global,num);
+//                return operacon.Analizar_OPA(raiz, errores);
+//
+//            case "dato":
+//                nuevo = new NodoRespuesta(raiz.valor);
+//                return nuevo;
+//            case "dato negado":
+//                nuevo = new NodoRespuesta("-" + raiz.valor);
+//                return nuevo;
+//
+//            case "autoincremento":
+//                ES_ID retorno = new ES_ID(tabla, global);
+//                return retorno.autoincrementar(raiz, errores);
+//
+//            case "autodecremento":
+//                retorno = new ES_ID(tabla, global);
+//                return retorno.autodecrementar(raiz, errores);
+//
+//            case "nativas":
+//                break;
+//            case "llamadafun":
+//                break;
+//            case "id":
+//                ES_ID id = new ES_ID(tabla, global);
+//                return id.Analizar(raiz, errores);
+//
+//        }
+//        nuevo = new NodoRespuesta(true);
+//        return nuevo;
+//    }

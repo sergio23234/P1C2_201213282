@@ -16,16 +16,19 @@ public class OPA_L {
 
     TablaSimbolos tabla;
     TablaSimbolos global;
-
-    public OPA_L(TablaSimbolos tabla, TablaSimbolos global) {
+    int num;
+    
+    public OPA_L(TablaSimbolos tabla, TablaSimbolos global,int num) {
         this.tabla = tabla;
         this.global = global;
+        this.num = num;
     }
 
     public NodoRespuesta Analizar_OPL(NodoFs raiz, ArrayList<NodoError> errores) {
         if (raiz.hijos.size() == 2) {
-            NodoRespuesta uno = Cuerpo_L(raiz.hijos.get(0), errores);
-            NodoRespuesta dos = Cuerpo_L(raiz.hijos.get(1), errores);
+           Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+            NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+            NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
             if (uno.error || dos.error) {
                 NodoRespuesta error = new NodoRespuesta(true);
                 return error;
@@ -33,13 +36,14 @@ public class OPA_L {
             NodoRespuesta resp = Accion_L(uno, raiz.valor, dos, errores);
             return resp;
         } else if (raiz.hijos.size() == 1) {
+            Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
             if (raiz.hijos.get(0).valor.equalsIgnoreCase("not")) {
-                NodoRespuesta uno = Cuerpo_L(raiz.hijos.get(0), errores);
+                NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
                 String respuesta = realizar_NOT(uno.resultado.toString());
                 NodoRespuesta result = new NodoRespuesta(respuesta);
                 return result;
             }else{
-                NodoRespuesta uno = Cuerpo_L(raiz.hijos.get(0), errores);
+                NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
                 if(!uno.error){
                     if(uno.resultado.toString().equalsIgnoreCase("verdadero")){
                         return uno;
@@ -57,54 +61,54 @@ public class OPA_L {
         return new NodoRespuesta(true);
     }
 
-    private NodoRespuesta Cuerpo_L(NodoFs raiz, ArrayList<NodoError> errores) {
-        NodoRespuesta nuevo;
-        switch (raiz.Tipo.toLowerCase()) {
-            case "ope_l":
-               OPA_L operal = new OPA_L(tabla, global);
-                return operal.Analizar_OPL(raiz, errores);
-                
-            case "ope_c":
-                OPA_C operac = new OPA_C(tabla, global);
-                return operac.Analizar_OPC(raiz, errores);
-
-            case "ope_a":
-                OPA_A operacon = new OPA_A(tabla, global);
-                return operacon.Analizar_OPA(raiz, errores);
-
-            case "dato":
-                nuevo = new NodoRespuesta(raiz.valor);
-                return nuevo;
-                
-            case "dato negado":
-                nuevo = new NodoRespuesta("-" + raiz.valor);
-                return nuevo;
-
-            case "autoincremento":
-                ES_ID retorno = new ES_ID(tabla, global);
-                return retorno.autoincrementar(raiz, errores);
-
-            case "autodecremento":
-                retorno = new ES_ID(tabla, global);
-                return retorno.autodecrementar(raiz, errores);
-
-            case "nativas":
-                break;
-            case "llamadafun":
-                break;
-            case "id":
-                ES_ID id = new ES_ID(tabla, global);
-                return id.Analizar(raiz, errores);
-
-        }
-        nuevo = new NodoRespuesta(true);
-        return nuevo;
-    }
+//    private NodoRespuesta Cuerpo_L(NodoFs raiz, ArrayList<NodoError> errores) {
+//        NodoRespuesta nuevo;
+//        switch (raiz.Tipo.toLowerCase()) {
+//            case "ope_l":
+//               OPA_L operal = new OPA_L(tabla, global);
+//                return operal.Analizar_OPL(raiz, errores);
+//                
+//            case "ope_c":
+//                OPA_C operac = new OPA_C(tabla, global);
+//                return operac.Analizar_OPC(raiz, errores);
+//
+//            case "ope_a":
+//                OPA_A operacon = new OPA_A(tabla, global);
+//                return operacon.Analizar_OPA(raiz, errores);
+//
+//            case "dato":
+//                nuevo = new NodoRespuesta(raiz.valor);
+//                return nuevo;
+//                
+//            case "dato negado":
+//                operacon = new OPA_A(tabla, global);
+//                return operacon.negar_dato(raiz, errores);
+//
+//            case "autoincremento":
+//                ES_ID retorno = new ES_ID(tabla, global);
+//                return retorno.autoincrementar(raiz, errores);
+//
+//            case "autodecremento":
+//                retorno = new ES_ID(tabla, global);
+//                return retorno.autodecrementar(raiz, errores);
+//
+//            case "nativas":
+//                break;
+//            case "llamadafun":
+//                break;
+//            case "id":
+//                ES_ID id = new ES_ID(tabla, global);
+//                return id.Analizar(raiz, errores);
+//
+//        }
+//        nuevo = new NodoRespuesta(true);
+//        return nuevo;
+//    }
 
     private NodoRespuesta Accion_L(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores) {
-        System.out.println("--------------");
-        System.out.println("izq: "+Izq.resultado.toString()+" Der:"+Der.resultado.toString());
-        System.out.println("--------------");
+        //System.out.println("--------------");
+        //System.out.println("izq: "+Izq.resultado.toString()+" Der:"+Der.resultado.toString());
+       // System.out.println("--------------");
         return realizar_OP(Izq.resultado.toString(), tipo, Der.resultado.toString());
 
     }
