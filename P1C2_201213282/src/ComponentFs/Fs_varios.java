@@ -86,7 +86,7 @@ public class Fs_varios {
                 return true;
             } else if (nombre.contains(actual.nombre) && nombre.contains(".") && actual.tipo.equalsIgnoreCase("objeto")) {
                 String id[] = nombre.split("\\.");
-                System.out.println("es:"+id.length+"__"+nombre);
+               // System.out.println("es:"+id.length+"__"+nombre);
                 NodoObjeto actobj = (NodoObjeto) actual.valor;
                 return actobj.existe_id(id[1]);
             }
@@ -120,7 +120,7 @@ public class Fs_varios {
             }
         }
         if (tabla.padre != null) {
-            return ret_Existencia_ID(nombre, tabla.padre);
+            return set_Nuevoval_ID(valor,nombre, tabla.padre);
         }
         return false;
     }

@@ -25,11 +25,11 @@ public class Est_return {
     }
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
-        System.out.println("entro");
+        //System.out.println("entro");
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta resultado = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         if (!resultado.error) {
-            System.out.println("retornara: " + resultado.resultado);
+           // System.out.println("retornara: " + resultado.resultado);
             resultado.es_retorno = true;
             return resultado;
         } else {

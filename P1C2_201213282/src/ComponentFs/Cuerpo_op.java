@@ -53,10 +53,12 @@ public class Cuerpo_op {
                 return retorno.autodecrementar(raiz, errores);
 
             case "nativas":
-                break;
+                Nativas nat = new Nativas(tabla,global,num);
+                return nat.Analizar(raiz, errores);      
             case "llamadafun":
+                /* llamada_Fun(raiz, errores);*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                nuevo = funcion.analizar(raiz, errores);
+                nuevo = funcion.analizar(raiz, errores, tabla);
                 if (!nuevo.es_retorno) {
                     NodoError error = new NodoError("semantico");
                     error.descripcion = "la funcion no retorna nada";
@@ -73,4 +75,6 @@ public class Cuerpo_op {
         nuevo = new NodoRespuesta(true);
         return nuevo;
     }
+
+ 
 }

@@ -17,15 +17,15 @@ public class OPA_A {
     TablaSimbolos tabla;
     TablaSimbolos global;
     int num;
-    
-    public OPA_A(TablaSimbolos tabla, TablaSimbolos global,int num) {
+
+    public OPA_A(TablaSimbolos tabla, TablaSimbolos global, int num) {
         this.tabla = tabla;
         this.global = global;
         this.num = num;
     }
 
     public NodoRespuesta Analizar_OPA(NodoFs raiz, ArrayList<NodoError> errores) {
-        Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
         if (uno.error || dos.error) {
@@ -43,7 +43,7 @@ public class OPA_A {
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
             if (Izq.tipo.equalsIgnoreCase("vector")) {
-               // System.out.println("izquiera es vector" + tipo_der);
+                // System.out.println("izquiera es vector" + tipo_der);
                 if (tipo_der.equalsIgnoreCase("numero") || tipo_der.equalsIgnoreCase("decimal") || tipo_der.equalsIgnoreCase("boleano")) {
                     return new NodoRespuesta(true);
                 }
@@ -58,7 +58,7 @@ public class OPA_A {
             NodoError error = new NodoError("semantico");
             error.descripcion = "erro tipos incompatibles no se puede: " + tipo + " con: " + tipo_izq + " y " + tipo_der;
             //System.out.println(error.descripcion);
-           // System.out.println(Izq.resultado + "---" + Der.resultado);
+            // System.out.println(Izq.resultado + "---" + Der.resultado);
             errores.add(error);
             return new NodoRespuesta(true);
         }
@@ -350,18 +350,17 @@ public class OPA_A {
     }
 
     public NodoRespuesta negar_dato(NodoFs raiz, ArrayList<NodoError> errores) {
-        Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-       // System.out.println(uno.resultado);
+        // System.out.println(uno.resultado);
         if (!uno.error) {
             String tipo = ret_tipo(uno.resultado.toString());
             if (tipo.equalsIgnoreCase("decimal") || tipo.equalsIgnoreCase("numero")) {
                 String resultado;
-                if(uno.resultado.toString().startsWith("-")){
-                    resultado=uno.resultado.toString().replace("-","+");
-                }
-                else{
-                    resultado="-"+uno.resultado.toString();                   
+                if (uno.resultado.toString().startsWith("-")) {
+                    resultado = uno.resultado.toString().replace("-", "+");
+                } else {
+                    resultado = "-" + uno.resultado.toString();
                 }
                 NodoRespuesta ret = new NodoRespuesta(resultado);
                 ret.tipo = "operacion";
@@ -374,44 +373,74 @@ public class OPA_A {
         }
         return new NodoRespuesta(true);
     }
+
+    public NodoRespuesta sumar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+        String tipodato1 = ret_tipo(Dato1.resultado.toString());
+        String tipodato2 = ret_tipo(Dato2.resultado.toString());
+        boolean compatible = ret_compatible(tipodato1, tipodato2, "+");
+        if (!compatible) {
+            return new NodoRespuesta(true);
+        } else {
+            String resultado = realizar_suma(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
+            String tipo = "variable";
+            String id = Dato1.dato;
+            NodoRespuesta nuevo = new NodoRespuesta(false);
+            nuevo.tipo = tipo;
+            nuevo.dato = id;
+            nuevo.resultado = resultado;
+            return nuevo;
+        }
+    }
+
+    public NodoRespuesta restar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+        String tipodato1 = ret_tipo(Dato1.resultado.toString());
+        String tipodato2 = ret_tipo(Dato2.resultado.toString());
+        boolean compatible = ret_compatible(tipodato1, tipodato2, "-");
+        if (!compatible) {
+            return new NodoRespuesta(true);
+        } else {
+            String resultado = realizar_resta(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
+            String tipo = "variable";
+            String id = Dato1.dato;
+            NodoRespuesta nuevo = new NodoRespuesta(false);
+            nuevo.tipo = tipo;
+            nuevo.dato = id;
+            nuevo.resultado = resultado;
+            return nuevo;
+        }
+    }
+    public NodoRespuesta multi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+        String tipodato1 = ret_tipo(Dato1.resultado.toString());
+        String tipodato2 = ret_tipo(Dato2.resultado.toString());
+        boolean compatible = ret_compatible(tipodato1, tipodato2, "*");
+        if (!compatible) {
+            return new NodoRespuesta(true);
+        } else {
+            String resultado = realizar_mul(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
+            String tipo = "variable";
+            String id = Dato1.dato;
+            NodoRespuesta nuevo = new NodoRespuesta(false);
+            nuevo.tipo = tipo;
+            nuevo.dato = id;
+            nuevo.resultado = resultado;
+            return nuevo;
+        }
+    }
+    public NodoRespuesta divi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+        String tipodato1 = ret_tipo(Dato1.resultado.toString());
+        String tipodato2 = ret_tipo(Dato2.resultado.toString());
+        boolean compatible = ret_compatible(tipodato1, tipodato2, "/");
+        if (!compatible) {
+            return new NodoRespuesta(true);
+        } else {
+            String resultado = realizar_div(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
+            String tipo = "variable";
+            String id = Dato1.dato;
+            NodoRespuesta nuevo = new NodoRespuesta(false);
+            nuevo.tipo = tipo;
+            nuevo.dato = id;
+            nuevo.resultado = resultado;
+            return nuevo;
+        }
+    }
 }
-//    private NodoRespuesta Cuerpo_A(NodoFs raiz, ArrayList<NodoError> errores) {
-//        NodoRespuesta nuevo;
-//        switch (raiz.Tipo.toLowerCase()) {
-//            case "ope_l":
-//                OPA_L operal = new OPA_L(tabla, global);
-//                return operal.Analizar_OPL(raiz, errores);
-//            case "ope_c":
-//                OPA_C operac = new OPA_C(tabla, global);
-//                return operac.Analizar_OPC(raiz, errores);
-//            case "ope_a":
-//                OPA_A operacon = new OPA_A(tabla, global);
-//                return operacon.Analizar_OPA(raiz, errores);
-//
-//            case "dato":
-//                nuevo = new NodoRespuesta(raiz.valor);
-//                return nuevo;
-//            case "dato negado":
-//                operacon = new OPA_A(tabla, global);
-//                return operacon.negar_dato(raiz, errores);
-//
-//            case "autoincremento":
-//                ES_ID retorno = new ES_ID(tabla, global);
-//                return retorno.autoincrementar(raiz, errores);
-//
-//            case "autodecremento":
-//                retorno = new ES_ID(tabla, global);
-//                return retorno.autodecrementar(raiz, errores);
-//
-//            case "nativas":
-//                break;
-//            case "llamadafun":
-//                break;
-//            case "id":
-//                ES_ID id = new ES_ID(tabla, global);
-//                return id.Analizar(raiz, errores);
-//
-//        }
-//        nuevo = new NodoRespuesta(true);
-//        return nuevo;
-//    }

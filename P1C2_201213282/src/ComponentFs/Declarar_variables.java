@@ -111,12 +111,20 @@ public class Declarar_variables {
                 }
                 return new NodoRespuesta(true);
             case "nativas":
-                break;
+                Nativas nat = new Nativas(tabla, global, num);
+                retorn = nat.Analizar(raiz, errores);
+                if (!retorn.error) {
+                    // System.out.println("vino funcion" + retorn.tipo);
+                    Add_var_Tabla_variable(raices, retorn);
+                    return new NodoRespuesta(false);
+                }
+                return new NodoRespuesta(true);
+
             case "llamadafun":
                 llamada_fun funcion = new llamada_fun(global, num);
-                retorn = funcion.analizar(raiz, errores);
+                retorn = funcion.analizar(raiz, errores, tabla);
                 if (!retorn.error) {
-                    System.out.println("vino funcion" + retorn.tipo);
+                    // System.out.println("vino funcion" + retorn.tipo);
                     Add_var_Tabla_variable(raices, retorn);
                     return new NodoRespuesta(false);
                 }
@@ -162,7 +170,7 @@ public class Declarar_variables {
         String tipos = "variable";
         if (respuesta.tipo.equalsIgnoreCase("vector")) {
             tipos = "vector";
-        }else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
+        } else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
             tipos = "objeto";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
@@ -177,13 +185,12 @@ public class Declarar_variables {
                 nuevo.add(valores.get(i));
             }
             nodo.valor = nuevo;
-        }else if (tipos.equalsIgnoreCase("objeto")) {
-           NodoObjeto valor = (NodoObjeto) respuesta.resultado;
-           NodoObjeto nuevo = new NodoObjeto();
-           valor.ret_bojetos(nuevo.objetos);
-           nodo.valor = nuevo;
-        }
-        else {
+        } else if (tipos.equalsIgnoreCase("objeto")) {
+            NodoObjeto valor = (NodoObjeto) respuesta.resultado;
+            NodoObjeto nuevo = new NodoObjeto();
+            valor.ret_bojetos(nuevo.objetos);
+            nodo.valor = nuevo;
+        } else {
             nodo.valor = respuesta.resultado;
         }
         tabla.Tabla.add(nodo);

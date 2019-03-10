@@ -31,6 +31,7 @@ public class Est_Si {
     }
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
+      NodoRespuesta defaultsi = new NodoRespuesta(false);
         for (int i = 0; i < raiz.hijos.size(); i++) {
             NodoFs actual = raiz.hijos.get(i);
             if (actual.Tipo.equalsIgnoreCase("si")) {
@@ -66,7 +67,7 @@ public class Est_Si {
                 return new NodoRespuesta(false, "si");
             }
         }
-        return null;
+        return defaultsi;
     }
 
     private NodoRespuesta Analizar_Cuerpo(NodoFs raiz, ArrayList<NodoError> errores) {
@@ -93,7 +94,7 @@ public class Est_Si {
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                NodoRespuesta nuevo = funcion.analizar(raiz, errores);
+                NodoRespuesta nuevo = funcion.analizar(raiz, errores,tabla);
                 return nuevo;
             case "id_accion":
                 /*!Estructura acciones ID!*/

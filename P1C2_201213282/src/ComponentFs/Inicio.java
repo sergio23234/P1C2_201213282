@@ -57,7 +57,9 @@ public class Inicio {
                 break;
             case "as_id":
                 /*!Estructura asignacion id!*/
-                break;
+                AS_ID id = new AS_ID(tabla,global,num);
+                return id.Analizar(raiz, errores);
+                
             case "es_sel":
                 /*!Estructura seleccionar!*/
                 Est_sel sel = new Est_sel(tabla, global, num);
@@ -65,7 +67,7 @@ public class Inicio {
 
             case "llamadafun":/*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                return funcion.analizar(raiz, errores);
+                return funcion.analizar(raiz, errores,tabla);
 
             case "id_accion":
                 /*!Estructura acciones ID!*/

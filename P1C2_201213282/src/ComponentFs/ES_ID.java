@@ -69,7 +69,7 @@ public class ES_ID {
         } else if (raiz.lista.size() > 0) {//es objeto
             Fs_varios nuevo = new Fs_varios();
             String nombre = raiz.valor+raiz.lista.get(0);
-            System.out.println("vino nombre: "+nombre);
+           // System.out.println("vino nombre: "+nombre);
             boolean existe = nuevo.ret_Existencia_ID(nombre, tabla);
             if (!existe) {
                 boolean rama = nuevo.ret_Existencia_ID(nombre, global);

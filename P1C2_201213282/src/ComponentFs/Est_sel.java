@@ -60,7 +60,7 @@ public class Est_sel {
                         } else if (ret.tipo.equalsIgnoreCase("detener")) {
                             return ret;
                         } else if (ret.es_retorno) {
-                            System.out.println("entro en retorno");
+                            //System.out.println("entro en retorno");
                             return ret;
                         }
                     }
@@ -107,7 +107,7 @@ public class Est_sel {
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                NodoRespuesta nuevo = funcion.analizar(raiz, errores);
+                NodoRespuesta nuevo = funcion.analizar(raiz, errores,tabla);
                 return nuevo;
             case "id_accion":
                 /*!Estructura acciones ID!*/

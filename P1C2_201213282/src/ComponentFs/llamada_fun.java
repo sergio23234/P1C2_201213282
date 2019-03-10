@@ -24,39 +24,47 @@ public class llamada_fun {
         this.num = num;
     }
 
-    public NodoRespuesta analizar(NodoFs raiz, ArrayList<NodoError> errores) {
+    public NodoRespuesta analizar(NodoFs raiz, ArrayList<NodoError> errores, TablaSimbolos tabla) {
+        ArrayList<NodoRespuesta> resultados = new ArrayList();
+        NodoFs actual = raiz.hijos.get(0);
+        for (int i = 0; i < actual.hijos.size(); i++) {
+            Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+            NodoRespuesta condicion = OP.Cuerpo_G(actual.hijos.get(i), errores);
+            if (!condicion.error) {
+                resultados.add(condicion);
+            } else {
+                return condicion;
+            }
+        }
+        return analizar1(raiz,errores,resultados);
+    }
+
+    private NodoRespuesta analizar1(NodoFs raiz, ArrayList<NodoError> errores, ArrayList<NodoRespuesta> resultados) {
         Fs_varios fs = new Fs_varios();
         String nombre_fun = raiz.valor;
-        boolean existe_func = fs.ret_Existencia_fun(nombre_fun, global);
+        boolean existe_func = fs.ret_Existencia_fun(nombre_fun, global);//para saber si existe la funcion
         if (existe_func) {
-            NodoFs raiz_fun = fs.ret_fun_Tabla(nombre_fun, global);
-            if (raiz_fun.hijos.size() > 1) {
+            NodoFs raiz_fun = fs.ret_fun_Tabla(nombre_fun, global); //raiz de la funcion
+            if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
                 NodoFs actual = raiz_fun.hijos.get(0);
                 ArrayList<String> hijos = new ArrayList();
-                ArrayList<NodoRespuesta> resultados = new ArrayList();
                 for (int i = 0; i < actual.lista.size(); i++) {
                     hijos.add(actual.lista.get(i));
-                }
-                if (raiz.hijos.size() > 0) {
-                    actual = raiz.hijos.get(0);
-                    for (int i = 0; i < actual.hijos.size(); i++) {
-                        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
-                        NodoRespuesta condicion = OP.Cuerpo_G(actual.hijos.get(i), errores);
-                        if (!condicion.error) {
-                            resultados.add(condicion);
-                        }
-                    }
+                }//añadimos parametros
+                if (raiz.hijos.size() > 0) {//resultados de hijos
+
                     if (hijos.size() == resultados.size()) {
                         if (!id_no_repetidos(hijos)) {
                             pasar_parametros(hijos, resultados);
                             actual = raiz_fun.hijos.get(1);
                             NodoRespuesta retornara;
                             for (int i = 0; i < actual.hijos.size(); i++) {
+                               // System.out.println(actual.hijos.size() + "hijos");
                                 retornara = Analizar_Cuerpo(actual.hijos.get(i), errores);
                                 if (retornara.error) {
                                     return retornara;
                                 } else if (retornara.es_retorno) {
-                                    System.out.println("retorno dato"+retornara.resultado);
+                                   // System.out.println("retorno dato" + retornara.resultado);
                                     return retornara;
                                 }
                             }
@@ -116,7 +124,7 @@ public class llamada_fun {
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                return funcion.analizar(raiz, errores);
+                return funcion.analizar(raiz, errores,tabla);
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
