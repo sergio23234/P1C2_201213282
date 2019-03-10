@@ -18,7 +18,7 @@ public class ES_ID {
     int num;
     TablaSimbolos global;
 
-    public ES_ID(TablaSimbolos tabla, TablaSimbolos global,int num) {
+    public ES_ID(TablaSimbolos tabla, TablaSimbolos global, int num) {
         this.tabla = tabla;
         this.global = global;
         this.num = num;
@@ -30,7 +30,7 @@ public class ES_ID {
             if (raiz.lista.size() > 0) {
 
             } else { //vector simple
-                Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+                Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
                 uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
                 if (!uno.error) {
                     int num;
@@ -51,11 +51,11 @@ public class ES_ID {
                                 uno = new NodoRespuesta(true);
                                 return uno;
                             } else {
-                               // System.out.println(id + "resultado gb");
+                                // System.out.println(id + "resultado gb");
                                 return nuevo.ret_ID_Tabla(id, global);
                             }
                         } else {
-                           // System.out.println(id + "resultado");
+                            // System.out.println(id + "resultado");
                             return nuevo.ret_ID_Tabla(id, tabla);
                         }
                     } catch (Exception e) {
@@ -66,8 +66,25 @@ public class ES_ID {
                     }
                 }
             }
-        } else if (raiz.lista.size() > 0) {
-
+        } else if (raiz.lista.size() > 0) {//es objeto
+            Fs_varios nuevo = new Fs_varios();
+            String nombre = raiz.valor+raiz.lista.get(0);
+            System.out.println("vino nombre: "+nombre);
+            boolean existe = nuevo.ret_Existencia_ID(nombre, tabla);
+            if (!existe) {
+                boolean rama = nuevo.ret_Existencia_ID(nombre, global);
+                if (!rama) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "no se encuentra la variable: " + nombre + " en el documento";
+                    errores.add(error);
+                    uno = new NodoRespuesta(true);
+                    return uno;
+                } else {
+                    return nuevo.ret_ID_Tabla(nombre, global);
+                }
+            } else {
+                return nuevo.ret_ID_Tabla(nombre, tabla);
+            }
         } else {
             Fs_varios nuevo = new Fs_varios();
             boolean existe = nuevo.ret_Existencia_ID(raiz.valor, tabla);
@@ -95,7 +112,7 @@ public class ES_ID {
         uno = Analizar(raiz.hijos.get(0), errores);
         //System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
-            OPA_A nueva = new OPA_A(tabla, global,num);
+            OPA_A nueva = new OPA_A(tabla, global, num);
             NodoRespuesta dos = nueva.sumar_uno(uno, errores, tabla);
             if (dos.error) {
                 return dos;
@@ -106,10 +123,10 @@ public class ES_ID {
 
     public NodoRespuesta autodecrementar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta uno;
-       // System.out.println(raiz.Tipo);
+        // System.out.println(raiz.Tipo);
         uno = Analizar(raiz.hijos.get(0), errores);
         if (!uno.error) {
-            OPA_A nueva = new OPA_A(tabla, global,num);
+            OPA_A nueva = new OPA_A(tabla, global, num);
             NodoRespuesta dos = nueva.restar_uno(uno, errores, tabla);
             if (dos.error) {
                 return dos;

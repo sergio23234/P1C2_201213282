@@ -43,6 +43,20 @@ public class Fs_varios {
                 retorno.dato = super_name;
                 retorno.tipo = actual.tipo;
                 return retorno;
+            } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("objeto")) {
+                String super_name = nombre;
+                NodoObjeto valores = (NodoObjeto) actual.valor;
+                NodoRespuesta retorno = new NodoRespuesta(valores);
+                retorno.dato = super_name;
+                retorno.tipo = actual.tipo;
+                return retorno;
+            } else if (nombre.contains(actual.nombre) && nombre.contains(".") && actual.tipo.equalsIgnoreCase("objeto")) {
+                String id[] = nombre.split("\\.");
+                NodoObjeto actobj = (NodoObjeto) actual.valor;
+                NodoRespuesta retorno = new NodoRespuesta(actobj.retornar_por_id(id[1]));
+                retorno.dato = nombre;
+                retorno.tipo = "variable";
+                return retorno;
             }
         }
         if (tabla.padre != null) {
@@ -68,6 +82,13 @@ public class Fs_varios {
                 }
             } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("vector")) {
                 return true;
+            } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("objeto")) {
+                return true;
+            } else if (nombre.contains(actual.nombre) && nombre.contains(".") && actual.tipo.equalsIgnoreCase("objeto")) {
+                String id[] = nombre.split("\\.");
+                System.out.println("es:"+id.length+"__"+nombre);
+                NodoObjeto actobj = (NodoObjeto) actual.valor;
+                return actobj.existe_id(id[1]);
             }
         }
         if (tabla.padre != null) {
@@ -89,6 +110,12 @@ public class Fs_varios {
                 ArrayList<String> valores = (ArrayList<String>) actual.valor;
                 valores.set(num, valor);
                 actual.valor = valores;
+                return true;
+            }else if (nombre.contains(actual.nombre) && nombre.contains(".") && actual.tipo.equalsIgnoreCase("objeto")) {
+                 String id[] = nombre.split("\\.");
+                NodoObjeto actobj = (NodoObjeto) actual.valor;
+                actobj.set_newval(id[1], valor);
+                actual.valor = actobj;
                 return true;
             }
         }

@@ -11,10 +11,16 @@ package ComponentFs;
  */
 public class Raiz {
 
-    private String tipo;
+    public String nombre, valor;
 
     public Raiz() {
-        tipo = "";
+        nombre = "";
+        valor = "";
+    }
+
+    public Raiz(String nombre, String valor) {
+        this.nombre = nombre;
+        this.valor = valor;
     }
 
 }

@@ -40,9 +40,10 @@ public class Declarar_variables {
         NodoRespuesta retorn;
         switch (raiz.Tipo.toLowerCase()) {
             case "vector":
-                return Ana_vect(raiz, errores, raices);              
+                return Ana_vect(raiz, errores, raices);
             case "objetos":
-                break;
+                return Ana_objeto(raiz, errores, raices);
+
             case "ventana":
                 break;
             case "boton":
@@ -115,7 +116,7 @@ public class Declarar_variables {
                 llamada_fun funcion = new llamada_fun(global, num);
                 retorn = funcion.analizar(raiz, errores);
                 if (!retorn.error) {
-                   System.out.println("vino funcion"+retorn.tipo);
+                    System.out.println("vino funcion" + retorn.tipo);
                     Add_var_Tabla_variable(raices, retorn);
                     return new NodoRespuesta(false);
                 }
@@ -161,6 +162,8 @@ public class Declarar_variables {
         String tipos = "variable";
         if (respuesta.tipo.equalsIgnoreCase("vector")) {
             tipos = "vector";
+        }else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
+            tipos = "objeto";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(i));
@@ -174,7 +177,13 @@ public class Declarar_variables {
                 nuevo.add(valores.get(i));
             }
             nodo.valor = nuevo;
-        } else {
+        }else if (tipos.equalsIgnoreCase("objeto")) {
+           NodoObjeto valor = (NodoObjeto) respuesta.resultado;
+           NodoObjeto nuevo = new NodoObjeto();
+           valor.ret_bojetos(nuevo.objetos);
+           nodo.valor = nuevo;
+        }
+        else {
             nodo.valor = respuesta.resultado;
         }
         tabla.Tabla.add(nodo);
@@ -202,6 +211,28 @@ public class Declarar_variables {
             tabla.Tabla.add(nodo);
         }
         NodoTabla nodo = new NodoTabla("vector", raices.lista.get(raices.lista.size() - 1));
+        nodo.valor = respuestas;
+        tabla.Tabla.add(nodo);
+    }
+
+    private NodoRespuesta Ana_objeto(NodoFs raiz, ArrayList<NodoError> errores, NodoFs raices) {
+        NodoObjeto nuevo = new NodoObjeto();
+        for (int i = 0; i < raiz.hijos.size(); i++) {
+            NodoFs act = raiz.hijos.get(i);
+            NodoFs val = act.hijos.get(0);
+            Raiz to_add = new Raiz(act.Tipo, val.valor);
+            nuevo.objetos.add(to_add);
+        }
+        Add_obj_Tabla(raices, nuevo);
+        return new NodoRespuesta(false);
+    }
+
+    private void Add_obj_Tabla(NodoFs raices, NodoObjeto respuestas) {
+        for (int i = 0; i < raices.lista.size() - 1; i++) {
+            NodoTabla nodo = new NodoTabla("variable", raices.lista.get(i));
+            tabla.Tabla.add(nodo);
+        }
+        NodoTabla nodo = new NodoTabla("objeto", raices.lista.get(raices.lista.size() - 1));
         nodo.valor = respuestas;
         tabla.Tabla.add(nodo);
     }

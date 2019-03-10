@@ -58,7 +58,6 @@ public class Cuerpo_op {
                 llamada_fun funcion = new llamada_fun(global, num);
                 nuevo = funcion.analizar(raiz, errores);
                 if (!nuevo.es_retorno) {
-                    System.out.println("llego aqui");
                     NodoError error = new NodoError("semantico");
                     error.descripcion = "la funcion no retorna nada";
                     errores.add(error);

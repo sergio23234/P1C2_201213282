@@ -79,8 +79,8 @@ ES_VAR1 ::= igu Exp_Log:e1 pyc	 					{:RESULT=e1;:}//id = expresion_Aritmetica
 Lista_Datos ::= Lista_Datos:e1 com Exp_Log:e2		{:e1.add_NodoFs(e2); RESULT=e1;:}		/* Exp , Exp*/
 		|		Exp_Log:e1							{:NodoFs nuevo = new NodoFs("Vector"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};	/* Exp*/
 
-Lista_Objetos ::= Lista_Objetos:e1 com idva:e2 dop cade:e3 	{:NodoFs nuevo1 = new NodoFs(e2); nuevo1.valor=e3; e1.add_NodoFs(nuevo1); RESULT=e1;:}/* Objetos , id : "objeto"*/
-			|		idva:e1 dop cade:e2						{:NodoFs nuevo = new NodoFs("Objetos"); NodoFs nuevo1 = new NodoFs(e1); nuevo1.valor=e2; nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
+Lista_Objetos ::= Lista_Objetos:e1 com idva:e2 dop Dato_Pri:e3 	{:NodoFs nuevo1 = new NodoFs(e2); nuevo1.add_NodoFs(e3); e1.add_NodoFs(nuevo1); RESULT=e1;:}/* Objetos , id : "objeto"*/
+			|		idva:e1 dop Dato_Pri:e2						{:NodoFs nuevo = new NodoFs("Objetos"); NodoFs nuevo1 = new NodoFs(e1); nuevo1.add_NodoFs(e2); nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
 				;
 
 Lista_ID ::=	Lista_ID:e1 com idva:e2	{:e1.add_ListaFs(e2); RESULT=e1;:}//id,id
