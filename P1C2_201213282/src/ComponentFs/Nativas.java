@@ -57,10 +57,11 @@ public class Nativas {
             if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
                 int tipo = ret_tipo(vector);
                 result = Ordenamiento(actual.valor, errores, result, tipo);
+            }else if(actual.Tipo.equalsIgnoreCase("filtros")) {
+                llamada_fun ord_fun = new llamada_fun(global,num);
+                return ord_fun.analizar_nati(actual, errores, (ArrayList<String>)vector.resultado);
             }
         }
-        System.out.println(raiz.hijos.size() + " funciones nativas sobre el vector: " + vector.resultado);
-        System.out.println(raiz.hijos.size() + " funciones nativas sobre el vector: " + result.resultado);
         return result;
     }
 
@@ -221,7 +222,7 @@ public class Nativas {
             } else if (dato.contains(".")) {
                 dec = true;
             } else if (dato.equalsIgnoreCase("verdadero") || dato.equalsIgnoreCase("falso")) {
-                bol = true;
+               return -1;
             } else {
                 num = true;
             }

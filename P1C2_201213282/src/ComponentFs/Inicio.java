@@ -71,6 +71,7 @@ public class Inicio {
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
+                
                 break;
             case "retornar":
                 /*!Estructura de retornar!*/

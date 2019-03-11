@@ -36,7 +36,7 @@ public class llamada_fun {
                 return condicion;
             }
         }
-        return analizar1(raiz,errores,resultados);
+        return analizar1(raiz, errores, resultados);
     }
 
     private NodoRespuesta analizar1(NodoFs raiz, ArrayList<NodoError> errores, ArrayList<NodoRespuesta> resultados) {
@@ -59,12 +59,12 @@ public class llamada_fun {
                             actual = raiz_fun.hijos.get(1);
                             NodoRespuesta retornara;
                             for (int i = 0; i < actual.hijos.size(); i++) {
-                               // System.out.println(actual.hijos.size() + "hijos");
+                                // System.out.println(actual.hijos.size() + "hijos");
                                 retornara = Analizar_Cuerpo(actual.hijos.get(i), errores);
                                 if (retornara.error) {
                                     return retornara;
                                 } else if (retornara.es_retorno) {
-                                   // System.out.println("retorno dato" + retornara.resultado);
+                                    // System.out.println("retorno dato" + retornara.resultado);
                                     return retornara;
                                 }
                             }
@@ -124,7 +124,7 @@ public class llamada_fun {
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                return funcion.analizar(raiz, errores,tabla);
+                return funcion.analizar(raiz, errores, tabla);
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
@@ -176,4 +176,150 @@ public class llamada_fun {
         tabla.Tabla.add(nodo);
     }
 
+    public NodoRespuesta analizar_nati(NodoFs raiz, ArrayList<NodoError> errores, ArrayList<String> vector) {
+        String tipo = raiz.valor;
+        String funcion = raiz.lista.get(0);
+        Fs_varios fs = new Fs_varios();
+        boolean existe_func = fs.ret_Existencia_fun(funcion, global);//para saber si existe la funcion
+        if (existe_func) {
+            NodoFs raiz_fun = fs.ret_fun_Tabla(funcion, global); //raiz de la funcion
+            if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
+                NodoFs actual = raiz_fun.hijos.get(0);
+                ArrayList<String> hijos = new ArrayList();
+                for (int i = 0; i < actual.lista.size(); i++) {
+                    hijos.add(actual.lista.get(i));
+                }//añadimos parametros
+                if (vector.size() % hijos.size() == 0) {
+                    if (!id_no_repetidos(hijos)) {
+                        return analizar_nati_p2(hijos, vector, tipo, raiz_fun, errores);
+                    } else {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "error la funcion:" + funcion + " tiene parametros con el mismo ID";
+                        errores.add(error);
+                        return new NodoRespuesta(true);
+                    }
+                } else {
+                    System.out.println("error parametros no concuerdan");
+                    return new NodoRespuesta(true);
+                }
+            } else {
+                return new NodoRespuesta(true);
+            }
+        }
+        return new NodoRespuesta(false);
+    }
+
+    private NodoRespuesta analizar_nati_p2(ArrayList<String> hijos, ArrayList<String> vector, String tipo, NodoFs raiz, ArrayList<NodoError> errores) {
+        switch (tipo.toLowerCase()) {
+            case "filtrar":
+                return es_filtrar(hijos, vector, raiz, errores);
+            case "buscar":
+                break;
+            case "map":
+                return es_map(hijos, vector, raiz, errores);
+            case "reduce":
+                break;
+            case "todos":
+                break;
+            case "algunos":
+                break;
+        }
+        return new NodoRespuesta(true);
+    }
+
+    private NodoRespuesta es_filtrar(ArrayList<String> hijos, ArrayList<String> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<String> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                // System.out.println(actual.hijos.size() + "hijos");
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
+                        for (int m = 0; m < resultados.size(); m++) {
+                            respuesta.add(resultados.get(m).resultado.toString());
+                        }
+                    } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
+
+                    } else {
+                        return new NodoRespuesta(true);
+                    }
+                    break;
+                }
+            }
+        }
+        retorno = new NodoRespuesta(respuesta);
+        retorno.tipo = "vector";
+        return retorno;
+    }
+
+    private NodoRespuesta es_map(ArrayList<String> hijos, ArrayList<String> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<String> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+               System.out.println(actual.hijos.get(k).Tipo);
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    System.out.println("entro a retorno"+retornara.resultado.toString());
+                    respuesta.add(retornara.resultado.toString());
+                    break;
+                } else {
+                    System.out.println("no retorno nada");
+                }
+            }
+        }
+        retorno = new NodoRespuesta(respuesta);
+        retorno.tipo = "vector";
+        return retorno;
+    }
 }
+/*      int i=0;
+      ArrayList<NodoRespuesta> resultados=new ArrayList();
+      for(int j=0;j<hijos.size();j++){
+          NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+          resultados.add(nuevo);
+          i++;
+      }
+      pasar_parametros(hijos, resultados);*/
+
+ /*                            pasar_parametros(hijos, resultados);
+                            actual = raiz_fun.hijos.get(1);
+                            NodoRespuesta retornara;
+                            for (int i = 0; i < actual.hijos.size(); i++) {
+                                // System.out.println(actual.hijos.size() + "hijos");
+                                retornara = Analizar_Cuerpo(actual.hijos.get(i), errores);
+                                if (retornara.error) {
+                                    return retornara;
+                                } else if (retornara.es_retorno) {
+                                    // System.out.println("retorno dato" + retornara.resultado);
+                                    return retornara;
+                                }
+                            }
+                            return new NodoRespuesta(false);*/

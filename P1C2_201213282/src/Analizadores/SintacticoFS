@@ -44,7 +44,7 @@ non terminal NodoFs accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc
 non terminal NodoFs Acc_repro,Acc_video,Acc_image,Acc_despl,Acc_Atext,Acc_Cnume,Acc_ctext,Acc_texto,Acc_boton,Acc_conte,Acc_venta,Acc_alcli;
 non terminal NodoFs func_gxml,func_leer,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_lla_fun1,Es_fun1,Es_func,Es_tipo_id1;
 non terminal NodoFs tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_asig1	,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
-non terminal NodoFs recur_nat,Exp_Ari,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion;
+non terminal NodoFs recur_nat,Exp_Ari,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion,Dato_Obj;
 non terminal String Tipo_Obte,Ex_men,Ex_may,Tipos_Acc_Ord,Tipo_Fun;
 precedence left mas,nos;
 precedence left por,div;
@@ -79,9 +79,12 @@ ES_VAR1 ::= igu Exp_Log:e1 pyc	 					{:RESULT=e1;:}//id = expresion_Aritmetica
 Lista_Datos ::= Lista_Datos:e1 com Exp_Log:e2		{:e1.add_NodoFs(e2); RESULT=e1;:}		/* Exp , Exp*/
 		|		Exp_Log:e1							{:NodoFs nuevo = new NodoFs("Vector"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};	/* Exp*/
 
-Lista_Objetos ::= Lista_Objetos:e1 com idva:e2 dop Dato_Pri:e3 	{:NodoFs nuevo1 = new NodoFs(e2); nuevo1.add_NodoFs(e3); e1.add_NodoFs(nuevo1); RESULT=e1;:}/* Objetos , id : "objeto"*/
-			|		idva:e1 dop Dato_Pri:e2						{:NodoFs nuevo = new NodoFs("Objetos"); NodoFs nuevo1 = new NodoFs(e1); nuevo1.add_NodoFs(e2); nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
+Lista_Objetos ::= Lista_Objetos:e1 com idva:e2 dop Dato_Obj:e3 	{:NodoFs nuevo1 = new NodoFs(e2); nuevo1.add_NodoFs(e3); e1.add_NodoFs(nuevo1); RESULT=e1;:}/* Objetos , id : "objeto"*/
+			|		idva:e1 dop Dato_Obj:e2						{:NodoFs nuevo = new NodoFs("Objetos"); NodoFs nuevo1 = new NodoFs(e1); nuevo1.add_NodoFs(e2); nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
 				;
+
+Dato_Obj ::= Dato_Pri:e1						{:RESULT=e1;:}
+|			ico Lista_Datos:e1 fco 	 		{:RESULT=e1;:};//id =[datos,datos,datos]		
 
 Lista_ID ::=	Lista_ID:e1 com idva:e2	{:e1.add_ListaFs(e2); RESULT=e1;:}//id,id
 			|	idva:e1					{:NodoFs nuevo = new NodoFs("ListID"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};//id
@@ -168,8 +171,8 @@ Es_asig ::= Es_tipo_id:e1 igu 	  Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs(
 Es_tipo_id ::=  idva:e1 ico Exp_Log:e2 fco 							{:NodoFs nuevo = new NodoFs("ID"); 	nuevo.add_NodoFs(e2); nuevo.valor=e1; RESULT=nuevo;:}/*ID[num]*/
 		|		idva:e1 											{:NodoFs nuevo = new NodoFs("ID"); 	nuevo.valor=e1; RESULT=nuevo;:}
 		|		idva:e1 idpu:e2										{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:}
-		|		idva:e1 ico Exp_Log:e2 fco  idpu:e3					{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_NodoFs(e2); nuevo.add_ListaFs(e3);	nuevo.valor=e1; RESULT=nuevo;:};
-		
+		|		idva:e1 ico Exp_Log:e2 fco  idpu:e3					{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs("especial");nuevo.add_NodoFs(e2); nuevo.add_ListaFs(e3);	nuevo.valor=e1; RESULT=nuevo;:}
+		|		idva:e1 idpu:e2 ico Exp_Log:e3 fco					{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs("objeto"); nuevo.add_NodoFs(e3); nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:};
 /*---------------------------- Estructura Selecciona ----------------------------*/		
 Es_sele ::= sele ipa Exp_Ari:e1 fpa ill Cuerpo_sele:e2 fll		{:NodoFs nuevo = new NodoFs("ES_SEL"); 	nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*seleciona (Exp_Ari){ casos}*/
 		;

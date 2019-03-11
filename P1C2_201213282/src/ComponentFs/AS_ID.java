@@ -83,20 +83,30 @@ public class AS_ID {
                 actual.tipo = valor.tipo;
                 actual.valor = valor.resultado;
                 return true;
-            } else if (nombre.contains(actual.nombre) && nombre.contains("[") && actual.tipo.equalsIgnoreCase("vector")) {
+            } else if (nombre.contains(actual.nombre) && nombre.contains("[") &&(Nombre_primero_pun_cor(nombre)==2) && actual.tipo.equalsIgnoreCase("vector")) {
                 String nombre_var = actual.nombre;
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 int num = Integer.valueOf(pos_num);
                 ArrayList<String> valores = (ArrayList<String>) actual.valor;
                 valores.set(num, valor.toString());
-                actual.tipo = valor.tipo;
+                 if(nombre.contains(".")){
+                    
+                }
+                else{
+                    actual.tipo = valor.tipo;
+                }
                 actual.valor = valores;
                 return true;
-            } else if (nombre.contains(actual.nombre) && nombre.contains(".") && actual.tipo.equalsIgnoreCase("objeto")) {
+            } else if (nombre.contains(actual.nombre) && nombre.contains(".") &&(Nombre_primero_pun_cor(nombre)==1) && actual.tipo.equalsIgnoreCase("objeto")) {
                 String id[] = nombre.split("\\.");
                 NodoObjeto actobj = (NodoObjeto) actual.valor;
-                actobj.set_newval(id[1], valor.toString());
-                actual.tipo = valor.tipo;
+                actobj.set_newval(id[1], valor.resultado);
+                if(nombre.contains("[")){
+                    
+                }
+                else{
+                    actual.tipo = valor.tipo;
+                }
                 actual.valor = actobj;
                 return true;
             } else if (nombre.equalsIgnoreCase(actual.nombre) && actual.tipo.equalsIgnoreCase("objeto")) {
@@ -154,7 +164,7 @@ public class AS_ID {
             if (sumar.error) {
                 return sumar;
             } else {
-                System.out.println(sumar.resultado + " esto resulto");
+               
                 Fs_varios id = new Fs_varios();
                 boolean funciono = id.set_Nuevoval_ID(sumar.resultado.toString(), sumar.dato, tabla);
                 if (funciono) {
@@ -174,7 +184,7 @@ public class AS_ID {
             if (sumar.error) {
                 return sumar;
             } else {
-                System.out.println(sumar.resultado + " esto resulto");
+              
                 Fs_varios id = new Fs_varios();
                 boolean funciono = id.set_Nuevoval_ID(sumar.resultado.toString(), sumar.dato, tabla);
                 if (funciono) {
@@ -194,7 +204,7 @@ public class AS_ID {
             if (sumar.error) {
                 return sumar;
             } else {
-                System.out.println(sumar.resultado + " esto resulto");
+               
                 Fs_varios id = new Fs_varios();
                 boolean funciono = id.set_Nuevoval_ID(sumar.resultado.toString(), sumar.dato, tabla);
                 if (funciono) {
@@ -214,7 +224,7 @@ public class AS_ID {
             if (sumar.error) {
                 return sumar;
             } else {
-                System.out.println(sumar.resultado + " esto resulto");
+              
                 Fs_varios id = new Fs_varios();
                 boolean funciono = id.set_Nuevoval_ID(sumar.resultado.toString(), sumar.dato, tabla);
                 if (funciono) {
@@ -223,5 +233,17 @@ public class AS_ID {
                 return new NodoRespuesta(true);
             }
         }
+    }
+     private int Nombre_primero_pun_cor(String nombre){
+        char nom[] = nombre.toCharArray();
+        for(int i=0;i<nom.length;i++){
+            if(nom[i]=='.'){
+                return 1;
+            }
+            else if(nom[i]=='['){
+                return 2;
+            }
+        }
+        return -1;
     }
 }

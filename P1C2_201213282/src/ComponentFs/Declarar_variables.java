@@ -224,10 +224,26 @@ public class Declarar_variables {
 
     private NodoRespuesta Ana_objeto(NodoFs raiz, ArrayList<NodoError> errores, NodoFs raices) {
         NodoObjeto nuevo = new NodoObjeto();
+        Raiz to_add;
         for (int i = 0; i < raiz.hijos.size(); i++) {
             NodoFs act = raiz.hijos.get(i);
             NodoFs val = act.hijos.get(0);
-            Raiz to_add = new Raiz(act.Tipo, val.valor);
+            if (val.Tipo.equalsIgnoreCase("vector")) {
+                ArrayList<String> valores = new ArrayList();
+                for (int j = 0; j < val.hijos.size(); j++) {
+                    Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+                    NodoRespuesta actual = OP.Cuerpo_G(val.hijos.get(j), errores);
+                    if (!actual.error) {
+                        String to_add1 = String.valueOf(actual.resultado);
+                        valores.add(to_add1);
+                    } else {
+                        return new NodoRespuesta(true);
+                    }
+                }
+                to_add = new Raiz(act.Tipo, valores,"vector");
+            } else {
+                to_add = new Raiz(act.Tipo, val.valor,"variable");
+            }
             nuevo.objetos.add(to_add);
         }
         Add_obj_Tabla(raices, nuevo);
@@ -237,6 +253,7 @@ public class Declarar_variables {
     private void Add_obj_Tabla(NodoFs raices, NodoObjeto respuestas) {
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla("variable", raices.lista.get(i));
+            nodo.valor = "undefined";
             tabla.Tabla.add(nodo);
         }
         NodoTabla nodo = new NodoTabla("objeto", raices.lista.get(raices.lista.size() - 1));

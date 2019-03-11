@@ -28,7 +28,29 @@ public class ES_ID {
         NodoRespuesta uno;
         if (raiz.hijos.size() > 0) {//es vector
             if (raiz.lista.size() > 0) {
-
+                if (raiz.lista.get(0).equalsIgnoreCase("objeto")) {
+                    Fs_varios nuevo = new Fs_varios();
+                    Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+                    uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+                    String nombre = raiz.valor + raiz.lista.get(1) + "[" + uno.resultado.toString() + "]";
+                    boolean existe = nuevo.ret_Existencia_ID(nombre, tabla);
+                    if (!existe) {
+                        boolean rama = nuevo.ret_Existencia_ID(nombre, global);
+                        if (!rama) {
+                            NodoError error = new NodoError("semantico");
+                            error.descripcion = "no se encuentra la variable: " + nombre + " en el documento";
+                            errores.add(error);
+                            uno = new NodoRespuesta(true);
+                            return uno;
+                        } else {
+                            
+                            return nuevo.ret_ID_Tabla(nombre, global);
+                        }
+                    } else {
+                        System.out.println("vino nombre: " + nombre);
+                        return nuevo.ret_ID_Tabla(nombre, tabla);
+                    }
+                }
             } else { //vector simple
                 Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
                 uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
@@ -68,8 +90,8 @@ public class ES_ID {
             }
         } else if (raiz.lista.size() > 0) {//es objeto
             Fs_varios nuevo = new Fs_varios();
-            String nombre = raiz.valor+raiz.lista.get(0);
-           // System.out.println("vino nombre: "+nombre);
+            String nombre = raiz.valor + raiz.lista.get(0);
+            // System.out.println("vino nombre: "+nombre);
             boolean existe = nuevo.ret_Existencia_ID(nombre, tabla);
             if (!existe) {
                 boolean rama = nuevo.ret_Existencia_ID(nombre, global);
