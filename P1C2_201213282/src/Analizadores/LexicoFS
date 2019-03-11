@@ -107,7 +107,7 @@ Numero = [0-9]+
 "."(([_]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
 											{return new Symbol(symf.idpu,yyline,yycolumn,yytext());}
 (["\""]([^\"])*["\""])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}	
-(["\'"]([^\"])*["'"])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}					
+//(["\'"]([^\"])*["'"])						{return new Symbol(symf.cade,yyline,yycolumn,yytext());}					
 ({Numero}"."{Numero})					   	{return new Symbol(symf.deci,yyline,yycolumn,yytext());}	
 ({Numero})					    			{return new Symbol(symf.nume,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}

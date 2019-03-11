@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * <a href="http://www.jflex.de/">JFlex</a> 1.7.0
  * from the specification file <tt>LexicoGD</tt>
  */
-public class LexicoFS implements java_cup.runtime.Scanner {
+public class LexicoGD implements java_cup.runtime.Scanner {
 
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
@@ -426,7 +426,7 @@ public static String errores="";
    *
    * @param   in  the java.io.Reader to read input from.
    */
-  public LexicoFS(java.io.Reader in) {
+  public LexicoGD(java.io.Reader in) {
     this.zzReader = in;
   }
 

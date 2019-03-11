@@ -18,13 +18,17 @@ public class Raiz {
     public Raiz() {
         nombre = "";
         valor = "";
-        tipo ="variable";
+        tipo = "variable";
     }
 
-    public Raiz(String nombre, Object valor,String tipo) {
+    public Raiz(String nombre, Object valor, String tipo) {
         this.nombre = nombre;
         this.valor = valor;
         this.tipo = tipo;
     }
 
+    public Raiz(Object valor) {
+        this.valor = valor;
+        
+    }
 }

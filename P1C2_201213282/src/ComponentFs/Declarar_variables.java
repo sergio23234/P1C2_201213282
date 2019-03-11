@@ -51,7 +51,10 @@ public class Declarar_variables {
             case "contenedor":
                 break;
             case "nada":
-                break;
+                nuevo = new NodoRespuesta("undefined");
+                Add_var_Tabla_variable(raices, nuevo);
+                return new NodoRespuesta(false);
+
             case "ope_l":
                 OPA_L operal = new OPA_L(tabla, global, num);
                 nuevo = operal.Analizar_OPL(raiz, errores);
@@ -81,6 +84,9 @@ public class Declarar_variables {
             case "dato":
                 nuevo = new NodoRespuesta(raiz.valor);
                 if (!nuevo.error) {
+                    if (raiz.valor.equalsIgnoreCase("nulo")) {
+                        nuevo.resultado = "undefined";
+                    }
                     Add_var_Tabla_variable(raices, nuevo);
                     return new NodoRespuesta(false);
                 }
@@ -175,6 +181,7 @@ public class Declarar_variables {
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(i));
+            nodo.valor = "undefined";
             tabla.Tabla.add(nodo);
         }
         NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(raices.lista.size() - 1));
@@ -215,6 +222,7 @@ public class Declarar_variables {
     private void Add_vect_Tabla(NodoFs raices, ArrayList<String> respuestas) {
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla("variable", raices.lista.get(i));
+            nodo.valor = "undefined";
             tabla.Tabla.add(nodo);
         }
         NodoTabla nodo = new NodoTabla("vector", raices.lista.get(raices.lista.size() - 1));
@@ -240,9 +248,9 @@ public class Declarar_variables {
                         return new NodoRespuesta(true);
                     }
                 }
-                to_add = new Raiz(act.Tipo, valores,"vector");
+                to_add = new Raiz(act.Tipo, valores, "vector");
             } else {
-                to_add = new Raiz(act.Tipo, val.valor,"variable");
+                to_add = new Raiz(act.Tipo, val.valor, "variable");
             }
             nuevo.objetos.add(to_add);
         }

@@ -42,16 +42,8 @@ public class OPA_A {
         String tipo_der = ret_tipo(Der.resultado.toString());
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
-            if (Izq.tipo.equalsIgnoreCase("vector")) {
-                // System.out.println("izquiera es vector" + tipo_der);
-                if (tipo_der.equalsIgnoreCase("numero") || tipo_der.equalsIgnoreCase("decimal") || tipo_der.equalsIgnoreCase("boleano")) {
-                    return new NodoRespuesta(true);
-                }
-            } else if (Der.tipo.equalsIgnoreCase("vector")) {
-                //System.out.println("Derecha es vector" + tipo_izq);
-                if (tipo_izq.equalsIgnoreCase("numero") || tipo_izq.equalsIgnoreCase("decimal") || tipo_izq.equalsIgnoreCase("boleano")) {
-                    return new NodoRespuesta(true);
-                }
+            if (accion_posible(Izq.tipo) || accion_posible(Der.tipo)) {
+                return new NodoRespuesta(true);
             }
             return realizar_OP(Izq.resultado.toString(), tipo_izq, tipo, Der.resultado.toString(), tipo_der);
         } else {
@@ -71,8 +63,27 @@ public class OPA_A {
             return "boleano";
         } else if (value.contains(".")) {
             return "decimal";
+        }else if (value.equalsIgnoreCase("undefined") || value.equalsIgnoreCase("nulo")) {
+            return "undefined";
         } else {
             return "numero";
+        }
+    }
+
+    private boolean accion_posible(String value) {
+        switch (value.toLowerCase()) {
+            case "vector":
+                return true;
+            case "objeto":
+                return true;
+            case "ventana":
+                return true;
+            case "contenedor":
+                return true;
+            case "boton":
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -87,7 +98,9 @@ public class OPA_A {
     }
 
     private boolean ret_compatible_mas(String tipo_izq, String tipo_der) {
-        if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
+        if (tipo_izq.equalsIgnoreCase("undefined")||tipo_der.equalsIgnoreCase("undefined")) {
+            return false;
+        }else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
             return true;
         } else if (tipo_izq.equalsIgnoreCase("decimal")) {
             if (tipo_der.equalsIgnoreCase("boleano")) {
@@ -106,7 +119,9 @@ public class OPA_A {
     }
 
     private boolean ret_compatible_menos_por_div(String tipo_izq, String tipo_der) {
-        if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
+        if (tipo_izq.equalsIgnoreCase("undefined")||tipo_der.equalsIgnoreCase("undefined")) {
+            return false;
+        }else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
             return false;
         } else if (tipo_izq.equalsIgnoreCase("decimal")) {
             if (tipo_der.equalsIgnoreCase("boleano")) {
@@ -409,6 +424,7 @@ public class OPA_A {
             return nuevo;
         }
     }
+
     public NodoRespuesta multi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());
@@ -426,6 +442,7 @@ public class OPA_A {
             return nuevo;
         }
     }
+
     public NodoRespuesta divi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());

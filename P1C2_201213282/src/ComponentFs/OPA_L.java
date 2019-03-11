@@ -25,38 +25,57 @@ public class OPA_L {
     }
 
     public NodoRespuesta Analizar_OPL(NodoFs raiz, ArrayList<NodoError> errores) {
-        if (raiz.hijos.size() == 2) {
-           Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
-            NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-            NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
-            if (uno.error || dos.error) {
-                NodoRespuesta error = new NodoRespuesta(true);
-                return error;
-            }
-            NodoRespuesta resp = Accion_L(uno, raiz.valor, dos, errores);
-            return resp;
-        } else if (raiz.hijos.size() == 1) {
-            Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
-            if (raiz.hijos.get(0).valor.equalsIgnoreCase("not")) {
+        switch (raiz.hijos.size()) {
+            case 2:
+            {
+                Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
                 NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-                String respuesta = realizar_NOT(uno.resultado.toString());
-                NodoRespuesta result = new NodoRespuesta(respuesta);
-                return result;
-            }else{
-                NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-                if(!uno.error){
-                    if(uno.resultado.toString().equalsIgnoreCase("verdadero")){
-                        return uno;
-                    }
-                    else if(uno.resultado.toString().equalsIgnoreCase("verdadero")){
-                        return uno;
-                    }
-                    else{
-                        return new NodoRespuesta(true);
-                    }
+                NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
+                if (uno.error || dos.error) {
+                    NodoRespuesta error = new NodoRespuesta(true);
+                    return error;
                 }
-                return uno;
+                NodoRespuesta resp = Accion_L(uno, raiz.valor, dos, errores);
+                return resp;
             }
+            case 1:
+            {
+                Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+                if (raiz.hijos.get(0).valor.equalsIgnoreCase("not")) {
+                    NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+                    String respuesta = realizar_NOT(uno.resultado.toString());
+                    NodoRespuesta result = new NodoRespuesta(respuesta);
+                    return result;
+                }else{
+                    NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+                    if(!uno.error){
+                        if(uno.resultado.toString().equalsIgnoreCase("verdadero")){
+                            return uno;
+                        }
+                        else if(uno.resultado.toString().equalsIgnoreCase("verdadero")){
+                            return uno;
+                        }
+                        else{
+                            return new NodoRespuesta(true);
+                        }
+                    }
+                    return uno;
+                }
+            }
+            case 3:
+                Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+                NodoRespuesta tres = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+                NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(1), errores);
+                NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(2), errores);
+                if (uno.error || dos.error||tres.error) {
+                    NodoRespuesta error = new NodoRespuesta(true);
+                    return error;
+                }
+                if(tres.resultado.toString().equalsIgnoreCase("verdadero")){
+                    return uno;
+                }else{
+                    return dos;
+                }
         }
         return new NodoRespuesta(true);
     }

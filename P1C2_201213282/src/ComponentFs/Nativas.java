@@ -238,6 +238,8 @@ public class Nativas {
             return 2;
         } else if (!num && !cad && dec && !bol) {
             return 3;
+        }else if (num && !cad && dec && !bol) {
+            return 3;
         } else if (!num && !cad && !dec && bol) {
             return 4;
         }

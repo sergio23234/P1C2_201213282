@@ -1,0 +1,57 @@
+package Analizadores;
+import java.io.FileReader;
+import java_cup.runtime.Symbol;
+import ComponentFs.*;
+import Principal.NodoError;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+parser code {:
+    protected int error_sync_size () {
+       return 1;   
+    }
+
+    public void syntax_error(Symbol s){
+        System.out.println("Error sintactico lexema \"" + s.value+"\" en la Columna: "+(s.right+1) +", Linea: "+(s.left+1)+ " no esperado"+s.sym);
+		NodoError Nerror = new NodoError("sintactico");
+		Nerror.descripcion = "caracter no reconocido: "+ s.value;
+		Nerror.linea = String.valueOf(s.left+1);
+		Nerror.columna = String.valueOf(s.right+1);
+		errores.add(Nerror);
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+        System.err.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
+        /*Nodo_error nuevo = new Nodo_error();
+        nuevo.dato = String.valueOf(s.value);
+        nuevo.linea = (s.left+1);
+        nuevo.columna=(s.right);
+        Errores.add(nuevo);
+        errores=true;*/
+    }
+	 public ArrayList<NodoError> errores = new ArrayList();
+	  public ArrayList<NodoObjeto> datos = new ArrayList();
+	 :}
+action code {:
+    public String estado="";
+:}
+terminal String ili,fli,ipr,fpr,dia,may,men,verd,fals,idva,deci,nume,cade;// Terminales
+non terminal ini,Est_Pri,Start;
+non terminal NodoObjeto Cuerpo_pri;
+non terminal Raiz Dato_pri,Est_ID;
+start with Start;
+Start ::= 	ili ini fli;
+ini ::= 	ini Est_Pri
+		|	Est_Pri;
+Est_Pri ::= ipr Cuerpo_pri:e1 fpr{:datos.add(e1);:};
+Cuerpo_pri ::= Cuerpo_pri:e2 Est_ID:e1 {:e2.objetos.add(e1); RESULT=e2;:}
+			|  Est_ID:e1 {:NodoObjeto nuevo = new NodoObjeto(); nuevo.objetos.add(e1); RESULT=nuevo;:}
+			;
+Est_ID ::= may idva:e1 men Dato_pri:e2 may dia idva men	{:e2.nombre=e1; RESULT=e2;:};
+
+Dato_pri ::= cade:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}
+	|		 nume:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}
+	|		 deci:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}
+	|		 men nume:e1	{:Raiz nuevo = new Raiz("-"+e1);RESULT=nuevo;:}
+	|		 men deci:e1	{:Raiz nuevo = new Raiz("-"+e1);RESULT=nuevo;:}
+	|		 verd:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}
+	|		 fals:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:};

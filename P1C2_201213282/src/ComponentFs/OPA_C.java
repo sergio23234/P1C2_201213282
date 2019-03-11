@@ -18,14 +18,14 @@ public class OPA_C {
     int num;
     TablaSimbolos global;
 
-    public OPA_C(TablaSimbolos tabla, TablaSimbolos global,int num) {
+    public OPA_C(TablaSimbolos tabla, TablaSimbolos global, int num) {
         this.tabla = tabla;
         this.global = global;
         this.num = num;
     }
 
     public NodoRespuesta Analizar_OPC(NodoFs raiz, ArrayList<NodoError> errores) {
-        Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
         if (uno.error || dos.error) {
@@ -78,13 +78,12 @@ public class OPA_C {
 //        nuevo = new NodoRespuesta(true);
 //        return nuevo;
 //    }
-
     private NodoRespuesta Accion_C(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores) {
         String tipo_izq = ret_tipo(Izq.resultado.toString());
         String tipo_der = ret_tipo(Der.resultado.toString());
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
-            return realizar_OP(Izq.resultado.toString(), tipo_izq, tipo, Der.resultado.toString());
+            return realizar_OP(Izq.resultado.toString(), tipo_izq, tipo, Der.resultado.toString(), tipo_der);
         } else {
             NodoError error = new NodoError("semantico");
             error.descripcion = "erro tipos incompatibles no se puede: " + tipo + " con: " + tipo_izq + " y " + tipo_der;
@@ -118,33 +117,33 @@ public class OPA_C {
         return false;
     }
 
-    private NodoRespuesta realizar_OP(String izq, String tipo_i, String tipo, String der) {
+    private NodoRespuesta realizar_OP(String izq, String tipo_i, String tipo, String der, String tipo_der) {
         NodoRespuesta nuevo;
         switch (tipo) {
             case ">":
-                nuevo = new NodoRespuesta(realizar_mayor(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_mayor(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "<":
-                nuevo = new NodoRespuesta(realizar_menor(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_menor(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case ">=":
-                nuevo = new NodoRespuesta(realizar_mayorigu(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_mayorigu(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "<=":
-                nuevo = new NodoRespuesta(realizar_menorigu(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_menorigu(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "==":
-                nuevo = new NodoRespuesta(realizar_igual(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_igual(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "!=":
-                nuevo = new NodoRespuesta(realizar_notigu(izq, tipo_i, der));
+                nuevo = new NodoRespuesta(realizar_notigu(izq, tipo_i, der, tipo_der));
                 return nuevo;
         }
         nuevo = new NodoRespuesta(true);
         return nuevo;
     }
 
-    private String realizar_igual(String izq, String tipo_izq, String der) {
+    private String realizar_igual(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -154,9 +153,16 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num == numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num == numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num == numd) {
+                    return "verdadero";
+                }
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
@@ -174,7 +180,7 @@ public class OPA_C {
         }
     }
 
-    private String realizar_notigu(String izq, String tipo_izq, String der) {
+    private String realizar_notigu(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -184,9 +190,16 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num != numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num != numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num != numd) {
+                    return "verdadero";
+                }
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
@@ -204,7 +217,7 @@ public class OPA_C {
         }
     }
 
-    private String realizar_mayor(String izq, String tipo_izq, String der) {
+    private String realizar_mayor(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -214,9 +227,16 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num > numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num > numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num > numd) {
+                    return "verdadero";
+                }
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
@@ -242,7 +262,7 @@ public class OPA_C {
         }
     }
 
-    private String realizar_mayorigu(String izq, String tipo_izq, String der) {
+    private String realizar_mayorigu(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -252,9 +272,16 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num >= numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num >= numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num >= numd) {
+                    return "verdadero";
+                }
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
@@ -280,7 +307,7 @@ public class OPA_C {
         }
     }
 
-    private String realizar_menor(String izq, String tipo_izq, String der) {
+    private String realizar_menor(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -290,9 +317,16 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num < numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num < numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num < numd) {
+                    return "verdadero";
+                }
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
@@ -318,7 +352,7 @@ public class OPA_C {
         }
     }
 
-    private String realizar_menorigu(String izq, String tipo_izq, String der) {
+    private String realizar_menorigu(String izq, String tipo_izq, String der, String tipo_der) {
         if (tipo_izq.equalsIgnoreCase("decimal")) {
             double num = Double.valueOf(izq);
             double numd = Double.valueOf(der);
@@ -328,10 +362,18 @@ public class OPA_C {
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("numero")) {
             int num = Integer.valueOf(izq);
-            int numd = Integer.valueOf(der);
-            if (num <= numd) {
-                return "verdadero";
+            if (tipo_der.equalsIgnoreCase("numero")) {
+                int numd = Integer.valueOf(der);
+                if (num <= numd) {
+                    return "verdadero";
+                }
+            } else {
+                double numd = Double.valueOf(der);
+                if (num <= numd) {
+                    return "verdadero";
+                }
             }
+
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
             int t_izq = sumatoria_string(izq);
