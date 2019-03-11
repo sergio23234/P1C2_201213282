@@ -34,7 +34,7 @@ public class Est_sel {
         //System.out.println(raiz.hijos.size() + "hijos selecionar");
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-       // System.out.println("suma de seleccionar ");
+        // System.out.println("suma de seleccionar ");
         if (uno.tipo.equalsIgnoreCase("vector")) {
             return new NodoRespuesta(true);
         } else {
@@ -74,7 +74,7 @@ public class Est_sel {
                     } else if (ret.tipo.equalsIgnoreCase("detener")) {
                         return ret;
                     } else if (ret.es_retorno) {
-                        
+
                         return ret;
                     }
                 }
@@ -107,7 +107,7 @@ public class Est_sel {
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                NodoRespuesta nuevo = funcion.analizar(raiz, errores,tabla);
+                NodoRespuesta nuevo = funcion.analizar(raiz, errores, tabla);
                 return nuevo;
             case "id_accion":
                 /*!Estructura acciones ID!*/

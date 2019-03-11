@@ -57,9 +57,9 @@ public class Nativas {
             if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
                 int tipo = ret_tipo(vector);
                 result = Ordenamiento(actual.valor, errores, result, tipo);
-            }else if(actual.Tipo.equalsIgnoreCase("filtros")) {
-                llamada_fun ord_fun = new llamada_fun(global,num);
-                return ord_fun.analizar_nati(actual, errores, (ArrayList<String>)vector.resultado);
+            } else if (actual.Tipo.equalsIgnoreCase("filtros")) {
+                llamada_fun ord_fun = new llamada_fun(global, num);
+                return ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
             }
         }
         return result;
@@ -74,9 +74,9 @@ public class Nativas {
             case "ascendente":
                 return ascendente(vector, tipop);
             case "minimo":
-               return max_min(ascendente(vector, tipop),0);
+                return max_min(ascendente(vector, tipop), 0);
             case "maximo":
-                return max_min(ascendente(vector, tipop),1);
+                return max_min(ascendente(vector, tipop), 1);
         }
         return new NodoRespuesta(true);
     }
@@ -108,7 +108,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
             case 1:
                 for (int i = 0; i < Svector.length; i++) {
                     for (int j = i + 1; j < Svector.length; j++) {
@@ -120,7 +121,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
             default:
                 for (int i = 0; i < Svector.length; i++) {
                     for (int j = i + 1; j < Svector.length; j++) {
@@ -132,7 +134,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
         }
         ArrayList<String> nuevalista = new ArrayList();
         for (int i = 0; i < Svector.length; i++) {
@@ -146,7 +149,7 @@ public class Nativas {
     private NodoRespuesta descendente(NodoRespuesta vector, int tipo) {
         ArrayList<String> actual = (ArrayList<String>) vector.resultado;
         Object[] Svector = actual.toArray();
-               switch (tipo) {
+        switch (tipo) {
             case 2:
             case 4:
                 for (int i = 0; i < Svector.length; i++) {
@@ -159,7 +162,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
             case 1:
                 for (int i = 0; i < Svector.length; i++) {
                     for (int j = i + 1; j < Svector.length; j++) {
@@ -171,7 +175,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
             default:
                 for (int i = 0; i < Svector.length; i++) {
                     for (int j = i + 1; j < Svector.length; j++) {
@@ -183,7 +188,8 @@ public class Nativas {
                             Svector[i] = tres;
                         }
                     }
-                }   break;
+                }
+                break;
         }
         ArrayList<String> nuevalista = new ArrayList();
         for (int i = 0; i < Svector.length; i++) {
@@ -194,21 +200,20 @@ public class Nativas {
         return nuevo;
     }
 
-    private NodoRespuesta max_min(NodoRespuesta vector,int tipo){
+    private NodoRespuesta max_min(NodoRespuesta vector, int tipo) {
         ArrayList<String> actual = (ArrayList<String>) vector.resultado;
         NodoRespuesta ret;
-        if(tipo==0){
+        if (tipo == 0) {
             ret = new NodoRespuesta(actual.get(0));
-            ret.tipo="variable";
+            ret.tipo = "variable";
             return ret;
-        }
-        else{
-            ret = new NodoRespuesta(actual.get(actual.size()-1));
-            ret.tipo="variable";
+        } else {
+            ret = new NodoRespuesta(actual.get(actual.size() - 1));
+            ret.tipo = "variable";
             return ret;
         }
     }
-    
+
     private int ret_tipo(NodoRespuesta vector) {
         ArrayList<String> actual = (ArrayList<String>) vector.resultado;
         boolean num = false;
@@ -222,7 +227,7 @@ public class Nativas {
             } else if (dato.contains(".")) {
                 dec = true;
             } else if (dato.equalsIgnoreCase("verdadero") || dato.equalsIgnoreCase("falso")) {
-               return -1;
+                return -1;
             } else {
                 num = true;
             }
