@@ -26,6 +26,11 @@ public class Fs_varios {
                 retorno.dato = actual.nombre;
                 retorno.tipo = actual.tipo;
                 return retorno;
+            }else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("array")) {
+                NodoRespuesta retorno = new NodoRespuesta(actual.valor);
+                retorno.dato = actual.nombre;
+                retorno.tipo = actual.tipo;
+                return retorno;
             } else if (nombre.contains(actual.nombre) && nombre.contains("[")&&(Nombre_primero_pun_cor(nombre)==2) && actual.tipo.equalsIgnoreCase("vector")) {
                 String super_name = nombre;
                 String nombre_var = actual.nombre;
@@ -70,7 +75,9 @@ public class Fs_varios {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
                 return true;
-            } else if (nombre.contains(actual.nombre) && nombre.contains("[") &&(Nombre_primero_pun_cor(nombre)==2)&& actual.tipo.equalsIgnoreCase("vector")) {
+            } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("array")) {
+                return true;
+            }else if (nombre.contains(actual.nombre) && nombre.contains("[") &&(Nombre_primero_pun_cor(nombre)==2)&& actual.tipo.equalsIgnoreCase("vector")) {
                 String nombre_var = actual.nombre;
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 try {
@@ -86,7 +93,7 @@ public class Fs_varios {
                 return true;
             } else if (nombre.contains(actual.nombre) && nombre.contains(".") &&(Nombre_primero_pun_cor(nombre)==1)&& actual.tipo.equalsIgnoreCase("objeto")) {
                 String id[] = nombre.split("\\.");
-               System.out.println("es:---> "+id[1]);
+              // System.out.println("es:---> "+id[1]);
                 NodoObjeto actobj = (NodoObjeto) actual.valor;
                 return actobj.existe_id(id[1]);
             }

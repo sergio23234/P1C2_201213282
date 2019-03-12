@@ -161,6 +161,8 @@ public class llamada_fun {
         String tipos = "variable";
         if (respuesta.tipo.equalsIgnoreCase("vector")) {
             tipos = "vector";
+        } else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
+            tipos = "objeto";
         }
         NodoTabla nodo = new NodoTabla(tipos, id);
         if (tipos.equalsIgnoreCase("vector")) {
@@ -170,6 +172,14 @@ public class llamada_fun {
                 nuevo.add(valores.get(i));
             }
             nodo.valor = nuevo;
+        } else if (tipos.equalsIgnoreCase("objeto")) {
+            NodoObjeto valores = (NodoObjeto) respuesta.resultado;
+            ArrayList<Raiz> nuevo = new ArrayList();
+            for (int i = 0; i < valores.objetos.size(); i++) {
+                nuevo.add(new Raiz(valores.objetos.get(i).nombre, valores.objetos.get(i).valor, valores.objetos.get(i).tipo));
+            }
+            NodoObjeto nuevo1 = new NodoObjeto(nuevo);
+            nodo.valor = nuevo1;
         } else {
             nodo.valor = respuesta.resultado;
         }
@@ -468,4 +478,307 @@ public class llamada_fun {
         respuesta.tipo = "variable";
         return respuesta;
     }
+
+    public NodoRespuesta analizar_nati2(NodoFs raiz, ArrayList<NodoError> errores, ArrayList<NodoObjeto> vector) {
+        String tipo = raiz.valor;
+        String funcion = raiz.lista.get(0);
+        Fs_varios fs = new Fs_varios();
+        boolean existe_func = fs.ret_Existencia_fun(funcion, global);//para saber si existe la funcion
+        if (existe_func) {
+            NodoFs raiz_fun = fs.ret_fun_Tabla(funcion, global); //raiz de la funcion
+            if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
+                NodoFs actual = raiz_fun.hijos.get(0);
+                ArrayList<String> hijos = new ArrayList();
+                for (int i = 0; i < actual.lista.size(); i++) {
+                    hijos.add(actual.lista.get(i));
+                }//añadimos parametros
+                if (vector.size() % hijos.size() == 0) {
+                    if (!id_no_repetidos(hijos)) {
+                        return analizar_nati_p2_2(hijos, vector, tipo, raiz_fun, errores);
+                    } else {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "error la funcion:" + funcion + " tiene parametros con el mismo ID";
+                        errores.add(error);
+                        return new NodoRespuesta(true);
+                    }
+                } else if (tipo.equalsIgnoreCase("reduce")) {
+                    if (vector.size() % (hijos.size() - 1) == 0) {
+                        if (!id_no_repetidos(hijos)) {
+                            return analizar_nati_p2_2(hijos, vector, tipo, raiz_fun, errores);
+                        } else {
+                            NodoError error = new NodoError("semantico");
+                            error.descripcion = "error la funcion:" + funcion + " tiene parametros con el mismo ID";
+                            errores.add(error);
+                            return new NodoRespuesta(true);
+                        }
+                    }
+                } else {
+                    System.out.println("error parametros no concuerdan");
+                    return new NodoRespuesta(true);
+                }
+            } else {
+                return new NodoRespuesta(true);
+            }
+        }
+        return new NodoRespuesta(false);
+    }
+
+    private NodoRespuesta analizar_nati_p2_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, String tipo, NodoFs raiz, ArrayList<NodoError> errores) {
+        switch (tipo.toLowerCase()) {
+            case "filtrar":
+                return es_filtrar_2(hijos, vector, raiz, errores);
+            case "buscar":
+                return es_buscar_2(hijos, vector, raiz, errores);
+            case "map":
+                return es_map_2(hijos, vector, raiz, errores);
+            case "reduce":
+                return es_reduce_2(hijos, vector, raiz, errores);
+            case "todos":
+                return es_todos_2(hijos, vector, raiz, errores);
+            case "algunos":
+                return es_alguno_2(hijos, vector, raiz, errores);
+        }
+        return new NodoRespuesta(true);
+    }
+
+    private NodoRespuesta es_filtrar_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<NodoObjeto> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        ArrayList<NodoRespuesta> resultados = new ArrayList();
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            resultados.clear();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                System.out.println(actual.hijos.size() + "hijos");
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
+                        respuesta.add(vector.get(i - 1));
+                    } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
+
+                    } else {
+                        System.out.println("hay error");
+                        return new NodoRespuesta(true);
+                    }
+                    break;
+                }
+            }
+        }
+        System.out.println("llego aqui: "+respuesta.size());
+        retorno = new NodoRespuesta(respuesta);
+        retorno.tipo = "array";
+        return retorno;
+    }
+
+    private NodoRespuesta es_map_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<String> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        ArrayList<NodoRespuesta> resultados = new ArrayList();
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            resultados.clear();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                System.out.println(actual.hijos.get(k).Tipo);
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    System.out.println("dio un error");
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    respuesta.add(retornara.resultado.toString());
+                    break;
+                } else {
+                    System.out.println("no retorno nada");
+                }
+            }
+        }
+        retorno = new NodoRespuesta(respuesta);
+        retorno.tipo = "vector";
+        return retorno;
+    }
+
+    private NodoRespuesta es_buscar_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<NodoObjeto> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                System.out.println(actual.hijos.get(k).Tipo);
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
+                        retorno = new NodoRespuesta(vector.get(i - 1));
+                        retorno.tipo = "objeto";
+                        return retorno;
+                    }
+                    break;
+                } else {
+                    System.out.println("no retorno nada");
+                }
+            }
+        }
+        retorno = new NodoRespuesta(false);
+        retorno.tipo = "undefined";
+        return retorno;
+    }
+
+    private NodoRespuesta es_todos_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<String> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                // System.out.println(actual.hijos.size() + "hijos");
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
+
+                    } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
+                        retorno = new NodoRespuesta("falso");
+                        retorno.tipo = "variable";
+                        return retorno;
+                    } else {
+                        retorno = new NodoRespuesta("falso");
+                        retorno.tipo = "variable";
+                        return retorno;
+                    }
+                    break;
+                }
+            }
+        }
+        retorno = new NodoRespuesta("verdadero");
+        retorno.tipo = "variable";
+        return retorno;
+    }
+
+    private NodoRespuesta es_alguno_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        ArrayList<String> respuesta = new ArrayList();
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            for (int j = 0; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                // System.out.println(actual.hijos.size() + "hijos");
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
+                        retorno = new NodoRespuesta("verdadero");
+                        retorno.tipo = "variable";
+                        return retorno;
+                    } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
+
+                    } else {
+                    }
+                    break;
+                }
+            }
+        }
+        retorno = new NodoRespuesta("falso");
+        retorno.tipo = "variable";
+        return retorno;
+    }
+
+    private NodoRespuesta es_reduce_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        int i = 0;
+        NodoRespuesta respuesta = new NodoRespuesta(false);
+        boolean primero = true;
+        NodoRespuesta retorno;
+        while (i < vector.size()) {
+            tabla.Tabla.clear();
+            ArrayList<NodoRespuesta> resultados = new ArrayList();
+            resultados.add(new NodoRespuesta(0));
+            for (int j = 1; j < hijos.size(); j++) {
+                NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
+                nuevo.tipo = "objeto";
+                resultados.add(nuevo);
+                i++;
+            }
+            pasar_parametros(hijos, resultados);
+            NodoFs actual = raiz.hijos.get(1);
+            NodoRespuesta retornara;
+            for (int k = 0; k < actual.hijos.size(); k++) {
+                System.out.println(actual.hijos.get(k).Tipo);
+                retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
+                if (retornara.error) {
+                    return retornara;
+                } else if (retornara.es_retorno) {
+                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    if (primero) {
+                        primero = false;
+                        respuesta = retornara;
+                    } else if (retornara.tipo.equalsIgnoreCase("variable")) {
+                        OPA_A op = new OPA_A(tabla, global, num);
+                        respuesta = op.sumar_xdato(respuesta, retornara);
+                    }
+                    break;
+                } else {
+                    System.out.println("no retorno nada");
+                }
+            }
+        }
+        respuesta.tipo = "variable";
+        return respuesta;
+    }
+
 }

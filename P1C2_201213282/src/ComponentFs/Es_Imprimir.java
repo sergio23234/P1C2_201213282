@@ -27,7 +27,7 @@ public class Es_Imprimir {
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta resultado = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-        System.out.println(resultado.resultado+" esto imprimira");
+       // System.out.println(resultado.resultado+" esto imprimira");
         if (!resultado.error) {
             String impri = resultado.resultado.toString().replace("\"", "") + "\n";
             Principal.Menu.Lista.get(num).Consola.append(impri);

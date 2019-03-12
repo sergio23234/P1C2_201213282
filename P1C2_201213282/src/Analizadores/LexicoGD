@@ -46,3 +46,5 @@ Numero = [0-9]+
 ({Numero}"."{Numero})					   	{return new Symbol(symd.deci,yyline,yycolumn,yytext());}	
 ({Numero})					    			{return new Symbol(symd.nume,yyline,yycolumn,yytext());}	
 (["\""]([^\"])*["\""])						{return new Symbol(symd.cade,yyline,yycolumn,yytext());}											
+([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
+.											{errorLexico(yytext(),yyline,yycolumn);}

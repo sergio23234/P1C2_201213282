@@ -33,7 +33,7 @@ public static String errores="";
 Numero = [0-9]+
 %%
 "//"([^\n])*[\n]							{/*Ignorar Comentario Simple*/}
-"/*"([^"*/"])*"*/"							{/*Ignorar Comentario multiple*/}
+"/*"([^"*/"])+"*/"							{/*Ignorar Comentario multiple*/}
 "+"											{return new Symbol(symf.mas,yyline,yycolumn,yytext());}
 "-"											{return new Symbol(symf.nos,yyline,yycolumn,yytext());}
 "*"											{return new Symbol(symf.por,yyline,yycolumn,yytext());}

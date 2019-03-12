@@ -176,6 +176,17 @@ public class Pestania extends javax.swing.JPanel {
                     valor += "---"+valores.objetos.get(j).nombre+" : "+valores.objetos.get(j).valor;
                 }
                 Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
+            }else  if (actual.tipo.equalsIgnoreCase("array")) {
+                String valor = "";
+                ArrayList<NodoObjeto> valores=(ArrayList<NodoObjeto>) actual.valor;
+                for (int j = 0; j < valores.size(); j++) {
+                   valor="";
+                   NodoObjeto actualO = valores.get(j);
+                    for (int k = 0; k < actualO.objetos.size(); k++) {
+                    valor += "---"+actualO.objetos.get(k).nombre+" : "+actualO.objetos.get(k).valor;
+                    }
+                   Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
+                }  
             } else {
                 Consola.append(actual.nombre + "  Valor: " + actual.valor + " tipo: " + actual.tipo + "\r\n");
             }

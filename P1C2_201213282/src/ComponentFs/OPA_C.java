@@ -133,6 +133,9 @@ public class OPA_C {
                 nuevo = new NodoRespuesta(realizar_menorigu(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "==":
+//                  System.out.println("--------------");
+//                  System.out.println("izq: "+izq+" Der:"+der);
+//                  System.out.println("--------------");
                 nuevo = new NodoRespuesta(realizar_igual(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "!=":
@@ -166,9 +169,9 @@ public class OPA_C {
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
-            int t_izq = sumatoria_string(izq);
-            int t_der = sumatoria_string(der);
-            if (t_izq == t_der) {
+            String t_izq = (izq.replace("\"",""));
+            String t_der = (der.replace("\"",""));
+            if (t_izq.equalsIgnoreCase(t_der)) {
                 return "verdadero";
             }
             return "falso";

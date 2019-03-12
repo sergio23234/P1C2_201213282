@@ -43,12 +43,20 @@ public class Declarar_variables {
                 return Ana_vect(raiz, errores, raices);
             case "objetos":
                 return Ana_objeto(raiz, errores, raices);
-
             case "ventana":
                 break;
             case "boton":
                 break;
             case "contenedor":
+                break;
+            case "arrayarchivo":
+                Est_Array array = new Est_Array(tabla, global, num);
+                nuevo = array.Analizar(raiz, errores);
+                if (!nuevo.error) {
+                    return Add_array(raices, nuevo);
+                }
+                return new NodoRespuesta(true);
+            case "leergxml":
                 break;
             case "nada":
                 nuevo = new NodoRespuesta("undefined");
@@ -163,7 +171,7 @@ public class Declarar_variables {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre)) {
                 NodoError nuevo = new NodoError("sintactico");
-                System.out.println("entro en este error");
+               // System.out.println("entro en este error");
                 nuevo.descripcion = "la variable" + actual.nombre + " ya ha sido declarada";
                 errores.add(nuevo);
                 return true;
@@ -178,6 +186,8 @@ public class Declarar_variables {
             tipos = "vector";
         } else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
             tipos = "objeto";
+        }else if(respuesta.tipo.equalsIgnoreCase("array")){
+            tipos = "array";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(i));
@@ -196,6 +206,15 @@ public class Declarar_variables {
             NodoObjeto valor = (NodoObjeto) respuesta.resultado;
             NodoObjeto nuevo = new NodoObjeto();
             valor.ret_bojetos(nuevo.objetos);
+            nodo.valor = nuevo;
+        } else if (tipos.equalsIgnoreCase("array")) {
+            ArrayList<NodoObjeto> valor = (ArrayList<NodoObjeto>) respuesta.resultado;
+            ArrayList<NodoObjeto> nuevo =  new ArrayList();
+            for (int i = 0; i < valor.size(); i++) {
+                NodoObjeto nuevoo = new NodoObjeto();
+                valor.get(i).ret_bojetos(nuevoo.objetos);
+                nuevo.add(nuevoo);
+            }
             nodo.valor = nuevo;
         } else {
             nodo.valor = respuesta.resultado;
@@ -267,6 +286,19 @@ public class Declarar_variables {
         NodoTabla nodo = new NodoTabla("objeto", raices.lista.get(raices.lista.size() - 1));
         nodo.valor = respuestas;
         tabla.Tabla.add(nodo);
+    }
+
+    private NodoRespuesta Add_array(NodoFs raices, NodoRespuesta respuesta) {
+        for (int i = 0; i < raices.lista.size() - 1; i++) {
+            NodoTabla nodo = new NodoTabla("variable", raices.lista.get(i));
+            nodo.valor = "undefined";
+            tabla.Tabla.add(nodo);
+        }
+        String var = raices.lista.get(raices.lista.size() - 1);
+        NodoTabla nodo = new NodoTabla("array", var);
+        nodo.valor = respuesta.resultado;
+        tabla.Tabla.add(nodo);
+        return new NodoRespuesta(false);
     }
 }
 //  private NodoRespuesta cuerpo_Vect(NodoFs raiz, ArrayList<NodoError> errores) {

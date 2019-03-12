@@ -42,11 +42,13 @@ start with Start;
 Start ::= 	ili ini fli;
 ini ::= 	ini Est_Pri
 		|	Est_Pri;
+		
 Est_Pri ::= ipr Cuerpo_pri:e1 fpr{:datos.add(e1);:};
+
 Cuerpo_pri ::= Cuerpo_pri:e2 Est_ID:e1 {:e2.objetos.add(e1); RESULT=e2;:}
 			|  Est_ID:e1 {:NodoObjeto nuevo = new NodoObjeto(); nuevo.objetos.add(e1); RESULT=nuevo;:}
 			;
-Est_ID ::= may idva:e1 men Dato_pri:e2 may dia idva men	{:e2.nombre=e1; RESULT=e2;:};
+Est_ID ::= men idva:e1 may Dato_pri:e2 men dia idva may	{:e2.nombre=e1; RESULT=e2;:};
 
 Dato_pri ::= cade:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}
 	|		 nume:e1		{:Raiz nuevo = new Raiz(e1);	RESULT=nuevo;:}

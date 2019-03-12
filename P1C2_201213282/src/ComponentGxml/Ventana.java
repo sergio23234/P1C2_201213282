@@ -68,31 +68,21 @@ public class Ventana {
     private void Analizar_Attributos_obligatorios(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
         boolean id = false;
         boolean tipo = false;
-        boolean alto = false,ancho = false;
         for (int i = 0; i < hijos.size(); i++) {
             if (hijos.get(i).tipo.equalsIgnoreCase("id")) {
                 id = true;
             } else if (hijos.get(i).tipo.equalsIgnoreCase("tipo")) {
                 tipo = true;
-            } else if (hijos.get(i).tipo.equalsIgnoreCase("alto")) {
-                alto = true;
-            } else if (hijos.get(i).tipo.equalsIgnoreCase("ancho")) {
-                ancho = true;
             }
         }
-        if (!id || !tipo|| !alto|| !ancho) {
+        if (!id || !tipo) {
             NodoError error = new NodoError("semantico");
             error.linea = String.valueOf(hijos.get(hijos.size()-1).linea);
             error.columna = String.valueOf(hijos.get(hijos.size()-1).columna);
             String tipoe;
             if(!id){
                 tipoe="ID";
-            }else if(!alto){
-                tipoe="Alto";
-            }else if(!ancho){
-                tipoe="Ancho";
-            }
-            else{
+            }else{
                 tipoe="Tipo";
             }
             error.descripcion = "No se encuentra el atributo: " + tipoe+" que es de caracter obligatorio en esta etiqueta";

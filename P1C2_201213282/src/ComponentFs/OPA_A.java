@@ -63,7 +63,7 @@ public class OPA_A {
             return "boleano";
         } else if (value.contains(".")) {
             return "decimal";
-        }else if (value.equalsIgnoreCase("undefined") || value.equalsIgnoreCase("nulo")) {
+        } else if (value.equalsIgnoreCase("undefined") || value.equalsIgnoreCase("nulo")) {
             return "undefined";
         } else {
             return "numero";
@@ -75,6 +75,8 @@ public class OPA_A {
             case "vector":
                 return true;
             case "objeto":
+                return true;
+            case "array":
                 return true;
             case "ventana":
                 return true;
@@ -98,9 +100,9 @@ public class OPA_A {
     }
 
     private boolean ret_compatible_mas(String tipo_izq, String tipo_der) {
-        if (tipo_izq.equalsIgnoreCase("undefined")||tipo_der.equalsIgnoreCase("undefined")) {
+        if (tipo_izq.equalsIgnoreCase("undefined") || tipo_der.equalsIgnoreCase("undefined")) {
             return false;
-        }else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
+        } else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
             return true;
         } else if (tipo_izq.equalsIgnoreCase("decimal")) {
             if (tipo_der.equalsIgnoreCase("boleano")) {
@@ -119,9 +121,9 @@ public class OPA_A {
     }
 
     private boolean ret_compatible_menos_por_div(String tipo_izq, String tipo_der) {
-        if (tipo_izq.equalsIgnoreCase("undefined")||tipo_der.equalsIgnoreCase("undefined")) {
+        if (tipo_izq.equalsIgnoreCase("undefined") || tipo_der.equalsIgnoreCase("undefined")) {
             return false;
-        }else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
+        } else if (tipo_izq.equalsIgnoreCase("cadena") || tipo_der.equalsIgnoreCase("cadena")) {
             return false;
         } else if (tipo_izq.equalsIgnoreCase("decimal")) {
             if (tipo_der.equalsIgnoreCase("boleano")) {
