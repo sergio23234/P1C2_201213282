@@ -127,6 +127,7 @@ Dato_Posfa ::= 	Dato_Pri:e1						{:RESULT=e1;:}
 			|	nulo:e1							{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}
 			|	Es_lla_fun:e1					{:RESULT=e1;:}
 			|	idva:e2 recur_nat:e1			{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
+			|	idva:e2 idpu:e3	recur_nat:e1	{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2+e3;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
 			|	Es_tipo_id:e1 dmas 				{:NodoFs nuevo = new NodoFs("Autoincremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID ++*/
 			|	Es_tipo_id:e1 dnos  			{:NodoFs nuevo = new NodoFs("Autodecremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID--*/
 		;

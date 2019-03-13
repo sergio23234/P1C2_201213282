@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ComponentFs;
+package Principal;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 public class ventana extends JFrame {
 
     private String id;
-    
     private ArrayList<contenedor> Contenedores;
     
     public ventana(String id) {
@@ -41,6 +40,7 @@ public class ventana extends JFrame {
         contenedor nuevo = new contenedor(id);
         nuevo.inicializar_contendor(x, y, largo, ancho, color);
         Contenedores.add(nuevo);
+        this.add(nuevo);
     }
    
 }

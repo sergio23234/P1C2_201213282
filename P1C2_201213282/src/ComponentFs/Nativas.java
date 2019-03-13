@@ -27,11 +27,12 @@ public class Nativas {
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         Fs_varios varios = new Fs_varios();
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
+        System.out.println("el ID es:"+raiz.valor+" y si existe:"+existe);
         if (existe) {
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
-            //System.out.println(resultadoid.tipo + " es estetipo");
+            System.out.println(resultadoid.tipo + " es estetipo");
             if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                return Analizarp2(raiz.hijos.get(0), errores, resultadoid);
+                return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid);
             } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                 //System.out.println("es vector de objetos");
                 return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
@@ -44,7 +45,7 @@ public class Nativas {
                 NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, global);
                 //System.out.println(resultadoid.tipo + " es estetipo");
                 if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                    return Analizarp2(raiz.hijos.get(0), errores, resultadoid);
+                    return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid);
                 } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                     //System.out.println("es vector de objetos");
                     return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
@@ -56,16 +57,20 @@ public class Nativas {
         }
     }
 
-    private NodoRespuesta Analizarp2(NodoFs raiz, ArrayList<NodoError> errores, NodoRespuesta vector) {
+    private NodoRespuesta Analizarp2(String ID, NodoFs raiz, ArrayList<NodoError> errores, NodoRespuesta vector) {
         NodoRespuesta result = vector;
         for (int i = 0; i < raiz.hijos.size(); i++) {
             NodoFs actual = raiz.hijos.get(i);
             if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
                 int tipo = ret_tipo(vector);
                 result = Ordenamiento(actual.valor, errores, result, tipo);
+                Fs_varios varios = new Fs_varios();
+                if (!(actual.valor.equalsIgnoreCase("maximo") || actual.valor.equalsIgnoreCase("minimo"))) {
+                    varios.set_Nuevoval_ID2(result, ID, tabla);
+                }
             } else if (actual.Tipo.equalsIgnoreCase("filtros")) {
                 llamada_fun ord_fun = new llamada_fun(global, num);
-                result= ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
+                result = ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
             }
         }
         return result;
@@ -77,7 +82,7 @@ public class Nativas {
             NodoFs actual = raiz.hijos.get(i);
             if (actual.Tipo.equalsIgnoreCase("filtros")) {
                 llamada_fun ord_fun = new llamada_fun(global, num);
-                result=ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>)objetos.resultado);
+                result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
             }
         }
         return result;

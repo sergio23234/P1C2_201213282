@@ -5,6 +5,7 @@
  */
 package Principal;
 
+import ComponentGxml.Ventana;
 import ComponentGxml.*;
 import java.io.BufferedWriter;
 import java.io.File;

@@ -25,7 +25,7 @@ public class NodoObjeto {
     }
 
     public Object retornar_por_id(String nombre) {
-       // System.out.println("entro" + nombre);
+        // System.out.println("entro" + nombre);
         for (int i = 0; i < objetos.size(); i++) {
             if (objetos.get(i).nombre.equalsIgnoreCase(nombre)) {
                 return objetos.get(i).valor;
@@ -40,9 +40,24 @@ public class NodoObjeto {
         return "";
     }
 
+    public String retornar_tipo_por_id(String nombre) {
+        // System.out.println("entro" + nombre);
+        for (int i = 0; i < objetos.size(); i++) {
+            if (objetos.get(i).nombre.equalsIgnoreCase(nombre)) {
+                try {
+                    ArrayList<String> valores = (ArrayList<String>) objetos.get(i).valor;
+                    return "vector";
+                } catch (Exception e) {
+                    return "variable";
+                }
+            }
+        }
+        return "";
+    }
+
     public boolean existe_id(String nombre) {
         for (int i = 0; i < objetos.size(); i++) {
-          //  System.out.println("nombre: " + objetos.get(i).nombre + "///" + objetos.get(i).tipo);
+            //  System.out.println("nombre: " + objetos.get(i).nombre + "///" + objetos.get(i).tipo);
             if (objetos.get(i).nombre.equalsIgnoreCase(nombre)) {
                 return true;
             } else if (nombre.contains(objetos.get(i).nombre) && nombre.contains("[") && objetos.get(i).tipo.equalsIgnoreCase("vector")) {

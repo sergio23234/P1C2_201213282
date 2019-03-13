@@ -5,7 +5,10 @@
  */
 package ComponentGxml;
 
+import ComponentGxml.Contenedor;
+import ComponentGxml.NodoSGxml;
 import java.util.ArrayList;
+import Principal.NodoError;
 import Principal.NodoError;
 import java.awt.Color;
 

@@ -71,8 +71,9 @@ public class Inicio {
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
+                Accion_ID ID_A =new Accion_ID(tabla,global,num);
+                return ID_A.Analizar(raiz, errores);
                 
-                break;
             case "retornar":
                 /*!Estructura de retornar!*/
                 Est_return retorno = new Est_return(tabla, global, num);

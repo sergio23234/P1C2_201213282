@@ -60,7 +60,7 @@ public class Fs_varios {
                 NodoObjeto actobj = (NodoObjeto) actual.valor;
                 NodoRespuesta retorno = new NodoRespuesta(actobj.retornar_por_id(id[1]));
                 retorno.dato = nombre;
-                retorno.tipo = "variable";
+                retorno.tipo = actobj.retornar_tipo_por_id(id[1]);
                 return retorno;
             }
         }
@@ -131,7 +131,40 @@ public class Fs_varios {
         }
         return false;
     }
-
+public Boolean set_Nuevoval_ID2(NodoRespuesta valor, String nombre, TablaSimbolos tabla) {
+        for (int i = 0; i < tabla.Tabla.size(); i++) {
+            NodoTabla actual = tabla.Tabla.get(i);
+            if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
+                actual.valor = valor.resultado;
+                actual.tipo = valor.tipo;
+                return true;
+            } else if (nombre.contains(actual.nombre) && nombre.contains("[")&&(Nombre_primero_pun_cor(nombre)==2) && actual.tipo.equalsIgnoreCase("vector")) {
+                String nombre_var = actual.nombre;
+                String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
+                int num = Integer.valueOf(pos_num);
+                ArrayList<String> valores = (ArrayList<String>) actual.valor;
+                valores.set(num, valor.resultado.toString());
+                actual.valor = valores;
+                actual.tipo=valor.tipo;
+                return true;
+            }else if (nombre.contains(actual.nombre) && nombre.contains(".")&&(Nombre_primero_pun_cor(nombre)==1) && actual.tipo.equalsIgnoreCase("objeto")) {
+                 String id[] = nombre.split("\\.");
+                NodoObjeto actobj = (NodoObjeto) actual.valor;
+                actobj.set_newval(id[1], valor.resultado);
+                actual.valor = actobj;
+                return true;
+            }else if(nombre.equalsIgnoreCase(actual.nombre)&& actual.tipo.equalsIgnoreCase("vector")){
+                 actual.valor =valor.resultado;
+                actual.tipo=valor.tipo;
+                return true; 
+                
+            }
+        }
+        if (tabla.padre != null) {
+            return set_Nuevoval_ID2(valor,nombre, tabla.padre);
+        }
+        return false;
+    }
     public Boolean ret_Existencia_fun(String nombre, TablaSimbolos tabla) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);

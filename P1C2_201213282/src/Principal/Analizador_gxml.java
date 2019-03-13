@@ -5,10 +5,10 @@
  */
 package Principal;
 
+import ComponentGxml.Ventana;
 import Analizadores.LexicoGxml;
 import Analizadores.SintacticoGxml;
 import ComponentGxml.NodoGxml;
-import ComponentGxml.Ventana;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;

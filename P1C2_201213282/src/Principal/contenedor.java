@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ComponentFs;
+package Principal;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -39,6 +39,8 @@ public class contenedor extends JPanel {
     {
         Texto tex = new Texto(nombre);
         tex.inicializar(fondo, tamañio, tipo, color, x, y, alto, ancho,texto);
+        Textos.add(tex);
+        this.add(tex);
     }
     
 

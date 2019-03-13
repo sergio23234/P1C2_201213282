@@ -5,6 +5,7 @@
 
 package Analizadores;
 
+import ComponentGxml.Ventana;
 import java.io.FileReader;
 import java_cup.runtime.Symbol;
 import ComponentGxml.*;
