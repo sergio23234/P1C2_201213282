@@ -26,14 +26,16 @@ public class llamada_fun {
 
     public NodoRespuesta analizar(NodoFs raiz, ArrayList<NodoError> errores, TablaSimbolos tabla) {
         ArrayList<NodoRespuesta> resultados = new ArrayList();
-        NodoFs actual = raiz.hijos.get(0);
-        for (int i = 0; i < actual.hijos.size(); i++) {
-            Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
-            NodoRespuesta condicion = OP.Cuerpo_G(actual.hijos.get(i), errores);
-            if (!condicion.error) {
-                resultados.add(condicion);
-            } else {
-                return condicion;
+        if (raiz.hijos.size() > 0) {
+            NodoFs actual = raiz.hijos.get(0);
+            for (int i = 0; i < actual.hijos.size(); i++) {
+                Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+                NodoRespuesta condicion = OP.Cuerpo_G(actual.hijos.get(i), errores);
+                if (!condicion.error) {
+                    resultados.add(condicion);
+                } else {
+                    return condicion;
+                }
             }
         }
         return analizar1(raiz, errores, resultados);
@@ -93,6 +95,20 @@ public class llamada_fun {
                     errores.add(error);
                     return new NodoRespuesta(true);
                 }
+            } else {
+                NodoFs actual = raiz_fun.hijos.get(0);
+                NodoRespuesta retornara;
+                for (int i = 0; i < actual.hijos.size(); i++) {
+                    // System.out.println(actual.hijos.size() + "hijos");
+                    retornara = Analizar_Cuerpo(actual.hijos.get(i), errores);
+                    if (retornara.error) {
+                        return retornara;
+                    } else if (retornara.es_retorno) {
+                        // System.out.println("retorno dato" + retornara.resultado);
+                        return retornara;
+                    }
+                }
+                return new NodoRespuesta(false);
             }
         }
         return null;
@@ -128,7 +144,10 @@ public class llamada_fun {
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
-                break;
+                Accion_ID ID_A =new Accion_ID(tabla,global,num);
+                return ID_A.Analizar(raiz, errores);
+                
+                
             case "retornar":
                 /*!Estructura de retornar!*/
                 Est_return retorno = new Est_return(tabla, global, num);
@@ -576,7 +595,7 @@ public class llamada_fun {
                 }
             }
         }
-        System.out.println("llego aqui: "+respuesta.size());
+        System.out.println("llego aqui: " + respuesta.size());
         retorno = new NodoRespuesta(respuesta);
         retorno.tipo = "array";
         return retorno;

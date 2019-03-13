@@ -77,7 +77,7 @@ public class Cuerpo_op {
                 return id.Analizar(raiz, errores);
 
         }
-        nuevo = new NodoRespuesta(true);
+        nuevo = new NodoRespuesta(false);
         return nuevo;
     }
 

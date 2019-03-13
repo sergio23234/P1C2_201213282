@@ -17,7 +17,7 @@ public class contenedor extends JPanel {
 
     private String id;
 
-    private ArrayList<Texto> Textos;
+    private ArrayList<Texto_Lab> Textos;
 
     public contenedor(String id) {
         super();
@@ -37,7 +37,7 @@ public class contenedor extends JPanel {
 
     public void add_texto(int x,int y,int alto,int ancho,String color,String nombre,String fondo,int tamañio,int tipo,String texto)
     {
-        Texto tex = new Texto(nombre);
+        Texto_Lab tex = new Texto_Lab(nombre);
         tex.inicializar(fondo, tamañio, tipo, color, x, y, alto, ancho,texto);
         Textos.add(tex);
         this.add(tex);

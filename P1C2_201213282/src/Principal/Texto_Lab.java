@@ -13,11 +13,11 @@ import javax.swing.JLabel;
  *
  * @author sergi
  */
-public class Texto extends JLabel {
+public class Texto_Lab extends JLabel {
 
     private String nombre;
 
-    public Texto(String nombre) {
+    public Texto_Lab(String nombre) {
         super();
         this.nombre = nombre;
     }
