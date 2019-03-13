@@ -24,10 +24,10 @@ public class Nativas {
         this.num = num;
     }
 
-    public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
+    public NodoRespuesta Analizarv2(NodoFs raiz, ArrayList<NodoError> errores) {
         Fs_varios varios = new Fs_varios();
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
-        System.out.println("el ID es:"+raiz.valor+" y si existe:"+existe);
+        System.out.println("el ID es:" + raiz.valor + " y si existe:" + existe);
         if (existe) {
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
             System.out.println(resultadoid.tipo + " es estetipo");
@@ -57,34 +57,69 @@ public class Nativas {
         }
     }
 
-    private NodoRespuesta Analizarp2(String ID, NodoFs raiz, ArrayList<NodoError> errores, NodoRespuesta vector) {
-        NodoRespuesta result = vector;
-        for (int i = 0; i < raiz.hijos.size(); i++) {
-            NodoFs actual = raiz.hijos.get(i);
-            if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
-                int tipo = ret_tipo(vector);
-                result = Ordenamiento(actual.valor, errores, result, tipo);
-                Fs_varios varios = new Fs_varios();
-                if (!(actual.valor.equalsIgnoreCase("maximo") || actual.valor.equalsIgnoreCase("minimo"))) {
-                    varios.set_Nuevoval_ID2(result, ID, tabla);
+    public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
+        Fs_varios varios = new Fs_varios();
+        boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
+        if (existe) {//existe 
+            NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
+            NodoFs actual1 = raiz.hijos.get(0);
+            NodoRespuesta result = resultadoid;
+            for (int i = 0; i < actual1.hijos.size(); i++) {
+                NodoFs actual = actual1.hijos.get(i);
+                if (result.tipo.equalsIgnoreCase("vector")) {
+                    result = Analizarp2(raiz.valor, actual, errores, result);
+                } else if (result.tipo.equalsIgnoreCase("array")) {
+                    result = Analizarp2_A(actual, errores, result);
+                } else {
+                    return new NodoRespuesta(true);
                 }
-            } else if (actual.Tipo.equalsIgnoreCase("filtros")) {
-                llamada_fun ord_fun = new llamada_fun(global, num);
-                result = ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
             }
+            return result;
+        } else {
+            existe = varios.ret_Existencia_ID(raiz.valor, global);
+            if (existe) {
+                NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, global);
+                NodoFs actual1 = raiz.hijos.get(0);
+                NodoRespuesta result = resultadoid;
+                for (int i = 0; i < actual1.hijos.size(); i++) {
+                    NodoFs actual = actual1.hijos.get(i);
+                    if (result.tipo.equalsIgnoreCase("vector")) {
+                        result = Analizarp2(raiz.valor, actual, errores, result);
+                    } else if (result.tipo.equalsIgnoreCase("array")) {
+                        result = Analizarp2_A(actual, errores, result);
+                    } else {
+                        return new NodoRespuesta(true);
+                    }
+                }
+                return result;
+            }
+            return new NodoRespuesta(true);
+        }
+    }
+
+    private NodoRespuesta Analizarp2(String ID, NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta vector) {
+        NodoRespuesta result = vector;
+        if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
+            int tipo = ret_tipo(vector);
+            result = Ordenamiento(actual.valor, errores, result, tipo);
+            Fs_varios varios = new Fs_varios();
+            if (!(actual.valor.equalsIgnoreCase("maximo") || actual.valor.equalsIgnoreCase("minimo"))) {
+                varios.set_Nuevoval_ID2(result, ID, tabla);
+            }
+        } else if (actual.Tipo.equalsIgnoreCase("filtros")) {
+            llamada_fun ord_fun = new llamada_fun(global, num);
+            result = ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
         }
         return result;
     }
 
-    private NodoRespuesta Analizarp2_A(NodoFs raiz, ArrayList<NodoError> errores, NodoRespuesta objetos) {
+    private NodoRespuesta Analizarp2_A(NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta objetos) {
         NodoRespuesta result = objetos;
-        for (int i = 0; i < raiz.hijos.size(); i++) {
-            NodoFs actual = raiz.hijos.get(i);
-            if (actual.Tipo.equalsIgnoreCase("filtros")) {
-                llamada_fun ord_fun = new llamada_fun(global, num);
-                result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
-            }
+        if (actual.Tipo.equalsIgnoreCase("filtros")) {
+            llamada_fun ord_fun = new llamada_fun(global, num);
+            result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
         }
+        System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
         return result;
     }
 

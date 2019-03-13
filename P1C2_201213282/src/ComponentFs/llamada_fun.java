@@ -144,10 +144,9 @@ public class llamada_fun {
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
-                Accion_ID ID_A =new Accion_ID(tabla,global,num);
+                Accion_ID ID_A = new Accion_ID(tabla, global, num);
                 return ID_A.Analizar(raiz, errores);
-                
-                
+
             case "retornar":
                 /*!Estructura de retornar!*/
                 Est_return retorno = new Est_return(tabla, global, num);
@@ -461,39 +460,52 @@ public class llamada_fun {
         int i = 0;
         NodoRespuesta respuesta = new NodoRespuesta(false);
         boolean primero = true;
-        NodoRespuesta retorno;
+        // NodoRespuesta retorno=new NodoRespuesta("");
         while (i < vector.size()) {
             tabla.Tabla.clear();
             ArrayList<NodoRespuesta> resultados = new ArrayList();
-            resultados.add(new NodoRespuesta(0));
+            if (primero) {
+                resultados.add(new NodoRespuesta(0));
+            } else {
+                resultados.add(new NodoRespuesta(respuesta.resultado.toString()));
+            }
             for (int j = 1; j < hijos.size(); j++) {
+                //System.out.println("este resultado: "+vector.get(i)+"::"+resultados.get(0).resultado.toString());
                 NodoRespuesta nuevo = new NodoRespuesta(vector.get(i));
                 resultados.add(nuevo);
                 i++;
             }
+            // System.out.println("hijos"+hijos.size()+" resultados"+resultados.size());
             pasar_parametros(hijos, resultados);
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+                // System.out.println("es este tiponn"+actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    //   System.out.println("entro a retorno" + retornara.resultado.toString());
                     if (primero) {
+                        //     System.out.println("entro aqui");
                         primero = false;
-                        respuesta = retornara;
+                        respuesta.resultado = retornara.resultado;
                     } else if (retornara.tipo.equalsIgnoreCase("variable")) {
+                        //   System.out.println("entro aqui2");
                         OPA_A op = new OPA_A(tabla, global, num);
-                        respuesta = op.sumar_xdato(respuesta, retornara);
+                        respuesta.resultado = retornara.resultado;
+
+                    } else if (!(retornara.tipo.equalsIgnoreCase("objeto") || retornara.tipo.equalsIgnoreCase("vector"))) {
+                        OPA_A op = new OPA_A(tabla, global, num);
+                        // System.out.println("entro aqui4");
+                        respuesta.resultado = retornara.resultado;
                     }
-                    break;
                 } else {
                     System.out.println("no retorno nada");
                 }
             }
         }
+        respuesta.resultado = analizar_resultado(respuesta.resultado);
         respuesta.tipo = "variable";
         return respuesta;
     }
@@ -588,7 +600,7 @@ public class llamada_fun {
                     } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
 
                     } else {
-                        System.out.println("hay error");
+                        System.out.println("hay error ->" + retornara.resultado);
                         return new NodoRespuesta(true);
                     }
                     break;
@@ -625,9 +637,8 @@ public class llamada_fun {
                     System.out.println("dio un error");
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    System.out.println("entro a retorno" + i + ":" + retornara.resultado.toString());
                     respuesta.add(retornara.resultado.toString());
-                    break;
                 } else {
                     System.out.println("no retorno nada");
                 }
@@ -759,6 +770,7 @@ public class llamada_fun {
     }
 
     private NodoRespuesta es_reduce_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
+        System.out.println("entro aqui reduce 2");
         int i = 0;
         NodoRespuesta respuesta = new NodoRespuesta(false);
         boolean primero = true;
@@ -798,6 +810,20 @@ public class llamada_fun {
         }
         respuesta.tipo = "variable";
         return respuesta;
+    }
+
+    private Object analizar_resultado(Object resultado) {
+        String resultados = resultado.toString();
+        if(resultados.contains("\"")){
+            resultados = resultados.replace("\"", "");
+           String nuevo="";
+           char[] fac = resultados.toCharArray();
+           for(int i=1;i<fac.length;i++){
+               nuevo = nuevo+fac[i];
+           }
+           return "\""+nuevo+"\"";
+        }
+        return resultado;
     }
 
 }

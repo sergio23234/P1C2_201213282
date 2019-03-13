@@ -33,7 +33,7 @@ public class Est_return {
             resultado.es_retorno = true;
             return resultado;
         } else {
-            System.out.println("hay error");
+            System.out.println("hay error::"+resultado.resultado);
         }
         return resultado;
     }
