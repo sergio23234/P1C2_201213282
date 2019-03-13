@@ -2750,6 +2750,9 @@ class CUP$SintacticoFs$actions {
           case 118: // Acc_conte ::= idva ccon ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
             {
               NodoFs RESULT =null;
+		int e0left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-14)).left;
+		int e0right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-14)).right;
+		String e0 = (String)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-14)).value;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).right;
 		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).value;
@@ -2768,7 +2771,7 @@ class CUP$SintacticoFs$actions {
 		int e6left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
 		int e6right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
 		NodoFs e6 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("Contenedor");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);RESULT=nuevo;
+		NodoFs nuevo = new NodoFs("Contenedor");  nuevo.valor=e0; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);RESULT=nuevo;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_conte",18, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-14)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
@@ -2777,6 +2780,9 @@ class CUP$SintacticoFs$actions {
           case 119: // Acc_boton ::= idva cbot ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
             {
               NodoFs RESULT =null;
+		int e0left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-20)).left;
+		int e0right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-20)).right;
+		String e0 = (String)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-20)).value;
 		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-17)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-17)).right;
 		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-17)).value;
@@ -2804,7 +2810,7 @@ class CUP$SintacticoFs$actions {
 		int e9left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
 		int e9right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
 		NodoFs e9 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("Boton");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9); RESULT=nuevo;
+		NodoFs nuevo = new NodoFs("Boton"); nuevo.valor=e0;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9); RESULT=nuevo;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_boton",17, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-20)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;

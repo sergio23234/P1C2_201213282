@@ -44,11 +44,35 @@ public class Declarar_variables {
             case "objetos":
                 return Ana_objeto(raiz, errores, raices);
             case "ventana":
-                break;
+                Componentes_FS ventana = new Componentes_FS(tabla, global, num);
+                nuevo = ventana.Analizar_Ventana(raiz, errores, raices);
+                if (nuevo.error) {
+                    return nuevo;
+                } else {
+                    Add_especial_var_tabla(raices, errores, 0);
+                    return new NodoRespuesta(false);
+                }
             case "boton":
-                break;
+                Componentes_FS boton = new Componentes_FS(tabla, global, num);
+                nuevo =boton.Analizar_Boton(raiz, errores, raices);
+                if (nuevo.error) {
+                    return nuevo;
+                } else {
+                    Add_especial_var_tabla(raices, errores, 0);
+                    return new NodoRespuesta(false);
+                }
             case "contenedor":
-                break;
+                System.out.println("entro aqui");
+                Componentes_FS conte = new Componentes_FS(tabla, global, num);
+                nuevo = conte.Analizar_Contenedor(raiz, errores, raices);
+                if (nuevo.error) {
+                    System.out.println("hay error");
+                    return nuevo;
+                } else {
+                    Add_especial_var_tabla(raices, errores, 1);
+                    return new NodoRespuesta(false);
+                }
+
             case "arrayarchivo":
                 Est_Array array = new Est_Array(tabla, global, num);
                 nuevo = array.Analizar(raiz, errores);
@@ -169,9 +193,9 @@ public class Declarar_variables {
     private boolean buscar_ID_Tabla(String nombre, ArrayList<NodoError> errores) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
-            if (actual.nombre.equalsIgnoreCase(nombre)) {
+            if (actual.nombre.equalsIgnoreCase(nombre)&&!actual.tipo.equalsIgnoreCase("funcion")) {
                 NodoError nuevo = new NodoError("sintactico");
-               // System.out.println("entro en este error");
+                // System.out.println("entro en este error");
                 nuevo.descripcion = "la variable" + actual.nombre + " ya ha sido declarada";
                 errores.add(nuevo);
                 return true;
@@ -186,7 +210,7 @@ public class Declarar_variables {
             tipos = "vector";
         } else if (respuesta.tipo.equalsIgnoreCase("objeto")) {
             tipos = "objeto";
-        }else if(respuesta.tipo.equalsIgnoreCase("array")){
+        } else if (respuesta.tipo.equalsIgnoreCase("array")) {
             tipos = "array";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
@@ -209,7 +233,7 @@ public class Declarar_variables {
             nodo.valor = nuevo;
         } else if (tipos.equalsIgnoreCase("array")) {
             ArrayList<NodoObjeto> valor = (ArrayList<NodoObjeto>) respuesta.resultado;
-            ArrayList<NodoObjeto> nuevo =  new ArrayList();
+            ArrayList<NodoObjeto> nuevo = new ArrayList();
             for (int i = 0; i < valor.size(); i++) {
                 NodoObjeto nuevoo = new NodoObjeto();
                 valor.get(i).ret_bojetos(nuevoo.objetos);
@@ -299,6 +323,28 @@ public class Declarar_variables {
         nodo.valor = respuesta.resultado;
         tabla.Tabla.add(nodo);
         return new NodoRespuesta(false);
+    }
+
+    private void Add_especial_var_tabla(NodoFs raices, ArrayList<NodoError> errores, int tipo) {
+        String tipos = "variable";
+        for (int i = 0; i < raices.lista.size() - 1; i++) {
+            NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(i));
+            nodo.valor = "undefined";
+            tabla.Tabla.add(nodo);
+        }
+        switch (tipo) {
+            case 0:
+                tipos = "ventana";
+                break;
+            case 1:
+                tipos = "contenedor";
+                break;
+            default:
+                tipos = "boton";
+                break;
+        }
+        NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(raices.lista.size() - 1));
+        tabla.Tabla.add(nodo);
     }
 }
 //  private NodoRespuesta cuerpo_Vect(NodoFs raiz, ArrayList<NodoError> errores) {

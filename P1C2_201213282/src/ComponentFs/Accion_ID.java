@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import Principal.Menu;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -40,6 +41,13 @@ public class Accion_ID {
                 nuevo = nat.Analizar(prueba, errores);
                 if (nuevo.error) {
                     return new NodoRespuesta(true);
+                }
+                break;
+            case "cargar":
+                if(raiz.hijos.size()>0){
+                    
+                }else{
+                    Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;
         }

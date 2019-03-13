@@ -5,6 +5,7 @@
  */
 package Principal;
 
+import ComponentFs.NodoFs;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -15,20 +16,26 @@ import javax.swing.JPanel;
  */
 public class contenedor extends JPanel {
 
-    private String id;
+    public String id;
 
     private ArrayList<Texto_Lab> Textos;
+    private ArrayList<Buton> Botones;
 
     public contenedor(String id) {
         super();
         this.id = id;
+        Botones = new ArrayList();
     }
 
-    public void inicializar_contendor(int x, int y, int largo, int ancho, String color) {
-        setBounds(x, y, ancho, largo);
+    public void inicializar_contendor(int alto, int ancho, String color, boolean border, int x, int y) {
+        this.setBounds(x, y, ancho, alto);
         color = color.replace("#", "").trim();
-        setBackground(new Color(hex(color)));
-        repaint();
+        this.setBackground(new Color(hex(color)));
+        if(border){
+            this.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        }
+        this.repaint();
+        this.setLayout(null);
     }
 
     private int hex(String color_hex) {
@@ -43,5 +50,21 @@ public class contenedor extends JPanel {
         this.add(tex);
     }
     
+    public boolean add_boton(String id,String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho){
+        Buton bot = new Buton(fuente,tam,color,x,y,referencia,texto,alto,ancho);
+        boolean add = true;
+        for (int i = 0; i < Botones.size(); i++) {
+            if (Botones.get(i).id.equalsIgnoreCase(id)) {
+                add = false;
+                return add;
+            }
+        }
+        if(add){
+            Botones.add(bot);
+            this.add(bot);
+            return true;
+        }
+        return false;
+    }
 
 }

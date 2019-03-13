@@ -24,8 +24,11 @@ public class Pestania extends javax.swing.JPanel {
     public String path;
     public String ABpath;
     private int num;
+    public ArrayList<est_ventana> ventanas;
+
     /**
      * Creates new form Pestania
+     *
      * @param num
      */
     public Pestania(int num) {
@@ -33,6 +36,7 @@ public class Pestania extends javax.swing.JPanel {
         path = "";
         ABpath = "";
         this.num = num;
+        ventanas = new ArrayList();
     }
 
     /**
@@ -119,7 +123,7 @@ public class Pestania extends javax.swing.JPanel {
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
                 TablaSimbolos tabla = pasada.analizar(errores);
-                Inicio ini = new Inicio(tabla,tabla,num);
+                Inicio ini = new Inicio(tabla, tabla, num);
                 ini.Analizar(nuevo, errores);
                 //recorrer_FS(nuevo,"");
                 recorrer_Tabla(tabla);
@@ -164,45 +168,89 @@ public class Pestania extends javax.swing.JPanel {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.tipo.equalsIgnoreCase("vector")) {
                 String valor = "";
-                ArrayList<String> valores=(ArrayList<String>) actual.valor;
+                ArrayList<String> valores = (ArrayList<String>) actual.valor;
                 for (int j = 0; j < valores.size(); j++) {
-                    valor += "---"+valores.get(j);
+                    valor += "---" + valores.get(j);
                 }
                 Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
-            }else  if (actual.tipo.equalsIgnoreCase("objeto")) {
+            } else if (actual.tipo.equalsIgnoreCase("objeto")) {
                 String valor = "";
-                NodoObjeto valores=(NodoObjeto) actual.valor;
+                NodoObjeto valores = (NodoObjeto) actual.valor;
                 for (int j = 0; j < valores.objetos.size(); j++) {
-                    valor += "---"+valores.objetos.get(j).nombre+" : "+valores.objetos.get(j).valor;
+                    valor += "---" + valores.objetos.get(j).nombre + " : " + valores.objetos.get(j).valor;
                 }
                 Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
-            }else  if (actual.tipo.equalsIgnoreCase("array")) {
+            } else if (actual.tipo.equalsIgnoreCase("array")) {
                 String valor = "";
-                ArrayList<NodoObjeto> valores=(ArrayList<NodoObjeto>) actual.valor;
+                ArrayList<NodoObjeto> valores = (ArrayList<NodoObjeto>) actual.valor;
                 for (int j = 0; j < valores.size(); j++) {
-                   valor="";
-                   NodoObjeto actualO = valores.get(j);
+                    valor = "";
+                    NodoObjeto actualO = valores.get(j);
                     for (int k = 0; k < actualO.objetos.size(); k++) {
-                    valor += "---"+actualO.objetos.get(k).nombre+" : "+actualO.objetos.get(k).valor;
+                        valor += "---" + actualO.objetos.get(k).nombre + " : " + actualO.objetos.get(k).valor;
                     }
-                   Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
-                }  
+                    Consola.append(actual.nombre + "  Valor: " + valor + " tipo: " + actual.tipo + "\r\n");
+                }
             } else {
                 Consola.append(actual.nombre + "  Valor: " + actual.valor + " tipo: " + actual.tipo + "\r\n");
             }
         }
     }
 
-    private void Imprimir_errores(ArrayList<NodoError> errores){
-       if(errores.size()>0){
-          System.out.println("---------- errores-------------");
-          for(int i=0;i<errores.size();i++){
-              NodoError actual = errores.get(i);
-              System.out.println(actual.descripcion+" ----  "+actual.tipo);
-          }  
-        System.out.println("---------- errores-------------");
-       }
+    private void Imprimir_errores(ArrayList<NodoError> errores) {
+        if (errores.size() > 0) {
+            System.out.println("---------- errores-------------");
+            for (int i = 0; i < errores.size(); i++) {
+                NodoError actual = errores.get(i);
+                System.out.println(actual.descripcion + " ----  " + actual.tipo);
+            }
+            System.out.println("---------- errores-------------");
+        }
     }
+
+    public boolean Add_ventana(String color, int largo, int ancho, String id) {
+        est_ventana  ven= new est_ventana(id,largo,ancho,color);
+        boolean add = true;
+        for (int i = 0; i < ventanas.size(); i++) {
+            if (ventanas.get(i).id.equalsIgnoreCase(id)) {
+                add = false;
+                break;
+            }
+        }
+        if (add) {     
+            ventanas.add(ven);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean Add_contenedor_ventana(String id, int alto, int ancho, String color, boolean boder, int x, int y, String id_ventana) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
+                est_ventana ven =ventanas.get(i);
+                return ven.add_contenedor(id, alto, ancho, color, boder, x, y);
+            }
+        }
+        return false;
+    }
+    public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            if (ventanas.get(i).ID_Contenedor(id_con)) {
+                return ventanas.get(i).add_boton(id_con, id, fuente, tam, color, x, y, referencia, texto, alto, ancho);
+            }
+        }
+        return false;
+    }
+    
+    public void mostrar_ventana(String id_ventana){
+        for (int i = 0; i < ventanas.size(); i++) {
+            if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
+                ventanas.get(i).show();
+            }
+        }
+        
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
     public javax.swing.JTextArea Editor;
