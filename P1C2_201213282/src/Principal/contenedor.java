@@ -20,13 +20,14 @@ public class contenedor extends JPanel implements ActionListener {
 
     public String id;
     int num_pest;
-    private ArrayList<Texto_Lab> Textos;
+    private ArrayList<Label> Labels;
     private ArrayList<Buton> Botones;
 
     public contenedor(String id) {
         super();
         this.id = id;
         Botones = new ArrayList();
+        Labels = new ArrayList();
     }
 
     public void inicializar_contendor(int num, int alto, int ancho, String color, boolean border, int x, int y) {
@@ -45,14 +46,14 @@ public class contenedor extends JPanel implements ActionListener {
         return Integer.parseInt(color_hex, 16);
     }
 
-    public void add_texto(int x, int y, int alto, int ancho, String color, String nombre, String fondo, int tamañio, int tipo, String texto) {
-        Texto_Lab tex = new Texto_Lab(nombre);
-        tex.inicializar(fondo, tamañio, tipo, color, x, y, alto, ancho, texto);
-        Textos.add(tex);
-        this.add(tex);
+    public boolean add_texto(String fuente, int tam, int x, int y, String color, int negrita, int cursiva, String nombre) {
+        Label Tex = new Label(fuente, tam, x, y, color, negrita, cursiva, nombre);
+        Labels.add(Tex);
+        this.add(Tex);
+        return true;
     }
 
-    public boolean add_boton(String id, String fuente, int tam, String color, int x, int y,String referencia, String texto, int alto, int ancho) {
+    public boolean add_boton(String id, String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         Buton bot = new Buton(id, fuente, tam, color, x, y, referencia, texto, alto, ancho);
         bot.addActionListener(this);
         boolean add = true;
@@ -64,7 +65,7 @@ public class contenedor extends JPanel implements ActionListener {
         }
         if (add) {
             Botones.add(bot);
-           this.add(bot);
+            this.add(bot);
             return true;
         }
         return false;
@@ -80,8 +81,8 @@ public class contenedor extends JPanel implements ActionListener {
                     if (Botones.get(i).accion != null) {
                         Menu.Lista.get(num_pest).Ejecutar_funcion(Botones.get(i).accion);
                     }
-                    if(!(Botones.get(i).referencia.equalsIgnoreCase("nulo")||Botones.get(i).referencia.equalsIgnoreCase("undefined"))){
-                        System.out.println(Botones.get(i).referencia+" es esta variable");
+                    if (!(Botones.get(i).referencia.equalsIgnoreCase("nulo") || Botones.get(i).referencia.equalsIgnoreCase("undefined"))) {
+                        System.out.println(Botones.get(i).referencia + " es esta variable");
                         Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
                     }
                 }

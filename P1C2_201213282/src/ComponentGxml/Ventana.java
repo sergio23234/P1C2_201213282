@@ -34,7 +34,7 @@ public class Ventana {
         color = "#ffffff";
         accionI = "";
         accionF = "";
-        alto=ancho=0;
+        alto=ancho=500;
     }
 
     public void Imprimir_NodoS(NodoSGxml nodo) {

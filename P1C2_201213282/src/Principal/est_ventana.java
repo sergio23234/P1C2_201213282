@@ -20,7 +20,7 @@ public class est_ventana extends javax.swing.JFrame {
     private String color;
     public boolean alcerrar,alcargar;
     public NodoFs cerrar,cargar;
-    private ArrayList<contenedor> contenedores;
+    public ArrayList<contenedor> contenedores;
     private boolean primero = true;
     /**
      * Creates new form ventana1
@@ -166,4 +166,15 @@ public class est_ventana extends javax.swing.JFrame {
         }
         return false;
     }
+
+    public int ID_intContenedor(String id_con) {
+        for (int i = 0; i < contenedores.size(); i++) {
+            if (contenedores.get(i).id.equalsIgnoreCase(id_con)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    
 }

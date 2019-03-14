@@ -213,4 +213,75 @@ public class Componentes_FS {
         }
         return false;
     }
+
+    public NodoRespuesta Analizar_Label(NodoFs raiz, ArrayList<NodoError> errores, NodoRespuesta id) {
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+        String id_ventana = id.resultado.toString();
+        NodoRespuesta dato1 = OP.Cuerpo_G(raiz.hijos.get(0), errores);//fuente
+        NodoRespuesta dato2 = OP.Cuerpo_G(raiz.hijos.get(1), errores);//tamaño
+        NodoRespuesta dato3 = OP.Cuerpo_G(raiz.hijos.get(2), errores);//color
+        NodoRespuesta dato4 = OP.Cuerpo_G(raiz.hijos.get(3), errores);//x
+        NodoRespuesta dato5 = OP.Cuerpo_G(raiz.hijos.get(4), errores);//y
+        NodoRespuesta dato6 = OP.Cuerpo_G(raiz.hijos.get(5), errores);//negrita
+        NodoRespuesta dato7 = OP.Cuerpo_G(raiz.hijos.get(6), errores);//cursiva
+        NodoRespuesta dato8 = OP.Cuerpo_G(raiz.hijos.get(7), errores);//valor
+        /*ERROES*/
+        if (dato1.error || dato2.error || dato3.error || dato4.error || dato5.error || dato7.error || dato8.error || dato6.error) {
+            return new NodoRespuesta(true);
+        } else {
+            String tipos[] = new String[8];
+            tipos[0] = ret_tipo(dato1.resultado.toString());
+            tipos[1] = ret_tipo(dato2.resultado.toString());
+            tipos[2] = ret_tipo(dato3.resultado.toString());
+            tipos[3] = ret_tipo(dato4.resultado.toString());
+            tipos[4] = ret_tipo(dato5.resultado.toString());
+            tipos[5] = ret_tipo(dato6.resultado.toString());
+            tipos[6] = ret_tipo(dato7.resultado.toString());
+            tipos[7] = ret_tipo(dato8.resultado.toString());
+            boolean error = false;
+            for (int i = 0; i < tipos.length; i++) {
+               if((!tipos[i].equalsIgnoreCase("boleano")&&i==5&&i==6)){
+                   error = true;
+                   break;
+               }
+                else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 0 || i == 2 || i == 7)) {
+                    System.out.println("no es cadena");
+                    error = true;
+                    break;
+                } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 1 || i == 3 || i == 4)) {
+                    System.out.println("no es numero" + i);
+                    error = true;
+                    break;
+                }
+            }
+
+            /*System.out.println(dato1.resultado.toString() + " es tipo: " + tipo1);
+            System.out.println(dato2.resultado.toString() + " es tipo: " + tipo2);
+            System.out.println(dato3.resultado.toString() + " es tipo: " + tipo3);*/
+            if (error) {
+                return new NodoRespuesta(true);
+            }
+            String fuente = dato1.resultado.toString().replace("\"", "");
+            int tam = Integer.valueOf(dato2.resultado.toString());
+            String color = dato3.resultado.toString().replace("\"", "");
+            int x = Integer.valueOf(dato4.resultado.toString());
+            int y = Integer.valueOf(dato5.resultado.toString());
+            String negri = dato6.resultado.toString();
+            String cursi = dato7.resultado.toString();
+            int negrita =0;
+            int cursiva = 0;
+            if(negri.equalsIgnoreCase("verdadero")){negrita=1;}
+            if(cursi.equalsIgnoreCase("verdadero")){cursiva=2;}
+            String valor = dato8.resultado.toString().replace("\"", "");
+            
+            boolean resultado = Menu.Lista.get(num).add_texto(id_ventana, fuente, tam, x, y, color, negrita, cursiva,valor);
+            if (resultado) {
+                NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
+                return retorno;
+            } else {
+                System.out.println("no se añadio");
+                return new NodoRespuesta(true);
+            }
+        }
+    }
 }

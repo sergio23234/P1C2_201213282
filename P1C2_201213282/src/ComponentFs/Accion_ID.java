@@ -45,14 +45,14 @@ public class Accion_ID {
                 break;
             case "cargar":
                 if (raiz.hijos.size() > 0) {
-                    Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(),0);
+                    Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(), 0);
                 } else {
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;
             case "cerrar":
                 if (raiz.hijos.size() > 0) {
-                    Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(),1);
+                    Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(), 1);
                 } else {
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
@@ -61,7 +61,12 @@ public class Accion_ID {
                 boolean resultado = Menu.Lista.get(num).add_FS_boton(id.resultado.toString(), raiz.hijos.get(0));
                 System.out.println(resultado + " si lo añadio " + id.resultado.toString());
                 break;
+            case "label":
+                Componentes_FS fs = new Componentes_FS(tabla,global,num);
+                fs.Analizar_Label(raiz, errores, id);
+                break;
         }
+
         return new NodoRespuesta(false);
     }
 
