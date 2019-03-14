@@ -52,7 +52,7 @@ public class contenedor extends JPanel implements ActionListener {
         this.add(tex);
     }
 
-    public boolean add_boton(String id, String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
+    public boolean add_boton(String id, String fuente, int tam, String color, int x, int y,String referencia, String texto, int alto, int ancho) {
         Buton bot = new Buton(id, fuente, tam, color, x, y, referencia, texto, alto, ancho);
         bot.addActionListener(this);
         boolean add = true;
@@ -78,7 +78,11 @@ public class contenedor extends JPanel implements ActionListener {
             for (int i = 0; i < Botones.size(); i++) {
                 if (fuente == Botones.get(i)) {
                     if (Botones.get(i).accion != null) {
-                        Menu.Lista.get(i).Ejecutar_funcion(Botones.get(i).accion);
+                        Menu.Lista.get(num_pest).Ejecutar_funcion(Botones.get(i).accion);
+                    }
+                    if(!(Botones.get(i).referencia.equalsIgnoreCase("nulo")||Botones.get(i).referencia.equalsIgnoreCase("undefined"))){
+                        System.out.println(Botones.get(i).referencia+" es esta variable");
+                        Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
                     }
                 }
             }

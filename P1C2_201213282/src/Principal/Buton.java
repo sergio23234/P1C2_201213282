@@ -17,14 +17,14 @@ import javax.swing.JButton;
  */
 public class Buton extends JButton {
 
-    NodoFs referencia;
+    String referencia;
     NodoFs accion;
     String id, color;
     int largo, ancho;
     int tam;
     String texto;
 
-    public Buton(String id,String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
+    public Buton(String id,String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         this.tam = tam;
         this.id =id;
         this.color = color.replace("#", "").trim();

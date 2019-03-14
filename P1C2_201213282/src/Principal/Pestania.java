@@ -27,6 +27,7 @@ public class Pestania extends javax.swing.JPanel {
     public ArrayList<est_ventana> ventanas;
     public TablaSimbolos tabla;
     private ArrayList<NodoError> errores;
+    private int abierta_actual = -1;
 
     /**
      * Creates new form Pestania
@@ -130,7 +131,7 @@ public class Pestania extends javax.swing.JPanel {
                 ini.Analizar(nuevo, errores);
                 recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
-                // Imprimir_errores(miParser.errores);
+                Imprimir_errores(miParser.errores);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -230,13 +231,13 @@ public class Pestania extends javax.swing.JPanel {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
                 est_ventana ven = ventanas.get(i);
-                return ven.add_contenedor(num,id, alto, ancho, color, boder, x, y);
+                return ven.add_contenedor(num, id, alto, ancho, color, boder, x, y);
             }
         }
         return false;
     }
 
-    public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
+    public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).ID_Contenedor(id_con)) {
                 return ventanas.get(i).add_boton(id_con, id, fuente, tam, color, x, y, referencia, texto, alto, ancho);
@@ -258,16 +259,31 @@ public class Pestania extends javax.swing.JPanel {
     public void mostrar_ventana(String id_ventana) {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
+
+                if (ventanas.get(i).alcargar) {
+                    Ejecutar_funcion(ventanas.get(i).cargar);
+                }
+                if (abierta_actual == -1) {
+                    abierta_actual = i;
+                } else {
+                    est_ventana temp = ventanas.get(abierta_actual);
+                    if (temp.alcerrar) {
+                        Ejecutar_funcion(temp.cerrar);
+                    }
+                    temp.hide();
+                }
                 ventanas.get(i).show();
+
             }
         }
 
     }
-    public void Ejecutar_funcion(NodoFs raiz){
+
+    public void Ejecutar_funcion(NodoFs raiz) {
         Inicio ini = new Inicio(tabla, tabla, num);
         NodoFs nuevo = new NodoFs("cuerpo");
         nuevo.add_NodoFs(raiz);
-        System.out.println("llamo a la funcion"+raiz.Tipo);
+        System.out.println("llamo a la funcion" + raiz.Tipo);
         ini.Analizar(nuevo, errores);
     }
 
@@ -280,4 +296,19 @@ public class Pestania extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
+
+    public void add_cargar_Fs(NodoFs get, String id, int tipo) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            if (ventanas.get(i).id.equalsIgnoreCase(id)) {
+                if (tipo == 0) {
+                    ventanas.get(i).cargar = get;
+                    ventanas.get(i).alcargar = true;
+                } else {
+                    ventanas.get(i).cerrar = get;
+                    ventanas.get(i).alcerrar = true;
+                }
+
+            }
+        }
+    }
 }

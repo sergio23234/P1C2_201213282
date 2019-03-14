@@ -127,7 +127,7 @@ public class Componentes_FS {
         NodoRespuesta dato3 = OP.Cuerpo_G(raiz.hijos.get(2), errores);//color
         NodoRespuesta dato4 = OP.Cuerpo_G(raiz.hijos.get(3), errores);//x
         NodoRespuesta dato5 = OP.Cuerpo_G(raiz.hijos.get(4), errores);//y
-
+        NodoRespuesta dato6 = OP.Cuerpo_G(raiz.hijos.get(5), errores);//referencia
         NodoRespuesta dato7 = OP.Cuerpo_G(raiz.hijos.get(6), errores);//valor
         NodoRespuesta dato8 = OP.Cuerpo_G(raiz.hijos.get(7), errores);//alto
         NodoRespuesta dato9 = OP.Cuerpo_G(raiz.hijos.get(8), errores);//ancho
@@ -135,22 +135,27 @@ public class Componentes_FS {
         if (dato1.error || dato2.error || dato3.error || dato4.error || dato5.error || dato7.error || dato8.error || dato9.error) {
             return new NodoRespuesta(true);
         } else {
-            String tipos[] = new String[8];
+            String tipos[] = new String[9];
             tipos[0] = ret_tipo(dato1.resultado.toString());
             tipos[1] = ret_tipo(dato2.resultado.toString());
             tipos[2] = ret_tipo(dato3.resultado.toString());
             tipos[3] = ret_tipo(dato4.resultado.toString());
             tipos[4] = ret_tipo(dato5.resultado.toString());
-            tipos[5] = ret_tipo(dato7.resultado.toString());
-            tipos[6] = ret_tipo(dato8.resultado.toString());
-            tipos[7] = ret_tipo(dato9.resultado.toString());
+            tipos[5] = ret_tipo(dato6.resultado.toString());
+            tipos[6] = ret_tipo(dato7.resultado.toString());
+            tipos[7] = ret_tipo(dato8.resultado.toString());
+            tipos[8] = ret_tipo(dato9.resultado.toString());
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
-                if (!tipos[i].equalsIgnoreCase("cadena") && (i == 0 || i == 2 || i == 5)) {
+               if((!tipos[i].equalsIgnoreCase("cadena")&&i==5)&&(!tipos[i].equalsIgnoreCase("undefined")&&i==5)){
+                   error = true;
+                   break;
+               }
+                else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 0 || i == 2 || i == 6)) {
                     System.out.println("no es cadena");
                     error = true;
                     break;
-                } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 2 && i != 5) {
+                } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 2 && i != 5&& i != 6) {
                     System.out.println("no es numero" + i);
                     error = true;
                     break;
@@ -169,10 +174,11 @@ public class Componentes_FS {
             String color = dato3.resultado.toString().replace("\"", "");
             int x = Integer.valueOf(dato4.resultado.toString());
             int y = Integer.valueOf(dato5.resultado.toString());
-            NodoFs referencia = raiz.hijos.get(5);//referencia
+            String referencia = dato6.resultado.toString().replace("\"", "");
             String valor = dato7.resultado.toString().replace("\"", "");
             int alto = Integer.valueOf(dato8.resultado.toString());
             int ancho = Integer.valueOf(dato9.resultado.toString());
+            
             boolean resultado = Menu.Lista.get(num).add_boton(id_ventana, id, fuente, tam, color, x, y, referencia, valor, alto, ancho);
             if (resultado) {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);

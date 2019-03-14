@@ -18,6 +18,8 @@ public class est_ventana extends javax.swing.JFrame {
 
     public String id;
     private String color;
+    public boolean alcerrar,alcargar;
+    public NodoFs cerrar,cargar;
     private ArrayList<contenedor> contenedores;
     private boolean primero = true;
     /**
@@ -37,6 +39,9 @@ public class est_ventana extends javax.swing.JFrame {
         this.color = color.replace("#", "").trim();
         master.setBackground(new Color(hex(this.color)));
         Refrescar();
+        alcerrar=alcargar=false;
+        cerrar = null;
+        cargar=null;
     }
 
     /**
@@ -118,7 +123,7 @@ public class est_ventana extends javax.swing.JFrame {
         return false;
     }
 
-    public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
+    public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).id.equalsIgnoreCase(id_con)) {
                 return contenedores.get(i).add_boton(id, fuente, tam, color, x, y, referencia, texto, alto, ancho);

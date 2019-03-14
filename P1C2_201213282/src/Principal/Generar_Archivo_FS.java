@@ -206,9 +206,9 @@ public class Generar_Archivo_FS {
         if (raiz.referencia.equalsIgnoreCase("nulo")) {
             nuevo += raiz.Nombre + "_" + super_Raiz + "= " + name_raiz+"_"+super_Raiz + ".CrearBoton(\"" + raiz.Etexto.Fuente + "\"," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.y + "," + raiz.x + ",nulo,\"" + raiz.Etexto.Valor.trim() + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
         } else {
-            String metodo = "CargarVentana_" + super_Raiz + "()";
-            nuevo += raiz.Nombre + "_" + super_Raiz + "= " + name_raiz+"_"+super_Raiz + ".CrearBoton(\"" + raiz.Etexto.Fuente + "\"," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.y + "," + raiz.x + "," + metodo + ",\"" + raiz.Etexto.Valor.trim() + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
-            Crear_metodo(metodo, super_Raiz, 0);
+            //String metodo = "CargarVentana_" + super_Raiz + "()";
+            nuevo += raiz.Nombre + "_" + super_Raiz + "= " + name_raiz+"_"+super_Raiz + ".CrearBoton(\"" + raiz.Etexto.Fuente + "\"," + raiz.Etexto.tam + ",\"" + raiz.Etexto.color + "\"," + raiz.y + "," + raiz.x + "," +"\"ven_"+raiz.referencia + "\",\"" + raiz.Etexto.Valor.trim() + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
+            //Crear_metodo(metodo, super_Raiz, 0);
         }
         Datos.add(nuevo);
         if (!raiz.accion.equalsIgnoreCase("") || raiz.tipo.equalsIgnoreCase("enviar")) {
