@@ -87,9 +87,9 @@ public class est_ventana extends javax.swing.JFrame {
         master.repaint();
     }
 
-    public boolean add_contenedor(String id, int alto, int ancho, String color, boolean boder, int x, int y) {
+    public boolean add_contenedor(int nump,String id, int alto, int ancho, String color, boolean boder, int x, int y) {
         contenedor nuevo = new contenedor(id);
-        nuevo.inicializar_contendor(alto, ancho, color, boder, x, y);
+        nuevo.inicializar_contendor(nump,alto, ancho, color, boder, x, y);
         boolean add = true;
         for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).id.equalsIgnoreCase(id)) {
@@ -126,14 +126,16 @@ public class est_ventana extends javax.swing.JFrame {
         }
         return false;
     }
-public boolean ID_Contenedor(String id_con){
-            for (int i = 0; i < contenedores.size(); i++) {
+
+    public boolean ID_Contenedor(String id_con) {
+        for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).id.equalsIgnoreCase(id_con)) {
                 return true;
             }
         }
-            return false;
-}
+        return false;
+    }
+
     private int hex(String color_hex) {
         return Integer.parseInt(color_hex, 16);
     }
@@ -141,4 +143,22 @@ public boolean ID_Contenedor(String id_con){
     private javax.swing.JScrollPane Scrollpane;
     private javax.swing.JPanel master;
     // End of variables declaration//GEN-END:variables
+
+    boolean ID_Contenedor_boton(String id) {
+        for (int i = 0; i < contenedores.size(); i++) {
+            if (contenedores.get(i).Buscar_boton(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean set_FS_boton(String id, NodoFs accion) {
+         for (int i = 0; i < contenedores.size(); i++) {
+            if (contenedores.get(i).Buscar_boton(id)) {
+                return contenedores.get(i).set_FS_boton(id,accion);
+            }
+        }
+        return false;
+    }
 }

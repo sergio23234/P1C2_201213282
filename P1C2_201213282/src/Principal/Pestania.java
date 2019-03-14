@@ -25,6 +25,8 @@ public class Pestania extends javax.swing.JPanel {
     public String ABpath;
     private int num;
     public ArrayList<est_ventana> ventanas;
+    public TablaSimbolos tabla;
+    private ArrayList<NodoError> errores;
 
     /**
      * Creates new form Pestania
@@ -37,6 +39,7 @@ public class Pestania extends javax.swing.JPanel {
         ABpath = "";
         this.num = num;
         ventanas = new ArrayList();
+        errores = new ArrayList();
     }
 
     /**
@@ -122,13 +125,12 @@ public class Pestania extends javax.swing.JPanel {
                 NodoFs nuevo = miParser.regresar_raiz();
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
-                TablaSimbolos tabla = pasada.analizar(errores);
+                tabla = pasada.analizar(errores);
                 Inicio ini = new Inicio(tabla, tabla, num);
                 ini.Analizar(nuevo, errores);
-                //recorrer_FS(nuevo,"");
                 recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
-                Imprimir_errores(miParser.errores);
+                // Imprimir_errores(miParser.errores);
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -209,7 +211,7 @@ public class Pestania extends javax.swing.JPanel {
     }
 
     public boolean Add_ventana(String color, int largo, int ancho, String id) {
-        est_ventana  ven= new est_ventana(id,largo,ancho,color);
+        est_ventana ven = new est_ventana(id, largo, ancho, color);
         boolean add = true;
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id)) {
@@ -217,7 +219,7 @@ public class Pestania extends javax.swing.JPanel {
                 break;
             }
         }
-        if (add) {     
+        if (add) {
             ventanas.add(ven);
             return true;
         }
@@ -227,12 +229,13 @@ public class Pestania extends javax.swing.JPanel {
     public boolean Add_contenedor_ventana(String id, int alto, int ancho, String color, boolean boder, int x, int y, String id_ventana) {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
-                est_ventana ven =ventanas.get(i);
-                return ven.add_contenedor(id, alto, ancho, color, boder, x, y);
+                est_ventana ven = ventanas.get(i);
+                return ven.add_contenedor(num,id, alto, ancho, color, boder, x, y);
             }
         }
         return false;
     }
+
     public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, NodoFs referencia, String texto, int alto, int ancho) {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).ID_Contenedor(id_con)) {
@@ -241,15 +244,33 @@ public class Pestania extends javax.swing.JPanel {
         }
         return false;
     }
-    
-    public void mostrar_ventana(String id_ventana){
+
+    public boolean add_FS_boton(String id, NodoFs accion) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            est_ventana ven = ventanas.get(i);
+            if (ven.ID_Contenedor_boton(id)) {
+                return ven.set_FS_boton(id, accion);
+            }
+        }
+        return false;
+    }
+
+    public void mostrar_ventana(String id_ventana) {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
                 ventanas.get(i).show();
             }
         }
-        
+
     }
+    public void Ejecutar_funcion(NodoFs raiz){
+        Inicio ini = new Inicio(tabla, tabla, num);
+        NodoFs nuevo = new NodoFs("cuerpo");
+        nuevo.add_NodoFs(raiz);
+        System.out.println("llamo a la funcion"+raiz.Tipo);
+        ini.Analizar(nuevo, errores);
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;

@@ -175,8 +175,8 @@ public class Componentes_FS {
             int ancho = Integer.valueOf(dato9.resultado.toString());
             boolean resultado = Menu.Lista.get(num).add_boton(id_ventana, id, fuente, tam, color, x, y, referencia, valor, alto, ancho);
             if (resultado) {
-                System.out.println("se añadio");
-                return new NodoRespuesta(false);
+                NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
+                return retorno;
             } else {
                 System.out.println("no se añadio");
                 return new NodoRespuesta(true);

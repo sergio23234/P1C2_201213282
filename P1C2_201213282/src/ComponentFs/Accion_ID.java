@@ -50,6 +50,10 @@ public class Accion_ID {
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;
+           case "click":
+                   boolean resultado= Menu.Lista.get(num).add_FS_boton(id.resultado.toString(), raiz.hijos.get(0));
+                   System.out.println(resultado+" si lo añadio "+id.resultado.toString());
+                   break;
         }
         return new NodoRespuesta(false);
     }
