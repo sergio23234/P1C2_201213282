@@ -2885,7 +2885,7 @@ class CUP$SintacticoFs$actions {
 		int e11left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
 		int e11right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
 		NodoFs e11 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("texto");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); RESULT=nuevo;
+		NodoFs nuevo = new NodoFs("texto");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_ctext",15, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-23)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
@@ -2927,7 +2927,7 @@ class CUP$SintacticoFs$actions {
 		int e11left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
 		int e11right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
 		NodoFs e11 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("Area");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); RESULT=nuevo;
+		NodoFs nuevo = new NodoFs("Area");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;
               CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_Atext",13, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-23)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;

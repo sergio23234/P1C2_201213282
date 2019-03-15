@@ -7,33 +7,45 @@ package Principal;
 
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.JLabel;
+import java.awt.GraphicsEnvironment;
+import javax.swing.*;
 
 /**
  *
  * @author sergi
  */
-public class Texto_Lab extends JLabel {
+public class Texto_Lab extends JTextField {
 
-    private String nombre;
+    public String nombre;
 
-    public Texto_Lab(String nombre) {
+    public Texto_Lab(int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
         super();
         this.nombre = nombre;
-    }
-
-    public void inicializar(String Fondo, int tamaño, int tipo, String color, int x, int y, int alto, int ancho,String texto) {
-        Font fondo = new Font(Fondo, tamaño, tipo);
+        String Fondo = averiguar_tipo_letra(fuente);
+        Font fondo = new Font(Fondo, ng,tam);
+        if (!defecto.equalsIgnoreCase("nulo") && !defecto.equalsIgnoreCase("undefined")) {
+            this.setText(defecto);
+        }
+        this.setBounds(x, y, ancho, alto);
+        this.setFont(fondo);
         color = color.replace("#", "").trim();
-        setForeground(new Color(hex(color)));
-        setBounds(x, y, alto,ancho);
-        setFont(fondo);
-        setText(texto);
+        this.setForeground(new Color(hex(color)));
         repaint();
+        
     }
 
     private int hex(String color_hex) {
         return Integer.parseInt(color_hex, 16);
+    }
+
+    public String averiguar_tipo_letra(String tipo) {
+        String[] fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        for (int i = 0; i < fontNames.length; i++) {
+            if (fontNames[i].equalsIgnoreCase(tipo)) {
+                return fontNames[i];
+            }
+        }
+        return "Arial";
     }
 
 }

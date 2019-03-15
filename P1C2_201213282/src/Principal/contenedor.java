@@ -22,12 +22,15 @@ public class contenedor extends JPanel implements ActionListener {
     int num_pest;
     private ArrayList<Label> Labels;
     private ArrayList<Buton> Botones;
+     private ArrayList<Texto_Lab> Fields;
 
     public contenedor(String id) {
         super();
+        this.setLayout(null);
         this.id = id;
         Botones = new ArrayList();
         Labels = new ArrayList();
+        Fields= new ArrayList();
     }
 
     public void inicializar_contendor(int num, int alto, int ancho, String color, boolean border, int x, int y) {
@@ -74,7 +77,7 @@ public class contenedor extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object fuente = e.getSource();
-        System.out.println("entro aqui en este envento");
+     //   System.out.println("entro aqui en este envento");
         if (!Botones.isEmpty()) {
             for (int i = 0; i < Botones.size(); i++) {
                 if (fuente == Botones.get(i)) {
@@ -82,7 +85,7 @@ public class contenedor extends JPanel implements ActionListener {
                         Menu.Lista.get(num_pest).Ejecutar_funcion(Botones.get(i).accion);
                     }
                     if (!(Botones.get(i).referencia.equalsIgnoreCase("nulo") || Botones.get(i).referencia.equalsIgnoreCase("undefined"))) {
-                        System.out.println(Botones.get(i).referencia + " es esta variable");
+                        //System.out.println(Botones.get(i).referencia + " es esta variable");
                         Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
                     }
                 }
@@ -107,6 +110,18 @@ public class contenedor extends JPanel implements ActionListener {
             }
         }
         return false;
+    }
+
+    boolean add_Field(int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
+        for(int i=0;i<Fields.size();i++){
+            if(Fields.get(i).nombre.equalsIgnoreCase(nombre)){
+                return false;
+            }
+        }
+        Texto_Lab field = new Texto_Lab(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+        Fields.add(field);
+        this.add(field);
+        return true;
     }
 
 }

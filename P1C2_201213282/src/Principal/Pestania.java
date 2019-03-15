@@ -118,6 +118,7 @@ public class Pestania extends javax.swing.JPanel {
             File archivo = new File(path);
             FileReader fr;
             try {
+                ventanas.clear();
                 fr = new FileReader(archivo);
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
@@ -312,14 +313,26 @@ public class Pestania extends javax.swing.JPanel {
         }
     }
 
-     public boolean add_texto(String contenedor,String fuente, int tam, int x, int y, String color, int negrita, int cursiva, String nombre) {
+    public boolean add_texto(String contenedor, String fuente, int tam, int x, int y, String color, int negrita, int cursiva, String nombre) {
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(contenedor);
-            if (numero!=-1) {
-               contenedor con = ventanas.get(i).contenedores.get(numero);
-               return con.add_texto(fuente, tam, x, y, color, negrita, cursiva, nombre);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_texto(fuente, tam, x, y, color, negrita, cursiva, nombre);
             }
         }
         return false;
     }
+    
+        public boolean add_Field(String contenedor, int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(contenedor);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_Field(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+            }
+        }
+        return false;
+    }
+    
 }

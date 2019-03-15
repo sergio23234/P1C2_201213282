@@ -27,6 +27,7 @@ public class Buton extends JButton {
     public Buton(String id,String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         this.tam = tam;
         this.id =id;
+        this.setLayout(null);
         this.color = color.replace("#", "").trim();
         this.referencia = referencia;
         this.setText(texto);

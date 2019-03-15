@@ -59,11 +59,15 @@ public class Accion_ID {
                 break;
             case "click":
                 boolean resultado = Menu.Lista.get(num).add_FS_boton(id.resultado.toString(), raiz.hijos.get(0));
-                System.out.println(resultado + " si lo añadio " + id.resultado.toString());
+                //System.out.println(resultado + " si lo añadio " + id.resultado.toString());
                 break;
             case "label":
-                Componentes_FS fs = new Componentes_FS(tabla,global,num);
+                Componentes_FS fs = new Componentes_FS(tabla, global, num);
                 fs.Analizar_Label(raiz, errores, id);
+                break;
+            case "texto":
+                Componentes_FS field = new Componentes_FS(tabla, global, num);
+                field.Analizar_Texto(raiz, errores, id);
                 break;
         }
 

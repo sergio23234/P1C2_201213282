@@ -62,7 +62,7 @@ public class Declarar_variables {
                     return new NodoRespuesta(false);
                 }
             case "contenedor":
-                System.out.println("entro aqui");
+              //  System.out.println("entro aqui");
                 Componentes_FS conte = new Componentes_FS(tabla, global, num);
                 nuevo = conte.Analizar_Contenedor(raiz, errores, raices);
                 if (nuevo.error) {
