@@ -22,8 +22,9 @@ public class contenedor extends JPanel implements ActionListener {
     int num_pest;
     private ArrayList<Label> Labels;
     private ArrayList<Buton> Botones;
-     private ArrayList<Texto_Lab> Fields;
-
+    private ArrayList<Texto_Lab> Fields;
+    private ArrayList<AreaTexto> Areas;
+    
     public contenedor(String id) {
         super();
         this.setLayout(null);
@@ -31,6 +32,7 @@ public class contenedor extends JPanel implements ActionListener {
         Botones = new ArrayList();
         Labels = new ArrayList();
         Fields= new ArrayList();
+        Areas= new ArrayList();
     }
 
     public void inicializar_contendor(int num, int alto, int ancho, String color, boolean border, int x, int y) {
@@ -123,5 +125,15 @@ public class contenedor extends JPanel implements ActionListener {
         this.add(field);
         return true;
     }
-
+    boolean add_Area(int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
+        for(int i=0;i<Areas.size();i++){
+            if(Areas.get(i).nombre.equalsIgnoreCase(nombre)){
+                return false;
+            }
+        }
+        AreaTexto field = new AreaTexto(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+        Areas.add(field);
+        this.add(field);
+        return true;
+    }
 }

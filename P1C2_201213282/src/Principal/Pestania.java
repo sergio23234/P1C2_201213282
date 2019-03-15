@@ -334,5 +334,14 @@ public class Pestania extends javax.swing.JPanel {
         }
         return false;
     }
-    
+    public boolean add_Area(String contenedor, int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(contenedor);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_Area(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+            }
+        }
+        return false;
+    }        
 }

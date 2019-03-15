@@ -69,6 +69,10 @@ public class Accion_ID {
                 Componentes_FS field = new Componentes_FS(tabla, global, num);
                 field.Analizar_Texto(raiz, errores, id);
                 break;
+            case "area":
+                Componentes_FS area=new Componentes_FS(tabla, global, num);
+                area.Analizar_Area(raiz, errores, id);
+                break;    
         }
 
         return new NodoRespuesta(false);
