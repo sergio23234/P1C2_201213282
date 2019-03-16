@@ -54,7 +54,7 @@ public class Pestania extends javax.swing.JPanel {
 
         jToggleButton1 = new javax.swing.JToggleButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Editor = new javax.swing.JTextArea();
+        Editor = new javax.swing.JEditorPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         Consola = new javax.swing.JTextArea();
         analizar = new javax.swing.JButton();
@@ -63,8 +63,7 @@ public class Pestania extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(204, 204, 204));
 
-        Editor.setColumns(20);
-        Editor.setRows(5);
+        Editor.setContentType("text/html"); // NOI18N
         jScrollPane1.setViewportView(Editor);
 
         Consola.setBackground(new java.awt.Color(102, 102, 102));
@@ -291,7 +290,7 @@ public class Pestania extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextArea Consola;
-    public javax.swing.JTextArea Editor;
+    public javax.swing.JEditorPane Editor;
     private javax.swing.JButton analizar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -378,7 +377,7 @@ public class Pestania extends javax.swing.JPanel {
         }
         return false;
     }
-    
+
     public boolean add_image(String id_ventana, String ruta, int x, int y, int alto, int ancho) {
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(id_ventana);

@@ -5,17 +5,23 @@
  */
 package Principal;
 
+import Analizadores.AnaFS;
+import Analizadores.AnaGxml;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
 
 /**
  *
@@ -26,7 +32,9 @@ public class Menu extends javax.swing.JFrame {
     /**
      * Creates new form Menu
      */
-    public static ArrayList<Pestania> Lista= new ArrayList();;
+    public static ArrayList<Pestania> Lista = new ArrayList();
+
+    ;
     public Menu() {
         initComponents();
         Crear_Pestania("nueva");
@@ -174,86 +182,133 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
-     if(Lista.size()>0){
-         
-         //empezamos implementando la clase JFileChooser para abrir archivos
-        JFileChooser JFC = new JFileChooser();
-        //filtro que muestra solo los archivos con extension *.edu
-        JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *.gxml *.fs", "gxml","GXML","fs","FS"));
-        //se comprueba si se ha dado al boton aceptar
-        int abrir = JFC.showDialog(null, "Abrir");
-        if (abrir == JFileChooser.APPROVE_OPTION) {
-            FileReader FR = null;
-            BufferedReader BR = null;
-            try {
-                //abro el fichero y creo un BufferedReader para hacer
-                File archivo = JFC.getSelectedFile();//abre un archivo .lengf
-                String PATH = JFC.getSelectedFile().getAbsolutePath();
-                if(PATH.toLowerCase().endsWith(".fs")||PATH.toLowerCase().endsWith(".gxml")){
-                    FR = new FileReader(archivo);
-                    BR = new BufferedReader(FR);
-                    
-                    //leyendo el archivo
-                    String linea;//variable para leer linea por linea el archivo de entrada
-                    System.out.println(archivo.getAbsolutePath());
-                    boolean abierto=false;
-                    for(int i=0;i<Lista.size();i++){
-                        if(Lista.get(i).path.compareTo(archivo.getAbsolutePath())==0){
-                            JOptionPane.showMessageDialog(this, "Archivo Abierto","Oops! Error", JOptionPane.ERROR_MESSAGE);
-                            abierto=true;
-                        }
-                    }
-                    if(!abierto){
-                        int num = Pestanias.getSelectedIndex();
-                        Pestania actual = Lista.get(num);
-                        actual.path = archivo.getAbsolutePath();
-                        actual.ABpath =archivo.getParent();
-                        actual.Editor.setText("");//limpiamos el textArea antes de sobreescribir
-                        while((linea=BR.readLine())!=null){ //cuando termina el texto del archivo?
-                            actual.Editor.append(linea+"\n");//utilizamos append para escribir en el textArea
-                        }
-                    }
-                    
-                }else{
-                    JOptionPane.showMessageDialog(this, "Archivo no soportado","Oops! Error", JOptionPane.ERROR_MESSAGE);                    
-                }
-
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-                //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
-            //cerramos el fichero, para asegurar que se cierra tanto
-            // si todo va bien si salta una excepcion
-            } catch (IOException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
+        if (Lista.size() > 0) {
+            //empezamos implementando la clase JFileChooser para abrir archivos
+            JFileChooser JFC = new JFileChooser();
+            //filtro que muestra solo los archivos con extension *.edu
+            JFC.setFileFilter(new FileNameExtensionFilter("todos los archivos *.gxml *.fs", "gxml", "GXML", "fs", "FS"));
+            //se comprueba si se ha dado al boton aceptar
+            int abrir = JFC.showDialog(null, "Abrir");
+            if (abrir == JFileChooser.APPROVE_OPTION) {
+                FileReader FR = null;
+                BufferedReader BR = null;
                 try {
-                    if(null!= FR){
-                        FR.close();
+                    //abro el fichero y creo un BufferedReader para hacer
+                    File archivo = JFC.getSelectedFile();//abre un archivo .lengf
+                    String PATH = JFC.getSelectedFile().getAbsolutePath();
+                    if (PATH.toLowerCase().endsWith(".fs") || PATH.toLowerCase().endsWith(".gxml")) {
+                        FR = new FileReader(archivo);
+                        BR = new BufferedReader(FR);
+
+                        //leyendo el archivo
+                        String linea;//variable para leer linea por linea el archivo de entrada
+                        //System.out.println(archivo.getAbsolutePath());
+                        boolean abierto = false;
+                        for (int i = 0; i < Lista.size(); i++) {
+                            if (Lista.get(i).path.compareTo(archivo.getAbsolutePath()) == 0) {
+                                JOptionPane.showMessageDialog(this, "Archivo Abierto", "Oops! Error", JOptionPane.ERROR_MESSAGE);
+                                abierto = true;
+                            }
+                        }
+                        if (!abierto) {
+                            int num = Pestanias.getSelectedIndex();
+                            Pestania actual = Lista.get(num);
+                            actual.path = archivo.getAbsolutePath();
+                            actual.ABpath = archivo.getParent();
+                            if (actual.path.endsWith(".gxml")) {
+                                FileReader fr = new FileReader(archivo);
+                                AnaGxml lexi = new AnaGxml(fr);
+                                lexi.yylex();
+                                String texto = "";
+                                for (int i = 0; i < lexi.Elista.size(); i++) {
+                                    texto += lexi.Elista.get(i);
+                                }
+                                actual.Editor.setText(texto);
+                            } else {
+                                FileReader fr = new FileReader(archivo);
+                                AnaFS lexi = new AnaFS(fr);
+                                lexi.yylex();
+                                String texto = "";
+                                for (int i = 0; i < lexi.Elista.size(); i++) {
+                                    texto += lexi.Elista.get(i);
+                                }
+                                actual.Editor.setText(texto);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Archivo no soportado", "Oops! Error", JOptionPane.ERROR_MESSAGE);
                     }
 
-                } catch (IOException ex) {
+                } catch (FileNotFoundException ex) {
                     ex.printStackTrace();
                     //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+                    //cerramos el fichero, para asegurar que se cierra tanto
+                    // si todo va bien si salta una excepcion
+                } catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        if (null != FR) {
+                            FR.close();
+                        }
+
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe existir por lo menos una pestaña para abrir un archivo", "Oops! Error", JOptionPane.ERROR_MESSAGE);
         }
-     }
-     else{
-         JOptionPane.showMessageDialog(this, "Debe existir por lo menos una pestaña para abrir un archivo","Oops! Error", JOptionPane.ERROR_MESSAGE);
-     }   
     }//GEN-LAST:event_abrirActionPerformed
 
     private void guardarcomoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarcomoActionPerformed
         // TODO add your handling code here:
+        if (Lista.size() > 0) {
+            GuardarComo();
+        }
     }//GEN-LAST:event_guardarcomoActionPerformed
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         // TODO add your handling code here:
+        if (Lista.size() > 0) {
+            int num = Pestanias.getSelectedIndex();
+            Pestania actual = Lista.get(num);
+            if (actual.path.equalsIgnoreCase("")) {
+                GuardarComo();
+            } else {
+                try {
+                    String texto = actual.Editor.getDocument().getText(0, actual.Editor.getDocument().getLength());
+                    String devuelto = serie_texto(texto, actual.path);
+                    File archivo = new File(actual.path);
+                    FileWriter FR;
+                    try {
+                        String[] lineas = devuelto.split("\n");
+                        FR = new FileWriter(archivo);
+                        BufferedWriter BR = new BufferedWriter(FR);
+                        for (String nuevalinea : lineas) {
+                            BR.write(nuevalinea.trim());
+                            BR.write("\n");
+                        }
+                        BR.close();
+                        FR.close();
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } catch (BadLocationException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }//GEN-LAST:event_guardarActionPerformed
 
     private void erroresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_erroresActionPerformed
         // TODO add your handling code here:
-            int num = Pestanias.getSelectedIndex();
+        int num = Pestanias.getSelectedIndex();
         if (num >= 0) {
             Pestania pest = Lista.get(num);
 
@@ -295,6 +350,48 @@ public class Menu extends javax.swing.JFrame {
         });
     }
 
+    private void GuardarComo() {
+        if (Lista.size() > 0) {
+            try {
+                int num = Pestanias.getSelectedIndex();
+                Pestania actual = Lista.get(num);
+                String texto = actual.Editor.getDocument().getText(0, actual.Editor.getDocument().getLength());//variable para comparacion
+
+                if (texto.matches("[[ ]*[\n]*[\t]]*")) {//compara si en el JTextArea hay texto sino muestrtra un mensaje en pantalla
+                    JOptionPane.showMessageDialog(null, "No hay texto para guardar!", "Oops! Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+
+                    JFileChooser fileChooser = new JFileChooser();
+                    fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("todos los archivos *.gxml *.fs", "fs", "gxml"));//filtro para ver solo archivos .edu
+                    int seleccion = fileChooser.showSaveDialog(null);
+                    try {
+                        if (seleccion == JFileChooser.APPROVE_OPTION) {//comprueba si ha presionado el boton de aceptar
+                            File JFC = fileChooser.getSelectedFile();
+                            String PATH = JFC.getAbsolutePath();//obtenemos el path del archivo a guardar
+                            if (!(PATH.toLowerCase().endsWith(".fs")) && !(PATH.toLowerCase().endsWith(".gxml"))) {//comprobamos si a la hora de guardar obtuvo la extension y si no se la asignamos
+                                JOptionPane.showMessageDialog(null, "No hay una extension fijada", "Error al guardar el archivo!", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                String JTextArea = serie_texto(texto, PATH);
+                                PrintWriter printwriter = new PrintWriter(JFC);
+                                printwriter.print(JTextArea);//escribe en el archivo todo lo que se encuentre en el JTextArea
+                                printwriter.close();//cierra el archivo
+                                actual.path = PATH;
+                                JOptionPane.showMessageDialog(null, "Guardado exitoso!", "Guardado exitoso!", JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                        }
+                    } catch (Exception e) {//por alguna excepcion salta un mensaje de error
+                        JOptionPane.showMessageDialog(null, "Error al guardar el archivo!", "Oops! Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } catch (BadLocationException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe existir por lo menos una pestaña para abrir un archivo", "Oops! Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Pestanias;
     private javax.swing.JScrollPane Scroll;
@@ -314,14 +411,72 @@ public class Menu extends javax.swing.JFrame {
     private void Crear_Pestania(String dato) {
         Pestania nueva = new Pestania(Lista.size());
         Lista.add(nueva);
-        Pestanias.add(nueva,dato+Lista.size());
-        repaint();    
+        Pestanias.add(nueva, dato + Lista.size());
+        repaint();
     }
-    private void Cerrar_Pestania(){
+
+    private void Cerrar_Pestania() {
         int num = Pestanias.getSelectedIndex();
-        if(num>=0){
+        if (num >= 0) {
             Lista.remove(num);
-        Pestanias.remove(num);
+            Pestanias.remove(num);
+        }
+    }
+
+    public String serie_texto(String texto, String path) {
+        if (path.endsWith(".gxml")) {
+            String devuelto = "";
+            String[] lineas = texto.trim().split(">");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
+                    devuelto += lineas[i].trim() + ">\n";
+                }
+            }
+            String nuevo = "";
+            lineas = devuelto.trim().split("</");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
+                    nuevo += lineas[i].trim() + "\n</";
+                }
+            }
+            devuelto = "";
+            lineas = nuevo.split("\n");
+            for (int i = 0; i < lineas.length; i++) {
+                if (i != lineas.length - 1) {
+                    devuelto += lineas[i].trim() + "\n";
+                }
+            }
+            return devuelto;
+        } else {
+            String devuelto = "";
+            String[] lineas = texto.trim().split("\\{");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
+                    devuelto += lineas[i].trim() + "{\n";
+                }
+            }
+            String nuevo = "";
+            lineas = devuelto.split("\\}");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
+                    nuevo += lineas[i].trim() + "}\n";
+                }
+            }
+            String retorno = "";
+            lineas = nuevo.split(";");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
+                    retorno += lineas[i].trim() + ";\n";
+                }
+            }
+            devuelto = "";
+            lineas = retorno.split("\n");
+            for (int i = 0; i < lineas.length; i++) {
+                if (i != lineas.length - 1) {
+                    devuelto += lineas[i].trim() + "\n";
+                }
+            }
+            return devuelto;
         }
     }
 }
