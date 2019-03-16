@@ -70,11 +70,25 @@ public class Accion_ID {
                 field.Analizar_Texto(raiz, errores, id);
                 break;
             case "area":
-                Componentes_FS area=new Componentes_FS(tabla, global, num);
+                Componentes_FS area = new Componentes_FS(tabla, global, num);
                 area.Analizar_Area(raiz, errores, id);
-                break;    
+                break;
+            case "desplegable":
+                area = new Componentes_FS(tabla, global, num);
+                area.Analizar_Combo(raiz, errores, id);
+                break;
+            case "reproductor":
+                area = new Componentes_FS(tabla, global, num);
+                area.Analizar_IMV(raiz, errores, id, 1);
+                break;
+            case "imagen":
+                area = new Componentes_FS(tabla, global, num);
+                area.Analizar_Imagen(raiz, errores, id);
+                break;   case "numero":
+                area = new Componentes_FS(tabla, global, num);
+                area.Analizar_Numero(raiz, errores, id);
+                break;
         }
-
         return new NodoRespuesta(false);
     }
 

@@ -74,7 +74,7 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\002\030\006\000\002\027\006\000\002\074\003\000\002" +
     "\074\003\000\002\025\012\000\002\024\021\000\002\023" +
     "\027\000\002\022\024\000\002\021\032\000\002\017\032" +
-    "\000\002\020\022\000\002\016\022\000\002\015\020\000" +
+    "\000\002\020\024\000\002\016\022\000\002\015\016\000" +
     "\002\014\020\000\002\013\020\000\002\007\006\000\002" +
     "\007\005\000\002\006\006\000\002\006\005\000\002\026" +
     "\006\000\002\005\003\000\002\005\003\000\002\005\003" +
@@ -571,21 +571,21 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\036\ufffe\037\ufffe\040\ufffe\041\ufffe\042\ufffe\043\ufffe\046" +
     "\ufffe\057\ufffe\001\002\000\024\002\uff71\030\uff71\036\uff71" +
     "\040\uff71\041\uff71\042\uff71\043\uff71\046\uff71\057\uff71\001" +
-    "\002\000\004\016\u01e4\001\002\000\004\016\u01d5\001\002" +
+    "\002\000\004\016\u01e4\001\002\000\004\016\u01d3\001\002" +
     "\000\004\024\uff6b\001\002\000\004\024\uff63\001\002\000" +
-    "\004\016\u01d1\001\002\000\004\016\u01ba\001\002\000\040" +
+    "\004\016\u01cf\001\002\000\004\016\u01b8\001\002\000\040" +
     "\024\uff61\047\162\050\157\052\151\053\150\054\152\055" +
     "\144\056\153\066\163\067\145\070\143\071\161\073\146" +
-    "\074\137\075\154\001\002\000\004\016\u01ad\001\002\000" +
+    "\074\137\075\154\001\002\000\004\016\u01ab\001\002\000" +
     "\004\024\uff69\001\002\000\004\024\uff6a\001\002\000\004" +
-    "\016\u0196\001\002\000\004\024\uff6c\001\002\000\004\016" +
-    "\u0191\001\002\000\004\010\u018e\001\002\000\004\024\u018d" +
-    "\001\002\000\004\010\u018a\001\002\000\004\024\uff65\001" +
-    "\002\000\004\016\u017d\001\002\000\004\024\uff62\001\002" +
-    "\000\004\051\u017a\001\002\000\004\024\u0179\001\002\000" +
+    "\016\u0194\001\002\000\004\024\uff6c\001\002\000\004\016" +
+    "\u018f\001\002\000\004\010\u018c\001\002\000\004\024\u018b" +
+    "\001\002\000\004\010\u0188\001\002\000\004\024\uff65\001" +
+    "\002\000\004\016\u017b\001\002\000\004\024\uff62\001\002" +
+    "\000\004\051\u0178\001\002\000\004\024\u0177\001\002\000" +
     "\004\024\uff68\001\002\000\004\024\uff66\001\002\000\004" +
-    "\024\uff67\001\002\000\004\010\u0176\001\002\000\004\024" +
-    "\uff60\001\002\000\004\024\u0175\001\002\000\004\016\u0166" +
+    "\024\uff67\001\002\000\004\010\u0174\001\002\000\004\024" +
+    "\uff60\001\002\000\004\024\u0173\001\002\000\004\016\u0164" +
     "\001\002\000\004\016\u0159\001\002\000\004\010\u0156\001" +
     "\002\000\004\016\u0145\001\002\000\032\013\054\016\061" +
     "\025\052\051\237\057\050\060\047\061\065\062\060\063" +
@@ -635,10 +635,10 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\001\002\000\012\023\123\026\122\027\121\032\u0161\001" +
     "\002\000\026\013\054\016\061\025\052\057\050\060\047" +
     "\061\065\062\060\063\051\064\066\114\057\001\002\000" +
-    "\012\023\123\026\122\027\121\032\u0163\001\002\000\026" +
-    "\013\054\016\061\025\052\057\050\060\047\061\065\062" +
-    "\060\063\051\064\066\114\057\001\002\000\012\017\u0165" +
-    "\023\123\026\122\027\121\001\002\000\004\024\uff84\001" +
+    "\012\017\u0163\023\123\026\122\027\121\001\002\000\004" +
+    "\024\uff84\001\002\000\026\013\054\016\061\025\052\057" +
+    "\050\060\047\061\065\062\060\063\051\064\066\114\057" +
+    "\001\002\000\012\023\123\026\122\027\121\032\u0166\001" +
     "\002\000\026\013\054\016\061\025\052\057\050\060\047" +
     "\061\065\062\060\063\051\064\066\114\057\001\002\000" +
     "\012\023\123\026\122\027\121\032\u0168\001\002\000\026" +
@@ -654,21 +654,21 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
     "\000\012\023\123\026\122\027\121\032\u0170\001\002\000" +
     "\026\013\054\016\061\025\052\057\050\060\047\061\065" +
-    "\062\060\063\051\064\066\114\057\001\002\000\012\023" +
-    "\123\026\122\027\121\032\u0172\001\002\000\026\013\054" +
-    "\016\061\025\052\057\050\060\047\061\065\062\060\063" +
-    "\051\064\066\114\057\001\002\000\012\017\u0174\023\123" +
-    "\026\122\027\121\001\002\000\004\024\uff85\001\002\000" +
-    "\026\002\uffb9\015\uffb9\030\uffb9\036\uffb9\040\uffb9\041\uffb9" +
-    "\042\uffb9\043\uffb9\046\uffb9\057\uffb9\001\002\000\026\013" +
-    "\054\016\061\025\052\057\050\060\047\061\065\062\060" +
-    "\063\051\064\066\114\057\001\002\000\012\023\123\024" +
-    "\u0178\026\122\027\121\001\002\000\026\002\uffbb\015\uffbb" +
-    "\030\uffbb\036\uffbb\040\uffbb\041\uffbb\042\uffbb\043\uffbb\046" +
-    "\uffbb\057\uffbb\001\002\000\026\002\uff6d\015\uff6d\030\uff6d" +
-    "\036\uff6d\040\uff6d\041\uff6d\042\uff6d\043\uff6d\046\uff6d\057" +
-    "\uff6d\001\002\000\004\016\u017b\001\002\000\004\017\u017c" +
-    "\001\002\000\004\024\uff64\001\002\000\026\013\054\016" +
+    "\062\060\063\051\064\066\114\057\001\002\000\012\017" +
+    "\u0172\023\123\026\122\027\121\001\002\000\004\024\uff85" +
+    "\001\002\000\026\002\uffb9\015\uffb9\030\uffb9\036\uffb9\040" +
+    "\uffb9\041\uffb9\042\uffb9\043\uffb9\046\uffb9\057\uffb9\001\002" +
+    "\000\026\013\054\016\061\025\052\057\050\060\047\061" +
+    "\065\062\060\063\051\064\066\114\057\001\002\000\012" +
+    "\023\123\024\u0176\026\122\027\121\001\002\000\026\002" +
+    "\uffbb\015\uffbb\030\uffbb\036\uffbb\040\uffbb\041\uffbb\042\uffbb" +
+    "\043\uffbb\046\uffbb\057\uffbb\001\002\000\026\002\uff6d\015" +
+    "\uff6d\030\uff6d\036\uff6d\040\uff6d\041\uff6d\042\uff6d\043\uff6d" +
+    "\046\uff6d\057\uff6d\001\002\000\004\016\u0179\001\002\000" +
+    "\004\017\u017a\001\002\000\004\024\uff64\001\002\000\026" +
+    "\013\054\016\061\025\052\057\050\060\047\061\065\062" +
+    "\060\063\051\064\066\114\057\001\002\000\012\023\123" +
+    "\026\122\027\121\032\u017d\001\002\000\026\013\054\016" +
     "\061\025\052\057\050\060\047\061\065\062\060\063\051" +
     "\064\066\114\057\001\002\000\012\023\123\026\122\027" +
     "\121\032\u017f\001\002\000\026\013\054\016\061\025\052" +
@@ -681,25 +681,25 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\062\060\063\051\064\066\114\057\001\002\000\012\023" +
     "\123\026\122\027\121\032\u0185\001\002\000\026\013\054" +
     "\016\061\025\052\057\050\060\047\061\065\062\060\063" +
-    "\051\064\066\114\057\001\002\000\012\023\123\026\122" +
-    "\027\121\032\u0187\001\002\000\026\013\054\016\061\025" +
+    "\051\064\066\114\057\001\002\000\012\017\u0187\023\123" +
+    "\026\122\027\121\001\002\000\004\024\uff83\001\002\000" +
+    "\026\013\054\016\061\025\052\057\050\060\047\061\065" +
+    "\062\060\063\051\064\066\114\057\001\002\000\012\023" +
+    "\123\024\u018a\026\122\027\121\001\002\000\026\002\uffbe" +
+    "\015\uffbe\030\uffbe\036\uffbe\040\uffbe\041\uffbe\042\uffbe\043" +
+    "\uffbe\046\uffbe\057\uffbe\001\002\000\026\002\uffba\015\uffba" +
+    "\030\uffba\036\uffba\040\uffba\041\uffba\042\uffba\043\uffba\046" +
+    "\uffba\057\uffba\001\002\000\026\013\054\016\061\025\052" +
+    "\057\050\060\047\061\065\062\060\063\051\064\066\114" +
+    "\057\001\002\000\012\023\123\024\u018e\026\122\027\121" +
+    "\001\002\000\026\002\uffbc\015\uffbc\030\uffbc\036\uffbc\040" +
+    "\uffbc\041\uffbc\042\uffbc\043\uffbc\046\uffbc\057\uffbc\001\002" +
+    "\000\006\017\u0191\057\u0192\001\002\000\004\017\u0193\001" +
+    "\002\000\004\024\uff80\001\002\000\004\016\140\001\002" +
+    "\000\004\024\uff81\001\002\000\026\013\054\016\061\025" +
     "\052\057\050\060\047\061\065\062\060\063\051\064\066" +
-    "\114\057\001\002\000\012\017\u0189\023\123\026\122\027" +
-    "\121\001\002\000\004\024\uff83\001\002\000\026\013\054" +
-    "\016\061\025\052\057\050\060\047\061\065\062\060\063" +
-    "\051\064\066\114\057\001\002\000\012\023\123\024\u018c" +
-    "\026\122\027\121\001\002\000\026\002\uffbe\015\uffbe\030" +
-    "\uffbe\036\uffbe\040\uffbe\041\uffbe\042\uffbe\043\uffbe\046\uffbe" +
-    "\057\uffbe\001\002\000\026\002\uffba\015\uffba\030\uffba\036" +
-    "\uffba\040\uffba\041\uffba\042\uffba\043\uffba\046\uffba\057\uffba" +
-    "\001\002\000\026\013\054\016\061\025\052\057\050\060" +
-    "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
-    "\000\012\023\123\024\u0190\026\122\027\121\001\002\000" +
-    "\026\002\uffbc\015\uffbc\030\uffbc\036\uffbc\040\uffbc\041\uffbc" +
-    "\042\uffbc\043\uffbc\046\uffbc\057\uffbc\001\002\000\006\017" +
-    "\u0193\057\u0194\001\002\000\004\017\u0195\001\002\000\004" +
-    "\024\uff80\001\002\000\004\016\140\001\002\000\004\024" +
-    "\uff81\001\002\000\026\013\054\016\061\025\052\057\050" +
+    "\114\057\001\002\000\012\023\123\026\122\027\121\032" +
+    "\u0196\001\002\000\026\013\054\016\061\025\052\057\050" +
     "\060\047\061\065\062\060\063\051\064\066\114\057\001" +
     "\002\000\012\023\123\026\122\027\121\032\u0198\001\002" +
     "\000\026\013\054\016\061\025\052\057\050\060\047\061" +
@@ -726,10 +726,10 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\057\001\002\000\012\023\123\026\122\027\121\032\u01a8" +
     "\001\002\000\026\013\054\016\061\025\052\057\050\060" +
     "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
-    "\000\012\023\123\026\122\027\121\032\u01aa\001\002\000" +
-    "\026\013\054\016\061\025\052\057\050\060\047\061\065" +
-    "\062\060\063\051\064\066\114\057\001\002\000\012\017" +
-    "\u01ac\023\123\026\122\027\121\001\002\000\004\024\uff87" +
+    "\000\012\017\u01aa\023\123\026\122\027\121\001\002\000" +
+    "\004\024\uff87\001\002\000\026\013\054\016\061\025\052" +
+    "\057\050\060\047\061\065\062\060\063\051\064\066\114" +
+    "\057\001\002\000\012\023\123\026\122\027\121\032\u01ad" +
     "\001\002\000\026\013\054\016\061\025\052\057\050\060" +
     "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
     "\000\012\023\123\026\122\027\121\032\u01af\001\002\000" +
@@ -743,11 +743,11 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\114\057\001\002\000\012\023\123\026\122\027\121\032" +
     "\u01b5\001\002\000\026\013\054\016\061\025\052\057\050" +
     "\060\047\061\065\062\060\063\051\064\066\114\057\001" +
-    "\002\000\012\023\123\026\122\027\121\032\u01b7\001\002" +
-    "\000\026\013\054\016\061\025\052\057\050\060\047\061" +
-    "\065\062\060\063\051\064\066\114\057\001\002\000\012" +
-    "\017\u01b9\023\123\026\122\027\121\001\002\000\004\024" +
-    "\uff82\001\002\000\026\013\054\016\061\025\052\057\050" +
+    "\002\000\012\017\u01b7\023\123\026\122\027\121\001\002" +
+    "\000\004\024\uff82\001\002\000\026\013\054\016\061\025" +
+    "\052\057\050\060\047\061\065\062\060\063\051\064\066" +
+    "\114\057\001\002\000\012\023\123\026\122\027\121\032" +
+    "\u01ba\001\002\000\026\013\054\016\061\025\052\057\050" +
     "\060\047\061\065\062\060\063\051\064\066\114\057\001" +
     "\002\000\012\023\123\026\122\027\121\032\u01bc\001\002" +
     "\000\026\013\054\016\061\025\052\057\050\060\047\061" +
@@ -774,12 +774,12 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\057\001\002\000\012\023\123\026\122\027\121\032\u01cc" +
     "\001\002\000\026\013\054\016\061\025\052\057\050\060" +
     "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
-    "\000\012\023\123\026\122\027\121\032\u01ce\001\002\000" +
-    "\026\013\054\016\061\025\052\057\050\060\047\061\065" +
-    "\062\060\063\051\064\066\114\057\001\002\000\012\017" +
-    "\u01d0\023\123\026\122\027\121\001\002\000\004\024\uff88" +
-    "\001\002\000\006\017\u01d3\057\u0194\001\002\000\004\017" +
-    "\u01d4\001\002\000\004\024\uff7e\001\002\000\004\024\uff7f" +
+    "\000\012\017\u01ce\023\123\026\122\027\121\001\002\000" +
+    "\004\024\uff88\001\002\000\006\017\u01d1\057\u0192\001\002" +
+    "\000\004\017\u01d2\001\002\000\004\024\uff7e\001\002\000" +
+    "\004\024\uff7f\001\002\000\026\013\054\016\061\025\052" +
+    "\057\050\060\047\061\065\062\060\063\051\064\066\114" +
+    "\057\001\002\000\012\023\123\026\122\027\121\032\u01d5" +
     "\001\002\000\026\013\054\016\061\025\052\057\050\060" +
     "\047\061\065\062\060\063\051\064\066\114\057\001\002" +
     "\000\012\023\123\026\122\027\121\032\u01d7\001\002\000" +
@@ -800,7 +800,7 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\054\016\061\025\052\057\050\060\047\061\065\062\060" +
     "\063\051\064\066\114\057\001\002\000\012\017\u01e3\023" +
     "\123\026\122\027\121\001\002\000\004\024\uff86\001\002" +
-    "\000\004\057\u0194\001\002\000\004\017\u01e6\001\002\000" +
+    "\000\004\057\u0192\001\002\000\004\017\u01e6\001\002\000" +
     "\004\024\uff7d\001\002\000\026\002\uff74\015\uff74\030\uff74" +
     "\036\uff74\040\uff74\041\uff74\042\uff74\043\uff74\046\uff74\057" +
     "\uff74\001\002\000\106\004\uffb5\006\uffb5\007\uffb5\010\uffb5" +
@@ -1029,9 +1029,9 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\001\001\000\002\001\001\000\020\034\055\044\054\060" +
     "\062\061\045\062\u015f\063\063\065\061\001\001\000\002" +
     "\001\001\000\020\034\055\044\054\060\062\061\045\062" +
-    "\u0161\063\063\065\061\001\001\000\002\001\001\000\020" +
-    "\034\055\044\054\060\062\061\045\062\u0163\063\063\065" +
-    "\061\001\001\000\002\001\001\000\002\001\001\000\020" +
+    "\u0161\063\063\065\061\001\001\000\002\001\001\000\002" +
+    "\001\001\000\020\034\055\044\054\060\062\061\045\062" +
+    "\u0164\063\063\065\061\001\001\000\002\001\001\000\020" +
     "\034\055\044\054\060\062\061\045\062\u0166\063\063\065" +
     "\061\001\001\000\002\001\001\000\020\034\055\044\054" +
     "\060\062\061\045\062\u0168\063\063\065\061\001\001\000" +
@@ -1042,12 +1042,12 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\054\060\062\061\045\062\u016e\063\063\065\061\001\001" +
     "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
     "\045\062\u0170\063\063\065\061\001\001\000\002\001\001" +
-    "\000\020\034\055\044\054\060\062\061\045\062\u0172\063" +
-    "\063\065\061\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
-    "\045\062\u0176\063\063\065\061\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\020\034\055\044" +
+    "\054\060\062\061\045\062\u0174\063\063\065\061\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\020\034\055\044\054" +
+    "\002\001\001\000\002\001\001\000\002\001\001\000\020" +
+    "\034\055\044\054\060\062\061\045\062\u017b\063\063\065" +
+    "\061\001\001\000\002\001\001\000\020\034\055\044\054" +
     "\060\062\061\045\062\u017d\063\063\065\061\001\001\000" +
     "\002\001\001\000\020\034\055\044\054\060\062\061\045" +
     "\062\u017f\063\063\065\061\001\001\000\002\001\001\000" +
@@ -1056,14 +1056,14 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\054\060\062\061\045\062\u0183\063\063\065\061\001\001" +
     "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
     "\045\062\u0185\063\063\065\061\001\001\000\002\001\001" +
-    "\000\020\034\055\044\054\060\062\061\045\062\u0187\063" +
-    "\063\065\061\001\001\000\002\001\001\000\002\001\001" +
-    "\000\020\034\055\044\054\060\062\061\045\062\u018a\063" +
-    "\063\065\061\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
-    "\045\062\u018e\063\063\065\061\001\001\000\002\001\001" +
-    "\000\002\001\001\000\004\034\u0191\001\001\000\002\001" +
+    "\045\062\u0188\063\063\065\061\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\020\034\055\044" +
+    "\054\060\062\061\045\062\u018c\063\063\065\061\001\001" +
+    "\000\002\001\001\000\002\001\001\000\004\034\u018f\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
+    "\045\062\u0194\063\063\065\061\001\001\000\002\001\001" +
     "\000\020\034\055\044\054\060\062\061\045\062\u0196\063" +
     "\063\065\061\001\001\000\002\001\001\000\020\034\055" +
     "\044\054\060\062\061\045\062\u0198\063\063\065\061\001" +
@@ -1081,8 +1081,8 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\060\062\061\045\062\u01a6\063\063\065\061\001\001\000" +
     "\002\001\001\000\020\034\055\044\054\060\062\061\045" +
     "\062\u01a8\063\063\065\061\001\001\000\002\001\001\000" +
-    "\020\034\055\044\054\060\062\061\045\062\u01aa\063\063" +
-    "\065\061\001\001\000\002\001\001\000\002\001\001\000" +
+    "\002\001\001\000\020\034\055\044\054\060\062\061\045" +
+    "\062\u01ab\063\063\065\061\001\001\000\002\001\001\000" +
     "\020\034\055\044\054\060\062\061\045\062\u01ad\063\063" +
     "\065\061\001\001\000\002\001\001\000\020\034\055\044" +
     "\054\060\062\061\045\062\u01af\063\063\065\061\001\001" +
@@ -1091,8 +1091,8 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\000\020\034\055\044\054\060\062\061\045\062\u01b3\063" +
     "\063\065\061\001\001\000\002\001\001\000\020\034\055" +
     "\044\054\060\062\061\045\062\u01b5\063\063\065\061\001" +
-    "\001\000\002\001\001\000\020\034\055\044\054\060\062" +
-    "\061\045\062\u01b7\063\063\065\061\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\020\034\055" +
+    "\044\054\060\062\061\045\062\u01b8\063\063\065\061\001" +
     "\001\000\002\001\001\000\020\034\055\044\054\060\062" +
     "\061\045\062\u01ba\063\063\065\061\001\001\000\002\001" +
     "\001\000\020\034\055\044\054\060\062\061\045\062\u01bc" +
@@ -1110,10 +1110,10 @@ public class SintacticoFs extends java_cup.runtime.lr_parser {
     "\020\034\055\044\054\060\062\061\045\062\u01ca\063\063" +
     "\065\061\001\001\000\002\001\001\000\020\034\055\044" +
     "\054\060\062\061\045\062\u01cc\063\063\065\061\001\001" +
-    "\000\002\001\001\000\020\034\055\044\054\060\062\061" +
-    "\045\062\u01ce\063\063\065\061\001\001\000\002\001\001" +
-    "\000\002\001\001\000\004\034\u01d1\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\020\034\055" +
+    "\000\002\001\001\000\002\001\001\000\004\034\u01cf\001" +
+    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
+    "\000\020\034\055\044\054\060\062\061\045\062\u01d3\063" +
+    "\063\065\061\001\001\000\002\001\001\000\020\034\055" +
     "\044\054\060\062\061\045\062\u01d5\063\063\065\061\001" +
     "\001\000\002\001\001\000\020\034\055\044\054\060\062" +
     "\061\045\062\u01d7\063\063\065\061\001\001\000\002\001" +
@@ -2933,32 +2933,35 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 123: // Acc_Cnume ::= ccnu ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
+          case 123: // Acc_Cnume ::= ccnu ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
             {
               NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).value;
-		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).left;
-		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).right;
-		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).value;
-		int e3left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).left;
-		int e3right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).right;
-		NodoFs e3 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).value;
-		int e4left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).left;
-		int e4right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).right;
-		NodoFs e4 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).value;
-		int e5left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).left;
-		int e5right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).right;
-		NodoFs e5 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).value;
-		int e6left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).left;
-		int e6right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).right;
-		NodoFs e6 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).value;
-		int e7left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
-		int e7right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
-		NodoFs e7 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("numero");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); RESULT=nuevo;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_Cnume",14, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-15)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-15)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-15)).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-15)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).right;
+		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)).value;
+		int e3left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).left;
+		int e3right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).right;
+		NodoFs e3 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).value;
+		int e4left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).left;
+		int e4right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).right;
+		NodoFs e4 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).value;
+		int e5left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).left;
+		int e5right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).right;
+		NodoFs e5 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).value;
+		int e6left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).left;
+		int e6right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).right;
+		NodoFs e6 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).value;
+		int e7left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).left;
+		int e7right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).right;
+		NodoFs e7 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).value;
+		int e8left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
+		int e8right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
+		NodoFs e8 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
+		NodoFs nuevo = new NodoFs("numero");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7);  nuevo.add_NodoFs(e8); RESULT=nuevo;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_Cnume",14, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-17)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
 
@@ -2993,29 +2996,26 @@ class CUP$SintacticoFs$actions {
           return CUP$SintacticoFs$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 125: // Acc_image ::= cima ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
+          case 125: // Acc_image ::= cima ipa Exp_Log com Exp_Log com Exp_Log com Exp_Log com Exp_Log fpa 
             {
               NodoFs RESULT =null;
-		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).left;
-		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).right;
-		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)).value;
-		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).left;
-		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).right;
-		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).value;
-		int e3left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).left;
-		int e3right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).right;
-		NodoFs e3 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).value;
-		int e4left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).left;
-		int e4right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).right;
-		NodoFs e4 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).value;
-		int e5left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).left;
-		int e5right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).right;
-		NodoFs e5 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).value;
-		int e6left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
-		int e6right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
-		NodoFs e6 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
-		NodoFs nuevo = new NodoFs("imagen");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6); RESULT=nuevo;
-              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_image",11, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-13)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
+		int e1left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).left;
+		int e1right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).right;
+		NodoFs e1 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-9)).value;
+		int e2left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).left;
+		int e2right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).right;
+		NodoFs e2 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-7)).value;
+		int e3left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).left;
+		int e3right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).right;
+		NodoFs e3 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-5)).value;
+		int e4left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).left;
+		int e4right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).right;
+		NodoFs e4 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-3)).value;
+		int e5left = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).left;
+		int e5right = ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).right;
+		NodoFs e5 = (NodoFs)((java_cup.runtime.Symbol) CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-1)).value;
+		NodoFs nuevo = new NodoFs("imagen");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); RESULT=nuevo;
+              CUP$SintacticoFs$result = parser.getSymbolFactory().newSymbol("Acc_image",11, ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.elementAt(CUP$SintacticoFs$top-11)), ((java_cup.runtime.Symbol)CUP$SintacticoFs$stack.peek()), RESULT);
             }
           return CUP$SintacticoFs$result;
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class est_ventana extends javax.swing.JFrame {
 
     public String id;
+    public int path;
     private String color;
     public boolean alcerrar,alcargar;
     public NodoFs cerrar,cargar;
@@ -27,7 +28,7 @@ public class est_ventana extends javax.swing.JFrame {
      */
     private int max_alto, max_ancho;
 
-    public est_ventana(String id, int alto, int ancho, String color) {
+    public est_ventana(String id, int alto, int ancho, String color,int path) {
         initComponents();
         this.id = id;
         contenedores = new ArrayList();
@@ -40,6 +41,7 @@ public class est_ventana extends javax.swing.JFrame {
         master.setBackground(new Color(hex(this.color)));
         Refrescar();
         alcerrar=alcargar=false;
+        this.path = path;
         cerrar = null;
         cargar=null;
     }

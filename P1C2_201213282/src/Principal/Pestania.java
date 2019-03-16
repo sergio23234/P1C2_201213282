@@ -213,7 +213,7 @@ public class Pestania extends javax.swing.JPanel {
     }
 
     public boolean Add_ventana(String color, int largo, int ancho, String id) {
-        est_ventana ven = new est_ventana(id, largo, ancho, color);
+        est_ventana ven = new est_ventana(id, largo, ancho, color, num);
         boolean add = true;
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id)) {
@@ -323,25 +323,70 @@ public class Pestania extends javax.swing.JPanel {
         }
         return false;
     }
-    
-        public boolean add_Field(String contenedor, int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
+
+    public boolean add_Field(String contenedor, int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(contenedor);
             if (numero != -1) {
                 contenedor con = ventanas.get(i).contenedores.get(numero);
-                return con.add_Field(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+                return con.add_Field(alto, ancho, fuente, tam, color, x, y, ng, defecto, nombre);
             }
         }
         return false;
     }
+
     public boolean add_Area(String contenedor, int alto, int ancho, String fuente, int tam, String color, int x, int y, int ng, String defecto, String nombre) {
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(contenedor);
             if (numero != -1) {
                 contenedor con = ventanas.get(i).contenedores.get(numero);
-                return con.add_Area(alto,ancho,fuente,tam,color,x,y,ng,defecto,nombre);
+                return con.add_Area(alto, ancho, fuente, tam, color, x, y, ng, defecto, nombre);
             }
         }
         return false;
-    }        
+    }
+
+    public boolean add_Combo(String contenedor, int alto, int ancho, ArrayList<String> lista, int x, int y, String defecto, String nombre) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(contenedor);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_Combo(alto, ancho, lista, x, y, defecto, nombre);
+            }
+        }
+        return false;
+    }
+
+    public boolean add_MV(String id_ventana, String ruta, int x, int y, boolean auto, int alto, int ancho, int tipo) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(id_ventana);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_MV(ruta, x, y, auto, alto, ancho, tipo);
+            }
+        }
+        return false;
+    }
+
+    public boolean add_Numero(String id_ventana, int alto, int ancho, int maximo, int minimo, int x, int y, int defecto, String nombre) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(id_ventana);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_Numero(alto, ancho, maximo, minimo, x, y, defecto, nombre);
+            }
+        }
+        return false;
+    }
+    
+    public boolean add_image(String id_ventana, String ruta, int x, int y, int alto, int ancho) {
+        for (int i = 0; i < ventanas.size(); i++) {
+            int numero = ventanas.get(i).ID_intContenedor(id_ventana);
+            if (numero != -1) {
+                contenedor con = ventanas.get(i).contenedores.get(numero);
+                return con.add_Image(ruta, x, y, alto, ancho);
+            }
+        }
+        return false;
+    }
 }
