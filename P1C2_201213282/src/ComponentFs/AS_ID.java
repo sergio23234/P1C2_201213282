@@ -28,7 +28,7 @@ public class AS_ID {
         NodoRespuesta var;
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         var = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-        System.out.println("var: " + var.dato);
+        //System.out.println("var: " + var.dato);
         if (!var.error) {
             if (raiz.hijos.size() > 1) {
                 NodoFs actual = raiz.hijos.get(1);
@@ -61,7 +61,7 @@ public class AS_ID {
 
     private NodoRespuesta es_igualar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores) {
         String tipo = resultado.tipo;
-        System.out.println(resultado.resultado + "eso ingresara");
+        //System.out.println(resultado.resultado + "eso ingresara");
         if (tipo.equalsIgnoreCase("vector") || tipo.equalsIgnoreCase("objeto")) {
             if (ID.dato.contains("[") || ID.dato.contains(".")) {
                 return new NodoRespuesta(true);
@@ -79,7 +79,7 @@ public class AS_ID {
         for (int i = 0; i < tabla.Tabla.size(); i++) {//recorrer toda la tabla
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
-                System.out.println("entro en esta parte");
+                //System.out.println("entro en esta parte");
                 if (valor.tipo.equalsIgnoreCase("")) {
                     actual.tipo = "variable";
                 } else {

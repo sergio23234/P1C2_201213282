@@ -27,10 +27,10 @@ public class Nativas {
     public NodoRespuesta Analizarv2(NodoFs raiz, ArrayList<NodoError> errores) {
         Fs_varios varios = new Fs_varios();
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
-        System.out.println("el ID es:" + raiz.valor + " y si existe:" + existe);
+        //System.out.println("el ID es:" + raiz.valor + " y si existe:" + existe);
         if (existe) {
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
-            System.out.println(resultadoid.tipo + " es estetipo");
+            //System.out.println(resultadoid.tipo + " es estetipo");
             if (resultadoid.tipo.equalsIgnoreCase("vector")) {
                 return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid);
             } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
@@ -119,7 +119,7 @@ public class Nativas {
             llamada_fun ord_fun = new llamada_fun(global, num);
             result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
         }
-        System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
+        //System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
         return result;
     }
 

@@ -102,10 +102,10 @@ public class Boton {
                     this.linea = hijos.get(i).linea;
                     this.columna = hijos.get(i).columna;
                     break;
-                case "y":
+                case "x":
                     this.x = Integer.valueOf(val);
                     break;
-                case "x":
+                case "y":
                     this.y = Integer.valueOf(val);
                     break;
                 case "alto":

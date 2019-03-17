@@ -28,6 +28,7 @@ public class Buton extends JButton {
         this.tam = tam;
         this.id =id;
         this.setLayout(null);
+        //System.out.println(id+" referencia de boton: "+referencia);
         this.color = color.replace("#", "").trim();
         this.referencia = referencia;
         this.setText(texto);

@@ -74,6 +74,7 @@ Numero = [0-9]+
 ".Descendente()"							{return new Symbol(symf.desc,yyline,yycolumn,yytext());}
 ".ascendente()"								{return new Symbol(symf.asce,yyline,yycolumn,yytext());}
 "crearArrayDesdeArchivo"					{return new Symbol(symf.cada,yyline,yycolumn,yytext());}
+".crearArrayDesdeArchivo()"					{return new Symbol(symf.pcada,yyline,yycolumn,yytext());}
 ".invertir()"								{return new Symbol(symf.inve,yyline,yycolumn,yytext());}
 ".maximo()"									{return new Symbol(symf.maxi,yyline,yycolumn,yytext());}
 ".minimo()"									{return new Symbol(symf.mini,yyline,yycolumn,yytext());}
@@ -102,7 +103,7 @@ Numero = [0-9]+
 ".AlCargar"									{return new Symbol(symf.acar,yyline,yycolumn,yytext());}
 ".AlCerrar"									{return new Symbol(symf.acer,yyline,yycolumn,yytext());}
 "nulo"										{return new Symbol(symf.nulo,yyline,yycolumn,yytext());}
-(([_]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
+((["_"]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
 											{return new Symbol(symf.idva,yyline,yycolumn,yytext());}
 "."(([_]?[:jletter:])([:jletter:]|[:jletterdigit:]|_)*)
 											{return new Symbol(symf.idpu,yyline,yycolumn,yytext());}

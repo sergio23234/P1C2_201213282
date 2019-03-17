@@ -471,7 +471,7 @@ public class Componentes_FS {
         NodoRespuesta dato5 = OP.Cuerpo_G(raiz.hijos.get(4), errores);//y
         NodoRespuesta dato6 = OP.Cuerpo_G(raiz.hijos.get(5), errores);//defecto
         NodoRespuesta dato7 = OP.Cuerpo_G(raiz.hijos.get(6), errores);//nombre
-        System.out.println(dato3.resultado + " :es esto");
+        //System.out.println(dato3.resultado + " :es esto");
         /*ERROES*/
         if (dato1.error || dato2.error || dato3.error || dato4.error || dato5.error || dato7.error || dato6.error) {
             return new NodoRespuesta(true);
@@ -490,12 +490,17 @@ public class Componentes_FS {
                     System.out.println("no es vector: " + tipos[i]);
                     error = true;
                     break;
-                } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 5 || i == 6)) {
-                    // System.out.println("no es cadena");
+                    
+                }else if ((!tipos[i].equalsIgnoreCase("cadena") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 5)) {
+                   // System.out.println("no es numero o nulo" + tipos[i]);
+                    error = true;
+                    break;
+                } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 6)) {
+                    System.out.println("no es cadena");
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 0 || i == 1 || i == 3 || i == 4)) {
-                    // System.out.println("no es numero" + i);
+                    System.out.println("no es numero" + i);
                     error = true;
                     break;
                 }
@@ -520,7 +525,7 @@ public class Componentes_FS {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
                 return retorno;
             } else {
-                System.out.println("no se añadio");
+               // System.out.println("no se añadio");
                 return new NodoRespuesta(true);
             }
         }
@@ -549,15 +554,15 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 0) {
-                    System.out.println("no es cadena");
+                   // System.out.println("no es cadena");
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 3) {
-                    System.out.println("no es numero" + i);
+                   // System.out.println("no es numero" + i);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && i == 3) {
-                    System.out.println("no es boleano");
+                   // System.out.println("no es boleano");
                     error = true;
                     break;
                 }
@@ -584,7 +589,7 @@ public class Componentes_FS {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
                 return retorno;
             } else {
-                System.out.println("no se añadio");
+                //System.out.println("no se añadio");
                 return new NodoRespuesta(true);
             }
         }
@@ -617,15 +622,15 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 7)) {
-                    System.out.println("no es cadena" + i);
+                   // System.out.println("no es cadena" + i);
                     error = true;
                     break;
                 } else if ((!tipos[i].equalsIgnoreCase("numero") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 2 || i == 3 || i == 6)) {
-                    System.out.println("no es numero o nulo" + tipos[i]);
+                   // System.out.println("no es numero o nulo" + tipos[i]);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i != 7 && i != 2 && i != 3 && i != 6)) {
-                    System.out.println("no es numero" + i);
+                   // System.out.println("no es numero" + i);
                     error = true;
                     break;
                 }
@@ -639,7 +644,7 @@ public class Componentes_FS {
             int minimo = 0;
             int x = Integer.valueOf(dato5.resultado.toString());
             int y = Integer.valueOf(dato6.resultado.toString());
-            String nombre = dato7.resultado.toString().replace("\"", "");
+            String nombre = dato8.resultado.toString().replace("\"", "");
             if (!tipos[2].equalsIgnoreCase("undefined")) {
                 maximo = Integer.valueOf(dato3.resultado.toString());
             }
@@ -683,11 +688,11 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 0) {
-                    System.out.println("no es cadena");
+                    //System.out.println("no es cadena");
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0) {
-                    System.out.println("no es numero" + i);
+                    //System.out.println("no es numero" + i);
                     error = true;
                     break;
                 }
@@ -709,7 +714,7 @@ public class Componentes_FS {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
                 return retorno;
             } else {
-                System.out.println("no se añadio");
+                //System.out.println("no se añadio");
                 return new NodoRespuesta(true);
             }
         }

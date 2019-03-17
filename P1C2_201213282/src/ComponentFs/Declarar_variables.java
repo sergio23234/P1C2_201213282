@@ -66,7 +66,7 @@ public class Declarar_variables {
                 Componentes_FS conte = new Componentes_FS(tabla, global, num);
                 nuevo = conte.Analizar_Contenedor(raiz, errores, raices);
                 if (nuevo.error) {
-                    System.out.println("hay error en contenedor");
+                    //System.out.println("hay error en contenedor");
                     return nuevo;
                 } else {
                     Add_especial_var_tabla(raices, errores, 1);

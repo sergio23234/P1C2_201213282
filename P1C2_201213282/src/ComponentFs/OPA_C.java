@@ -33,7 +33,7 @@ public class OPA_C {
             return error;
         }
         NodoRespuesta resp = Accion_C(uno, raiz.valor, dos, errores);
-        //System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
+        System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
         return resp;
     }
 
@@ -133,9 +133,6 @@ public class OPA_C {
                 nuevo = new NodoRespuesta(realizar_menorigu(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "==":
-//                  System.out.println("--------------");
-//                  System.out.println("izq: "+izq+" Der:"+der);
-//                  System.out.println("--------------");
                 nuevo = new NodoRespuesta(realizar_igual(izq, tipo_i, der, tipo_der));
                 return nuevo;
             case "!=":
@@ -169,8 +166,8 @@ public class OPA_C {
             }
             return "falso";
         } else if (tipo_izq.equalsIgnoreCase("cadena")) {
-            String t_izq = (izq.replace("\"",""));
-            String t_der = (der.replace("\"",""));
+            String t_izq = (izq.replace("\"", ""));
+            String t_der = (der.replace("\"", ""));
             if (t_izq.equalsIgnoreCase(t_der)) {
                 return "verdadero";
             }

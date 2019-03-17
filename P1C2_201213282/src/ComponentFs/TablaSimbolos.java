@@ -12,14 +12,27 @@ import java.util.ArrayList;
  * @author sergi
  */
 public class TablaSimbolos {
-    
+
     public ArrayList<NodoTabla> Tabla;
     public TablaSimbolos padre;
     public String ambito;
-    
- public TablaSimbolos(String ambito){
-     Tabla = new ArrayList();
-     padre = null;
-     this.ambito = ambito;
- }
+    public ArrayList<TablaSimbolos> importados;
+
+    public TablaSimbolos(String ambito) {
+        Tabla = new ArrayList();
+        padre = null;
+        this.ambito = ambito;
+        this.importados = null;
+    }
+
+    public void inicia_importados() {
+        this.importados = new ArrayList();
+    }
+
+    public void add_importado(TablaSimbolos nueva) {
+        this.importados.add(nueva);
+    }
+    public TablaSimbolos(){
+        
+    }
 }

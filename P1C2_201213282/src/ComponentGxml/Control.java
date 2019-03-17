@@ -280,10 +280,10 @@ public class Control {
                     this.color = val.replace("\"", "");
                     break;
                 case "y":
-                    this.x = Integer.valueOf(val);
+                    this.y = Integer.valueOf(val);
                     break;
                 case "x":
-                    this.y = Integer.valueOf(val);
+                    this.x = Integer.valueOf(val);
                     break;
                 case "tam":
                     this.tam = Integer.valueOf(val);

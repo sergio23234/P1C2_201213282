@@ -147,10 +147,10 @@ public class Contenedor {
                 case "color":
                     this.color = val.replace("\"", "");
                     break;
-                case "y":
+                case "x":
                     this.x = Integer.valueOf(val);
                     break;
-                case "x":
+                case "y":
                     this.y = Integer.valueOf(val);
                     break;
                 case "alto":

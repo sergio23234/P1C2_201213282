@@ -77,6 +77,7 @@ public class contenedor extends JPanel implements ActionListener {
             }
         }
         if (add) {
+            System.out.println(bot.id+" se añadio a:"+this.id);
             Botones.add(bot);
             this.add(bot);
             return true;
@@ -92,11 +93,19 @@ public class contenedor extends JPanel implements ActionListener {
             for (int i = 0; i < Botones.size(); i++) {
                 if (fuente == Botones.get(i)) {
                     if (Botones.get(i).accion != null) {
+                        System.out.println("entro a la accion"+Botones.get(i).accion.Tipo);
                         Menu.Lista.get(num_pest).Ejecutar_funcion(Botones.get(i).accion);
                     }
-                    if (!(Botones.get(i).referencia.equalsIgnoreCase("nulo") || Botones.get(i).referencia.equalsIgnoreCase("undefined"))) {
-                        //System.out.println(Botones.get(i).referencia + " es esta variable");
-                        Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
+                    if ((!Botones.get(i).referencia.trim().equalsIgnoreCase("nulo") && !Botones.get(i).referencia.trim().equalsIgnoreCase("undefined"))) {
+                        if(Botones.get(i).referencia.equalsIgnoreCase("nulo")){
+                            
+                        }
+                        else if(Botones.get(i).referencia.equalsIgnoreCase("nulo")){
+                            
+                        }else{
+                         
+                           Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
+                        }
                     }
                 }
             }
@@ -149,11 +158,13 @@ public class contenedor extends JPanel implements ActionListener {
     boolean add_Combo(int alto, int ancho, ArrayList<String> lista, int x, int y, String defecto, String nombre) {
         for (int i = 0; i < Combos.size(); i++) {
             if (Combos.get(i).nombre.equalsIgnoreCase(nombre)) {
+                System.out.println("repetido");
                 return false;
             }
         }
         Desplegable field = new Desplegable(alto, ancho, lista, x, y, defecto, nombre);
         Combos.add(field);
+       System.out.println("se añadio");
         this.add(field);
         return true;
     }
@@ -173,6 +184,7 @@ public class contenedor extends JPanel implements ActionListener {
     boolean add_Numero(int alto, int ancho, int maximo, int minimo, int x, int y, int defecto, String nombre) {
         for (int i = 0; i < Numeros.size(); i++) {
             if (Numeros.get(i).nombre.equalsIgnoreCase(nombre)) {
+                System.out.println("son iguales");
                 return false;
             }
         }

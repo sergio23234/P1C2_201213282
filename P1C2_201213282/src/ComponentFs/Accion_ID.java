@@ -47,6 +47,7 @@ public class Accion_ID {
                 if (raiz.hijos.size() > 0) {
                     Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(), 0);
                 } else {
+                    System.out.println("llego a cargar: "+id.resultado.toString());
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;

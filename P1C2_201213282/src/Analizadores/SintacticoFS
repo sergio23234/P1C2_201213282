@@ -37,7 +37,7 @@ parser code {:
 action code {:
     public String estado="";
 :}
-terminal String mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,idpu,ico,fco,fin,pyc,not,Sor,and,var,pun,com,dop,dmas,dnos;// Terminales
+terminal String mas,men,por,div,igu,pot,may,nos,ill,fll,ipa,fpa,idpu,ico,fco,fin,pyc,not,Sor,and,var,pcada,pun,com,dop,dmas,dnos;// Terminales
 terminal String impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,maxi,mini,busc,filt,idva,cade,deci,nume,verd,fals,sino;
 terminal String map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
 non terminal NodoFs accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2;
@@ -193,8 +193,8 @@ Es_func ::= func idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("fu
 Es_fun1 ::=   Lista_parametros:e1 	fpa	ill	Estu_Cuerpo:e2	fll		{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}		/*parametros ) {}*/
 			| fpa				ill		Estu_Cuerpo:e1 fll 			{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*) {}*/
 
-Lista_parametros ::= Lista_parametros:e1 com idva:e2				{:e1.add_ListaFs(e2); RESULT=e1;:}/*Lista prametros com var id*/
-				|	 idva:e1										{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
+Lista_parametros ::= Lista_parametros:e1 com var idva:e2				{:e1.add_ListaFs(e2); RESULT=e1;:}/*Lista prametros com var id*/
+				|	 var idva:e1										{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
 			
 /*LLamada de una funcion*/
 Es_lla_fun ::= idva:e1 ipa Es_lla_fun1:e2 							{:e2.valor=e1; RESULT=e2;:};/*ID(param,param,etc)  */
@@ -298,6 +298,7 @@ Es_DeAu ::= Cuerpo_general:e1 	{:RESULT=e1;:}
 Es_acc_ID ::= Es_tipo_id:e1 accion_ID:e2 pyc	{:NodoFs nuevo = new NodoFs("ID_ACCION");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}; /*ID . Accion ID*/
 
 accion_ID ::= 	Acc_texto:e1			{:RESULT=e1;:}
+			|	pcada		            {:NodoFs nuevo = new NodoFs("arrayarchivo"); RESULT=nuevo;:}		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
 			|	Acc_ctext:e1			{:RESULT=e1;:}
 			|	Acc_Atext:e1			{:RESULT=e1;:}
 			|	Acc_Cnume:e1			{:RESULT=e1;:}
@@ -305,7 +306,6 @@ accion_ID ::= 	Acc_texto:e1			{:RESULT=e1;:}
 			|	Acc_image:e1			{:RESULT=e1;:}
 			|	Acc_video:e1			{:RESULT=e1;:}
 			|	Acc_repro:e1			{:RESULT=e1;:}
-			|	pun cada ipa fpa		{:NodoFs nuevo = new NodoFs("arrayarchivo"); RESULT=nuevo;:}		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
 			|	Acc_alcar:e1			{:RESULT=e1;:}
 			|	Acc_alcli:e1			{:RESULT=e1;:}
 			|	recur_nat:e1			{:RESULT=e1;:}

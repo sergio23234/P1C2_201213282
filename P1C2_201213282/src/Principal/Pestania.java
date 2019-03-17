@@ -117,21 +117,31 @@ public class Pestania extends javax.swing.JPanel {
             File archivo = new File(path);
             FileReader fr;
             try {
+                tabla=new TablaSimbolos();
                 ventanas.clear();
                 fr = new FileReader(archivo);
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
                 miParser.parse();
                 ArrayList<NodoError> errores = miParser.errores;
+                ArrayList<NodoError> lexicos = lex.Elista;
                 NodoFs nuevo = miParser.regresar_raiz();
                 Consola.setText("");
                 Pasada1 pasada = new Pasada1(nuevo);
                 tabla = pasada.analizar(errores);
+                tabla.inicia_importados();
+                Importados imp = new Importados(tabla,tabla,num);
+                ArrayList<String> lista = new ArrayList();
+                lista.add(path);
+                imp.Analizar(nuevo, errores, lista);
                 Inicio ini = new Inicio(tabla, tabla, num);
                 ini.Analizar(nuevo, errores);
-                recorrer_Tabla(tabla);
+                //recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
-                Imprimir_errores(miParser.errores);
+                System.out.println(ventanas.size() + " <----ventanas");
+                //Imprimir_errores(miParser.errores);
+                //Impirmir_importados();
+                imprimir_ventanas();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -231,6 +241,7 @@ public class Pestania extends javax.swing.JPanel {
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id_ventana)) {
                 est_ventana ven = ventanas.get(i);
+                //System.out.println(i+":entron en esta ventana:"+ven.id+"-->"+id_ventana);
                 return ven.add_contenedor(num, id, alto, ancho, color, boder, x, y);
             }
         }
@@ -273,7 +284,7 @@ public class Pestania extends javax.swing.JPanel {
                     temp.hide();
                 }
                 ventanas.get(i).show();
-
+                abierta_actual=i;
             }
         }
 
@@ -283,7 +294,7 @@ public class Pestania extends javax.swing.JPanel {
         Inicio ini = new Inicio(tabla, tabla, num);
         NodoFs nuevo = new NodoFs("cuerpo");
         nuevo.add_NodoFs(raiz);
-        System.out.println("llamo a la funcion" + raiz.Tipo);
+        //System.out.println("llamo a la funcion" + raiz.Tipo);
         ini.Analizar(nuevo, errores);
     }
 
@@ -316,6 +327,7 @@ public class Pestania extends javax.swing.JPanel {
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(contenedor);
             if (numero != -1) {
+                
                 contenedor con = ventanas.get(i).contenedores.get(numero);
                 return con.add_texto(fuente, tam, x, y, color, negrita, cursiva, nombre);
             }
@@ -346,9 +358,12 @@ public class Pestania extends javax.swing.JPanel {
     }
 
     public boolean add_Combo(String contenedor, int alto, int ancho, ArrayList<String> lista, int x, int y, String defecto, String nombre) {
+        System.out.println(contenedor+"es este contenedor");
         for (int i = 0; i < ventanas.size(); i++) {
             int numero = ventanas.get(i).ID_intContenedor(contenedor);
+            
             if (numero != -1) {
+                System.out.println("entro aqui");
                 contenedor con = ventanas.get(i).contenedores.get(numero);
                 return con.add_Combo(alto, ancho, lista, x, y, defecto, nombre);
             }
@@ -387,5 +402,22 @@ public class Pestania extends javax.swing.JPanel {
             }
         }
         return false;
+    }
+
+    public void Impirmir_importados(){
+        for(int i=0;i<tabla.importados.size();i++){
+            System.out.println("--------"+i+"-----------");
+            TablaSimbolos actual = tabla.importados.get(i);
+            for(int j=0;j<actual.Tabla.size();j++){
+                System.out.println("\t"+actual.Tabla.get(j).nombre);
+            }
+            System.out.println("-----------------------");
+        }
+    }
+    
+    private void imprimir_ventanas(){
+        for(int i=0;i<ventanas.size();i++){
+            System.out.println(i+" : "+ventanas.get(i).id);
+        }
     }
 }

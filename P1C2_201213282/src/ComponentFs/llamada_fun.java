@@ -45,6 +45,7 @@ public class llamada_fun {
         Fs_varios fs = new Fs_varios();
         String nombre_fun = raiz.valor;
         boolean existe_func = fs.ret_Existencia_fun(nombre_fun, global);//para saber si existe la funcion
+        System.out.println("llego a este punto 0"+nombre_fun);
         if (existe_func) {
             NodoFs raiz_fun = fs.ret_fun_Tabla(nombre_fun, global); //raiz de la funcion
             if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
@@ -321,16 +322,16 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+                //System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                  //  System.out.println("entro a retorno" + retornara.resultado.toString());
                     respuesta.add(retornara.resultado.toString());
                     break;
                 } else {
-                    System.out.println("no retorno nada");
+                    //System.out.println("no retorno nada");
                 }
             }
         }
@@ -355,12 +356,12 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+                //System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                  //  System.out.println("entro a retorno" + retornara.resultado.toString());
                     if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
                         retorno = new NodoRespuesta(resultados.get(i - 1).resultado.toString());
                         retorno.tipo = "variable";
@@ -368,7 +369,7 @@ public class llamada_fun {
                     }
                     break;
                 } else {
-                    System.out.println("no retorno nada");
+                   // System.out.println("no retorno nada");
                 }
             }
         }
@@ -590,7 +591,7 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.size() + "hijos");
+                //System.out.println(actual.hijos.size() + "hijos");
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
@@ -600,14 +601,14 @@ public class llamada_fun {
                     } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
 
                     } else {
-                        System.out.println("hay error ->" + retornara.resultado);
+                       // System.out.println("hay error ->" + retornara.resultado);
                         return new NodoRespuesta(true);
                     }
                     break;
                 }
             }
         }
-        System.out.println("llego aqui: " + respuesta.size());
+        //System.out.println("llego aqui: " + respuesta.size());
         retorno = new NodoRespuesta(respuesta);
         retorno.tipo = "array";
         return retorno;
@@ -631,16 +632,16 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+               // System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
-                    System.out.println("dio un error");
+                    //System.out.println("dio un error");
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + i + ":" + retornara.resultado.toString());
+                    //System.out.println("entro a retorno" + i + ":" + retornara.resultado.toString());
                     respuesta.add(retornara.resultado.toString());
                 } else {
-                    System.out.println("no retorno nada");
+                    //System.out.println("no retorno nada");
                 }
             }
         }
@@ -666,12 +667,12 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+                //System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    //System.out.println("entro a retorno" + retornara.resultado.toString());
                     if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
                         retorno = new NodoRespuesta(vector.get(i - 1));
                         retorno.tipo = "objeto";
@@ -679,7 +680,7 @@ public class llamada_fun {
                     }
                     break;
                 } else {
-                    System.out.println("no retorno nada");
+                    //System.out.println("no retorno nada");
                 }
             }
         }
@@ -770,7 +771,7 @@ public class llamada_fun {
     }
 
     private NodoRespuesta es_reduce_2(ArrayList<String> hijos, ArrayList<NodoObjeto> vector, NodoFs raiz, ArrayList<NodoError> errores) {
-        System.out.println("entro aqui reduce 2");
+        //System.out.println("entro aqui reduce 2");
         int i = 0;
         NodoRespuesta respuesta = new NodoRespuesta(false);
         boolean primero = true;
@@ -789,12 +790,12 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-                System.out.println(actual.hijos.get(k).Tipo);
+                //System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                    System.out.println("entro a retorno" + retornara.resultado.toString());
+                    //System.out.println("entro a retorno" + retornara.resultado.toString());
                     if (primero) {
                         primero = false;
                         respuesta = retornara;
@@ -804,7 +805,7 @@ public class llamada_fun {
                     }
                     break;
                 } else {
-                    System.out.println("no retorno nada");
+                    //System.out.println("no retorno nada");
                 }
             }
         }

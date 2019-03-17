@@ -128,6 +128,7 @@ public class est_ventana extends javax.swing.JFrame {
     public boolean add_boton(String id_con, String id, String fuente, int tam, String color, int x, int y, String referencia, String texto, int alto, int ancho) {
         for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).id.equalsIgnoreCase(id_con)) {
+                //System.out.println(i+"::"+contenedores.get(i).id+"-->"+id_con);
                 return contenedores.get(i).add_boton(id, fuente, tam, color, x, y, referencia, texto, alto, ancho);
             }
         }

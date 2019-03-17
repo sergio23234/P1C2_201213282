@@ -48,7 +48,7 @@ public class Est_Array {
                return new NodoRespuesta(true);
            }
         }else{
-            System.out.println("El archivo no existe");
+            //System.out.println("El archivo no existe");
         }
         return new NodoRespuesta(false);
     }

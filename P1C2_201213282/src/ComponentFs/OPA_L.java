@@ -65,15 +65,16 @@ public class OPA_L {
             case 3:
                 Cuerpo_op OP = new Cuerpo_op(tabla,global,num);
                 NodoRespuesta tres = OP.Cuerpo_G(raiz.hijos.get(0), errores);
-                NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(1), errores);
-                NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(2), errores);
-                if (uno.error || dos.error||tres.error) {
+                if (tres.error) {
                     NodoRespuesta error = new NodoRespuesta(true);
                     return error;
                 }
+                System.out.println("llego el resultado: "+tres.resultado.toString());
                 if(tres.resultado.toString().equalsIgnoreCase("verdadero")){
+                    NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(1), errores);
                     return uno;
                 }else{
+                    NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(2), errores);
                     return dos;
                 }
         }

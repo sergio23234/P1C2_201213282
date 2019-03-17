@@ -23,13 +23,15 @@ public class Generar_Archivo_FS {
     private ArrayList<String> Datos;
     private ArrayList<NodoGxml> Raices;
     private ArrayList<String> Metodos;
-
+    private String raiz_principal;
+    
     public Generar_Archivo_FS(ArrayList<NodoGxml> raiz) {
         //this.raiz = raiz;
         Datos = new ArrayList();
         Raices = new ArrayList();
         Metodos = new ArrayList();
         Raices = raiz;
+        raiz_principal="";
 
     }
 
@@ -58,17 +60,18 @@ public class Generar_Archivo_FS {
     }
 
     private void Recorrer_ventanas(NodoGxml raiz) {
-        int num = 0;
+        int num = -1;
         for (int i = 0; i < raiz.Ventanas.size(); i++) {
             if (raiz.Ventanas.get(i).tipo.equalsIgnoreCase("principal")) {
                 num = i;
+                Crear_Ventana(raiz.Ventanas.get(num),true);
                 break;
             }
         }
-        Crear_Ventana(raiz.Ventanas.get(num));
+        System.out.println("trajo este numero"+num);
         for (int i = 0; i < raiz.Ventanas.size(); i++) {
             if (i != num) {
-                Crear_Ventana(raiz.Ventanas.get(i));
+                Crear_Ventana(raiz.Ventanas.get(i),false);
             }
         }
     }
@@ -79,7 +82,7 @@ public class Generar_Archivo_FS {
         Datos.add(nuevo);
     }
 
-    private void Crear_Ventana(Ventana raiz) {
+    private void Crear_Ventana(Ventana raiz,boolean principal) {
         String nuevo = "var ven_";
         nuevo += raiz.Id + "= CrearVentana(\"" + raiz.color + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
         Datos.add(nuevo);
@@ -93,6 +96,10 @@ public class Generar_Archivo_FS {
         if (!raiz.accionF.equalsIgnoreCase("")) {
             String linea = "ven_" + raiz.Id + ".AlCerrar(" + raiz.accionF.replace("{", "").replace("}", "").trim() + ");\n";
             Datos.add(linea);
+        }
+        if(principal){
+            System.out.println(raiz.Id+"trajo este id");
+            raiz_principal ="ven_"+raiz.Id+".AlCargar();";
         }
     }
 
@@ -167,7 +174,13 @@ public class Generar_Archivo_FS {
         if (raiz.minimo >= 0) {
             maximo = String.valueOf(raiz.minimo);
         }
-        nuevo += name_raiz + "_" + raiz_padre + ".CrearControlNumerico(" + raiz.alto + "," + raiz.ancho + "," + maximo + "," + minimo + "," + raiz.x + "," + raiz.y + ",\"" + raiz.Nombre + "\");\n";
+        String defecto="";
+        if(raiz.Defecto!=null){
+            defecto = raiz.Defecto.Dato;
+        }else{
+            defecto ="nulo";
+        }
+        nuevo += name_raiz + "_" + raiz_padre + ".CrearControlNumerico(" + raiz.alto + "," + raiz.ancho + "," + maximo + "," + minimo + "," + raiz.x + "," + raiz.y +","+defecto +",\"" + raiz.Nombre + "\");\n";
         Datos.add(nuevo);
     }
 
@@ -180,7 +193,7 @@ public class Generar_Archivo_FS {
         if (raiz.Defecto != null) {
             defecto = "\"" + raiz.Defecto.Dato + "\"";
         }
-        nuevo += name_raiz + "_" + raiz_padre + ".CrearControlDesplegable(" + raiz.alto + "," + raiz.ancho + "," + lista + "," + raiz.x + "," + raiz.y + "," + defecto + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + "_" + raiz_padre + ".CrearDesplegable(" + raiz.alto + "," + raiz.ancho + "," + lista + "," + raiz.x + "," + raiz.y + "," + defecto + ",\"" + raiz.Nombre + "\");\n";
         Datos.add(variable);
         Datos.add(nuevo);
     }
@@ -239,19 +252,19 @@ public class Generar_Archivo_FS {
 
     private void Crear_Imagen(Multimedia raiz, String name_raiz, String raiz_padre) {
         String nuevo = "";
-        nuevo += name_raiz + "_" + raiz_padre + ".CrearImagen(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + "_" + raiz_padre + ".CrearImagen(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.alto + "," + raiz.ancho + ");\n";
         Datos.add(nuevo);
     }
 
     private void Crear_Reproductor(Multimedia raiz, String name_raiz, String raiz_padre) {
         String nuevo = "";
-        nuevo += name_raiz + "_" + raiz_padre + ".CrearReproductor(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + "_" + raiz_padre + ".CrearReproductor(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ");\n";
         Datos.add(nuevo);
     }
 
     private void Crear_Video(Multimedia raiz, String name_raiz, String raiz_padre) {
         String nuevo = "";
-        nuevo += name_raiz + "_" + raiz_padre + ".CrearVideo(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ",\"" + raiz.Nombre + "\");\n";
+        nuevo += name_raiz + "_" + raiz_padre + ".CrearVideo(\"" + raiz.Path + "\"," + raiz.x + "," + raiz.y + "," + raiz.Auto + "," + raiz.alto + "," + raiz.ancho + ");\n";
         Datos.add(nuevo);
     }
 
@@ -270,6 +283,8 @@ public class Generar_Archivo_FS {
                     bw.write(Metodos.get(i));
                     bw.write("\n");
                 }
+                bw.write(raiz_principal);
+                bw.write(("\n"));
             } else {
                 bw = new BufferedWriter(new FileWriter(archivo));
                 for (int i = 0; i < Datos.size(); i++) {
@@ -280,6 +295,8 @@ public class Generar_Archivo_FS {
                     bw.write(Metodos.get(i));
                     bw.write("\n");
                 }
+                bw.write(raiz_principal);
+                bw.write(("\n"));
             }
             bw.close();
         } catch (IOException e) {

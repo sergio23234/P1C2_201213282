@@ -47,7 +47,7 @@ public class ES_ID {
                             return nuevo.ret_ID_Tabla(nombre, global);
                         }
                     } else {
-                        System.out.println("vino nombre: " + nombre);
+                       // System.out.println("vino nombre: " + nombre);
                         return nuevo.ret_ID_Tabla(nombre, tabla);
                     }
                 }

@@ -98,10 +98,10 @@ public class Multimedia {
                     this.Auto = val.replace("\"", "");
                     break;
                 case "y":
-                    this.x = Integer.valueOf(val);
+                    this.y = Integer.valueOf(val);
                     break;
                 case "x":
-                    this.y = Integer.valueOf(val);
+                    this.x = Integer.valueOf(val);
                     break;
                 case "alto":
                     this.alto = Integer.valueOf(val);
