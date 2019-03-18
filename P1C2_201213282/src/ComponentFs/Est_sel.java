@@ -50,7 +50,9 @@ public class Est_sel {
             NodoFs actual = raiz.hijos.get(i);
             if (actual.Tipo.equalsIgnoreCase("caso")) {
                 NodoRespuesta Respuesta = OP.Cuerpo_G(actual.hijos.get(0), errores);
-                if (Respuesta.resultado.toString().equalsIgnoreCase(respuesta) || confirmado) {
+                OPA_C compa = new OPA_C(tabla,global,num);
+                NodoRespuesta caso = compa.Comparar_Caso(Respuesta.resultado.toString(), respuesta);
+                if (caso.resultado.toString().equalsIgnoreCase("verdadero") || confirmado) {
                     NodoFs cuerpo = actual.hijos.get(1);
                     confirmado = true;
                     for (int j = 0; j < cuerpo.hijos.size(); j++) {

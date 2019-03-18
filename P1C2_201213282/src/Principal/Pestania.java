@@ -139,7 +139,7 @@ public class Pestania extends javax.swing.JPanel {
                 //recorrer_Tabla(tabla);
                 System.out.println(miParser.errores.size() + " <----cantidad de errores");
                 System.out.println(ventanas.size() + " <----ventanas");
-                //Imprimir_errores(miParser.errores);
+                Imprimir_errores(miParser.errores);
                 //Impirmir_importados();
                 imprimir_ventanas();
             } catch (FileNotFoundException ex) {
@@ -418,6 +418,14 @@ public class Pestania extends javax.swing.JPanel {
     private void imprimir_ventanas(){
         for(int i=0;i<ventanas.size();i++){
             System.out.println(i+" : "+ventanas.get(i).id);
+        }
+    }
+
+    public void Add_Dato(String id_ventana){
+        for(int i=0;i<ventanas.size();i++){
+            if(ventanas.get(i).id.equalsIgnoreCase(id_ventana)){
+                ventanas.get(i).Guardar_datosContenedor();
+            }
         }
     }
 }

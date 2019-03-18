@@ -45,7 +45,7 @@ public class llamada_fun {
         Fs_varios fs = new Fs_varios();
         String nombre_fun = raiz.valor;
         boolean existe_func = fs.ret_Existencia_fun(nombre_fun, global);//para saber si existe la funcion
-        System.out.println("llego a este punto 0"+nombre_fun);
+       // System.out.println("llego a este punto 0"+nombre_fun);
         if (existe_func) {
             NodoFs raiz_fun = fs.ret_fun_Tabla(nombre_fun, global); //raiz de la funcion
             if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
@@ -124,6 +124,7 @@ public class llamada_fun {
                 return ret;/*!Estructura variable!*/
             case "imprimir":
                 /*!Estructura imprimir!*/
+                System.out.println("llego a imprimir");
                 Es_Imprimir nuevoi = new Es_Imprimir(tabla, global, num);
                 return nuevoi.Analizar(raiz, errores);
             case "est_si":
@@ -132,7 +133,9 @@ public class llamada_fun {
                 return est.Analizar(raiz, errores);
             case "as_id":
                 /*!Estructura asignacion id!*/
-                break;
+                 AS_ID id = new AS_ID(tabla,global,num);
+                return id.Analizar(raiz, errores);
+                
             case "es_sel":
                 /*!Estructura seleccionar!*/
                 Est_sel sel = new Est_sel(tabla, global, num);

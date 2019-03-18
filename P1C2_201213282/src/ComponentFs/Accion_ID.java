@@ -47,7 +47,7 @@ public class Accion_ID {
                 if (raiz.hijos.size() > 0) {
                     Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(), 0);
                 } else {
-                    System.out.println("llego a cargar: "+id.resultado.toString());
+                    System.out.println("llego a cargar: " + id.resultado.toString());
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;
@@ -85,11 +85,16 @@ public class Accion_ID {
             case "imagen":
                 area = new Componentes_FS(tabla, global, num);
                 area.Analizar_Imagen(raiz, errores, id);
-                break;   case "numero":
+                break;
+            case "numero":
                 area = new Componentes_FS(tabla, global, num);
                 area.Analizar_Numero(raiz, errores, id);
                 break;
+            case "arrayarchivo":
+                Menu.Lista.get(num).Add_Dato(id.resultado.toString());
+                break;
         }
+
         return new NodoRespuesta(false);
     }
 

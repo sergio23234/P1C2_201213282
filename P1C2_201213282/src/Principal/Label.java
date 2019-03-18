@@ -22,7 +22,8 @@ public class Label extends JLabel {
     public Label(String fuente, int tam, int x, int y, String color, int negrita, int cursiva, String nombre) {
         super();
         this.setLayout(null);
-        setBounds(x, y, 300, 40);
+        int ancho = nombre.length()*10;
+        setBounds(x, y, ancho, 40);
         this.color = color.replace("#", "");
         int total = negrita + cursiva;
         this.setText(nombre);

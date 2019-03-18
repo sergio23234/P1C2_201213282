@@ -4,19 +4,31 @@
  * and open the template in the editor.
  */
 package Principal;
+
+import java.awt.Component;
 import java.io.File;
-import javazoom.jlgui.basicplayer.BasicPlayer;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+
 /**
  *
  * @author sergi
  */
 public class Musica extends javax.swing.JPanel {
 
-    private BasicPlayer player;
-    int iniciado=0;
+    int iniciado = 0;
     boolean auto;
+    hilomusica hilo;
+
     /**
      * Creates new form Musica
+     *
      * @param ruta
      * @param x
      * @param y
@@ -24,16 +36,13 @@ public class Musica extends javax.swing.JPanel {
      * @param alto
      * @param ancho
      */
-    public Musica(String ruta,int x,int y,boolean auto,int alto,int ancho) {
+    public Musica(String ruta, int x, int y, boolean auto, int alto, int ancho) {
         initComponents();
-        player = new BasicPlayer();
         this.setBounds(x, y, ancho, alto);
-          try{
-                AbrirFichero(ruta);
-            }catch(Exception e){
-                
-            }
-         this.auto = auto;
+        reproducir.setBounds(x, y, ancho, alto);
+        hilo = new hilomusica(ruta);
+        this.auto = auto;
+        repaint();
     }
 
     /**
@@ -61,10 +70,7 @@ public class Musica extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(reproducir)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(reproducir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,53 +80,50 @@ public class Musica extends javax.swing.JPanel {
 
     private void reproducirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reproducirActionPerformed
         // TODO add your handling code here:
-        if(iniciado==0){
-           reproducir.setText("pausar");
-           iniciado=1;
-           try{
-                Play();
-            }catch(Exception e){
-                
-            }
-        }else if(iniciado==1){
-            reproducir.setText("reproducir");
-            iniciado=2;
-            try{
-                Pausa();
-            }catch(Exception e){
-                
-            }
-        }else{
-            reproducir.setText("pausar");
-           iniciado=1;
-           try{
-                Continuar();
-            }catch(Exception e){
-                
-            }
+        switch (iniciado) {
+            case 0:
+                reproducir.setText("detener");
+                iniciado = 1;
+                hilo.start();
+                break;
+            case 2:
+                reproducir.setText("detener");
+                iniciado = 1;
+                String ruta = hilo.path;
+                hilo = new hilomusica(ruta);
+                hilo.start();
+                break;
+            default:
+                reproducir.setText("iniciar");
+                iniciado = 2;
+                hilo.stop();
+                break;
         }
     }//GEN-LAST:event_reproducirActionPerformed
-public void Play() throws Exception {
-  player.play();
-}
- 
-public void AbrirFichero(String ruta) throws Exception {
-  File archivo = new File(ruta);
-  player.open(archivo);
-}
- 
-public void Pausa() throws Exception {
-  player.pause();
-}
- 
-public void Continuar() throws Exception {
-  player.resume();
-}
- 
-public void Stop() throws Exception {
-  player.stop();
-}
+//public void Play() throws Exception {
+//  player.play();
+//}
+// 
+//public void AbrirFichero(String ruta) throws Exception {
+//  File archivo = new File(ruta);
+//  player.open(archivo);
+//}
+// 
+//public void Pausa() throws Exception {
+//  player.pause();
+//}
+// 
+//public void Continuar() throws Exception {
+//  player.resume();
+//}
+// 
+//public void Stop() throws Exception {
+//  player.stop();
+//}
 
+    public void reproducir() {
+
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton reproducir;
     // End of variables declaration//GEN-END:variables

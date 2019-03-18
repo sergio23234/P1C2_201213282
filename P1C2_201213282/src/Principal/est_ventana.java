@@ -179,5 +179,15 @@ public class est_ventana extends javax.swing.JFrame {
         return -1;
     }
 
+    public void Guardar_datosContenedor(){
+        String texto ="";
+        for(int i=0;i<contenedores.size();i++){
+            String textoad = contenedores.get(i).obtener_datos();
+            if(!textoad.equalsIgnoreCase("")){
+                texto+=textoad;
+            }
+        }
+        System.out.println(texto);
+    }
     
 }

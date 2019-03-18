@@ -33,51 +33,10 @@ public class OPA_C {
             return error;
         }
         NodoRespuesta resp = Accion_C(uno, raiz.valor, dos, errores);
-        System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
+        //System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
         return resp;
     }
 
-//    private NodoRespuesta Cuerpo_C(NodoFs raiz, ArrayList<NodoError> errores) {
-//        NodoRespuesta nuevo;
-//        switch (raiz.Tipo.toLowerCase()) {
-//            case "ope_l":
-//                OPA_L operal = new OPA_L(tabla, global);
-//                return operal.Analizar_OPL(raiz, errores);
-//            case "ope_c":
-//                OPA_C operac = new OPA_C(tabla, global);
-//                return operac.Analizar_OPC(raiz, errores);
-//
-//            case "ope_a":
-//                OPA_A operacon = new OPA_A(tabla, global);
-//                return operacon.Analizar_OPA(raiz, errores);
-//
-//            case "dato":
-//                nuevo = new NodoRespuesta(raiz.valor);
-//                return nuevo;
-//            case "dato negado":
-//                operacon = new OPA_A(tabla, global);
-//                return operacon.negar_dato(raiz, errores);
-//
-//            case "autoincremento":
-//                ES_ID retorno = new ES_ID(tabla, global);
-//                return retorno.autoincrementar(raiz, errores);
-//
-//            case "autodecremento":
-//                retorno = new ES_ID(tabla, global);
-//                return retorno.autodecrementar(raiz, errores);
-//
-//            case "nativas":
-//                break;
-//            case "llamadafun":
-//                break;
-//            case "id":
-//                ES_ID id = new ES_ID(tabla, global);
-//                return id.Analizar(raiz, errores);
-//
-//        }
-//        nuevo = new NodoRespuesta(true);
-//        return nuevo;
-//    }
     private NodoRespuesta Accion_C(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores) {
         String tipo_izq = ret_tipo(Izq.resultado.toString());
         String tipo_der = ret_tipo(Der.resultado.toString());
@@ -406,4 +365,18 @@ public class OPA_C {
         }
         return resultado;
     }
+
+    public NodoRespuesta Comparar_Caso(String dato1,String dato2){
+        String tipo1 = ret_tipo(dato1);
+        String tipo2 = ret_tipo(dato2);
+        boolean compatible = ret_compatible(tipo1,tipo2,"==");
+        if(compatible){
+            String resultado = realizar_igual(dato1,tipo1,dato2,tipo2);
+            return new NodoRespuesta(resultado);
+        }else{
+            return new NodoRespuesta(true);
+        }
+    }
+    
 }
+

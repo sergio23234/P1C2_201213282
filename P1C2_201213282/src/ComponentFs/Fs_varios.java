@@ -182,13 +182,11 @@ public class Fs_varios {
         }
         if (tabla.padre != null) {
             return ret_Existencia_ID(nombre, tabla.padre);
-        }else{
-            if(tabla.importados!=null){
-                for(int i=0;i<tabla.importados.size();i++){
-                    boolean existe = ret_Existencia_fun(nombre,tabla.importados.get(i));
-                    if(existe){
-                        return true;
-                    }
+        } else if (tabla.importados != null) {
+            for (int i = 0; i < tabla.importados.size(); i++) {
+                boolean existe = ret_Existencia_fun(nombre, tabla.importados.get(i));
+                if (existe) {
+                    return true;
                 }
             }
         }
@@ -204,14 +202,11 @@ public class Fs_varios {
         }
         if (tabla.padre != null) {
             return ret_fun_Tabla(nombre, tabla.padre);
-        }
-        else{
-            if(tabla.importados!=null){
-                for(int i=0;i<tabla.importados.size();i++){
-                    NodoFs existe = ret_fun_Tabla(nombre,tabla.importados.get(i));
-                    if(existe!=null){
-                        return existe;
-                    }
+        } else if (tabla.importados != null) {
+            for (int i = 0; i < tabla.importados.size(); i++) {
+                NodoFs existe = ret_fun_Tabla(nombre, tabla.importados.get(i));
+                if (existe != null) {
+                    return existe;
                 }
             }
         }

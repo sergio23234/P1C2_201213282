@@ -719,5 +719,8 @@ public class Componentes_FS {
             }
         }
     }
-
+public void Guardar_Datosventana(String id){
+    
+}
+    
 }

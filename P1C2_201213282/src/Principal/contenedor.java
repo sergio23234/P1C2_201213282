@@ -20,13 +20,15 @@ public class contenedor extends JPanel implements ActionListener {
 
     public String id;
     int num_pest;
-    private ArrayList<Label> Labels;
-    private ArrayList<Buton> Botones;
+    /*------------------------Donde podemos obtener informacion--------------------------*/
     private ArrayList<Texto_Lab> Fields;
     private ArrayList<AreaTexto> Areas;
     private ArrayList<Desplegable> Combos;
-    private ArrayList<Musica> Reproductor;
     private ArrayList<Numberfield> Numeros;
+    /*------------------------Donde no se obtiene nada--------------------------*/
+    private ArrayList<Musica> Reproductor;
+    private ArrayList<Label> Labels;
+    private ArrayList<Buton> Botones;
     private ArrayList<Imagenes> imagenes;
 
     public contenedor(String id) {
@@ -77,7 +79,7 @@ public class contenedor extends JPanel implements ActionListener {
             }
         }
         if (add) {
-            System.out.println(bot.id+" se añadio a:"+this.id);
+            System.out.println(bot.id + " se añadio a:" + this.id);
             Botones.add(bot);
             this.add(bot);
             return true;
@@ -93,18 +95,17 @@ public class contenedor extends JPanel implements ActionListener {
             for (int i = 0; i < Botones.size(); i++) {
                 if (fuente == Botones.get(i)) {
                     if (Botones.get(i).accion != null) {
-                        System.out.println("entro a la accion"+Botones.get(i).accion.Tipo);
+                        System.out.println("entro a la accion" + Botones.get(i).accion.Tipo);
                         Menu.Lista.get(num_pest).Ejecutar_funcion(Botones.get(i).accion);
                     }
                     if ((!Botones.get(i).referencia.trim().equalsIgnoreCase("nulo") && !Botones.get(i).referencia.trim().equalsIgnoreCase("undefined"))) {
-                        if(Botones.get(i).referencia.equalsIgnoreCase("nulo")){
-                            
-                        }
-                        else if(Botones.get(i).referencia.equalsIgnoreCase("nulo")){
-                            
-                        }else{
-                         
-                           Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
+                        if (Botones.get(i).referencia.equalsIgnoreCase("nulo")) {
+
+                        } else if (Botones.get(i).referencia.equalsIgnoreCase("nulo")) {
+
+                        } else {
+
+                            Menu.Lista.get(num_pest).mostrar_ventana(Botones.get(i).referencia);
                         }
                     }
                 }
@@ -164,7 +165,7 @@ public class contenedor extends JPanel implements ActionListener {
         }
         Desplegable field = new Desplegable(alto, ancho, lista, x, y, defecto, nombre);
         Combos.add(field);
-       System.out.println("se añadio");
+        System.out.println("se añadio");
         this.add(field);
         return true;
     }
@@ -197,9 +198,34 @@ public class contenedor extends JPanel implements ActionListener {
     boolean add_Image(String ruta, int x, int y, int alto, int ancho) {
         String nuevopat = Menu.Lista.get(num_pest).ABpath + "\\" + ruta;
         System.out.println(nuevopat + "este es el nuevopat");
-        Imagenes music = new Imagenes(nuevopat, x, y,alto, ancho);
+        Imagenes music = new Imagenes(nuevopat, x, y, alto, ancho);
         imagenes.add(music);
         this.add(music);
         return true;
+    }
+
+    public String obtener_datos() {
+        String datos = "";
+        for(int i=0;i<Fields.size();i++){
+            Texto_Lab actual = Fields.get(i);
+            String dato = "<"+actual.nombre+">\""+actual.getText()+"\"</"+actual.nombre+">";
+            datos += dato;
+        }
+        for(int i=0;i<Areas.size();i++){
+            AreaTexto actual = Areas.get(i);
+            String dato = "<"+actual.nombre+">\""+actual.getText().replace("\n","\\n")+"\"</"+actual.nombre+">";
+            datos += dato;
+        }
+        for(int i=0;i<Combos.size();i++){
+            Desplegable actual = Combos.get(i);
+            String dato = "<"+actual.nombre+">\""+actual.getSelectedItem().toString()+"\"</"+actual.nombre+">";
+            datos += dato;
+        }
+        for(int i=0;i<Numeros.size();i++){
+            Numberfield actual = Numeros.get(i);
+            String dato = "<"+actual.nombre+">"+actual.getValue()+"</"+actual.nombre+">";
+            datos += dato;
+        }
+        return datos;
     }
 }
