@@ -5,6 +5,8 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
+import ComponentFs.Raiz;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -14,24 +16,24 @@ import java.util.ArrayList;
  */
 public class Control {
 
-    public String Nombre;
-    public String Tipo;
-    public String color;
-    public String Fuente;
-    public int x, y, maximo, minimo;
-    public int tam, alto, ancho;
+    public String Nombre;//ya esta
+    public String Tipo; //ya esta
+    public String color;//ya esta
+    public String Fuente;//ya esta 
+    public int x, y, maximo, minimo;//ya estan
+    public int tam, alto, ancho;//listo
     public String negrita, cursiva, accion;
     public int linea, columna;
     public ListaDatos Datos;
     public EDato Defecto;
 
     public Control() {
-        Nombre = Tipo =   "";
+        Nombre = Tipo = "";
         Fuente = "Arial";
         alto = ancho = 50;
         tam = 14;
         color = "#000000";
-        x = y =  0;
+        x = y = 0;
         maximo = minimo = -1;
         negrita = cursiva = "falso";
         accion = "";
@@ -105,13 +107,13 @@ public class Control {
         }
         switch (actual.val.replace("\"", "").toLowerCase()) {
             case "texto":
-                Analizar_Attributos_Tipo_Texto(hijos, lista,1);
+                Analizar_Attributos_Tipo_Texto(hijos, lista, 1);
                 break;
             case "numerico":
                 Analizar_Attributos_Tipo_Numerico(hijos, lista);
                 break;
             case "textoarea":
-                Analizar_Attributos_Tipo_Texto(hijos, lista,0);
+                Analizar_Attributos_Tipo_Texto(hijos, lista, 0);
                 break;
             case "desplegable":
                 Analizar_Attributos_Tipo_desplegable(hijos, lista);
@@ -120,7 +122,7 @@ public class Control {
         }
     }
 
-    private void Analizar_Attributos_Tipo_Texto(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista,int tipo) {
+    private void Analizar_Attributos_Tipo_Texto(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista, int tipo) {
         for (int i = 0; i < hijos.size(); i++) {
             NodoSGxml actual = hijos.get(i);
             NodoError error;
@@ -139,13 +141,13 @@ public class Control {
                     error.descripcion = "El attributo Maximo no esta permitido dentro del cotrol tipo texto/textoarea";
                     lista.add(error);
                     break;
-                case "accion":   
-                    if(tipo==1){
+                case "accion":
+                    if (tipo == 1) {
                         error = new NodoError("semantico");
-                    error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
-                    error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
-                    error.descripcion = "El attributo Accion no esta permitido dentro del cotrol tipo texto";
-                    lista.add(error);
+                        error.linea = String.valueOf(hijos.get(hijos.size() - 1).linea);
+                        error.columna = String.valueOf(hijos.get(hijos.size() - 1).columna);
+                        error.descripcion = "El attributo Accion no esta permitido dentro del cotrol tipo texto";
+                        lista.add(error);
                     }
                     break;
             }
@@ -212,48 +214,48 @@ public class Control {
         if (Datos != null) {
             Datos.verficar_datos_repetidos(lista);
         }
-       if(Defecto!=null){
-           Analizar_etiqueta_Defecto(lista);
-       } 
+        if (Defecto != null) {
+            Analizar_etiqueta_Defecto(lista);
+        }
     }
 
-    private void Analizar_etiqueta_Defecto(ArrayList<NodoError> lista){
-        switch(Tipo.toLowerCase()) {
+    private void Analizar_etiqueta_Defecto(ArrayList<NodoError> lista) {
+        switch (Tipo.toLowerCase()) {
             case "desplegable":
-                if(!Datos.buscar_lista_datos(Defecto.Dato)){
-                NodoError error;
-                error = new NodoError("semantico");
-                error.linea = String.valueOf(Defecto.linea);
-                error.columna = String.valueOf(Defecto.columna);
-                error.descripcion = "la etiqueta Defecto no tiene un valor valido dentro de los datos de la lista";
-                lista.add(error);
+                if (!Datos.buscar_lista_datos(Defecto.Dato)) {
+                    NodoError error;
+                    error = new NodoError("semantico");
+                    error.linea = String.valueOf(Defecto.linea);
+                    error.columna = String.valueOf(Defecto.columna);
+                    error.descripcion = "la etiqueta Defecto no tiene un valor valido dentro de los datos de la lista";
+                    lista.add(error);
                 }
                 break;
             case "numerico":
-                if(!Defecto.match_numero()){
-                NodoError error;
-                error = new NodoError("semantico");
-                error.linea = String.valueOf(Defecto.linea);
-                error.columna = String.valueOf(Defecto.columna);
-                error.descripcion = "la etiqueta Defecto tiene solo numeros dentro del tipo numerico";
-                lista.add(error);
+                if (!Defecto.match_numero()) {
+                    NodoError error;
+                    error = new NodoError("semantico");
+                    error.linea = String.valueOf(Defecto.linea);
+                    error.columna = String.valueOf(Defecto.columna);
+                    error.descripcion = "la etiqueta Defecto tiene solo numeros dentro del tipo numerico";
+                    lista.add(error);
                 }
                 break;
-            case "texto":   
-                if(Defecto.Dato.contains("\n")){
-                NodoError error;
-                error = new NodoError("semantico");
-                error.linea = String.valueOf(Defecto.linea);
-                error.columna = String.valueOf(Defecto.columna);
-                error.descripcion = "la etiqueta Defecto tiene un salto de linea, no valido en tipo Texto";
-                lista.add(error);
+            case "texto":
+                if (Defecto.Dato.contains("\n")) {
+                    NodoError error;
+                    error = new NodoError("semantico");
+                    error.linea = String.valueOf(Defecto.linea);
+                    error.columna = String.valueOf(Defecto.columna);
+                    error.descripcion = "la etiqueta Defecto tiene un salto de linea, no valido en tipo Texto";
+                    lista.add(error);
                 }
                 break;
-            case "textoArea": 
+            case "textoArea":
                 break;
         }
     }
-    
+
     private void Set_Attributos(ArrayList<NodoSGxml> hijos) {
         for (int i = 0; i < hijos.size(); i++) {
             String hijo = hijos.get(i).tipo;
@@ -267,15 +269,15 @@ public class Control {
                     break;
                 case "accion":
                     this.accion = val.replace("\"", "");
-                    break;                    
+                    break;
                 case "nombre":
-                    this.Nombre= val.replace("\"", "");
+                    this.Nombre = val.replace("\"", "");
                     this.linea = hijos.get(i).linea;
                     this.columna = hijos.get(i).columna;
                     break;
                 case "tipo":
-                    this.Tipo= val.replace("\"", "");
-                    break;                    
+                    this.Tipo = val.replace("\"", "");
+                    break;
                 case "color":
                     this.color = val.replace("\"", "");
                     break;
@@ -287,13 +289,13 @@ public class Control {
                     break;
                 case "tam":
                     this.tam = Integer.valueOf(val);
-                    break; 
+                    break;
                 case "maximo":
                     this.maximo = Integer.valueOf(val);
                     break;
                 case "minimo":
                     this.minimo = Integer.valueOf(val);
-                    break;                    
+                    break;
                 case "alto":
                     this.alto = Integer.valueOf(val);
                     break;
@@ -304,5 +306,44 @@ public class Control {
         }
     }
 
-    
+    public NodoObjeto dev_Control() {
+        ArrayList<Raiz> lista = new ArrayList();
+        Raiz uno = new Raiz("color", color, "variable");
+        lista.add(uno);
+        uno = new Raiz("Fuente", Fuente, "variable");
+        lista.add(uno);
+        uno = new Raiz("tamañio", tam, "variable");
+        lista.add(uno);
+        uno = new Raiz("x", x, "variable");
+        lista.add(uno);
+        uno = new Raiz("y", y, "variable");
+        lista.add(uno);
+        uno = new Raiz("maximo", maximo, "variable");
+        lista.add(uno);
+        uno = new Raiz("minimo", minimo, "variable");
+        lista.add(uno);
+        uno = new Raiz("negrita", negrita, "variable");
+        lista.add(uno);
+        uno = new Raiz("cursiva", cursiva, "variable");
+        lista.add(uno);
+        uno = new Raiz("nombre", Nombre, "variable");
+        lista.add(uno);
+        uno = new Raiz("alto", alto, "variable");
+        lista.add(uno);
+        uno = new Raiz("ancho", ancho, "variable");
+        lista.add(uno);
+        uno = new Raiz("tipo", Tipo, "variable");
+        lista.add(uno);
+        uno = new Raiz("accion", accion, "variable");
+        lista.add(uno);
+        if (Datos != null) {
+            uno = new Raiz("listadatos", Datos.dev_lista_datos(), "variable");
+            lista.add(uno);
+        } else {
+            uno = new Raiz("listadatos", "", "variable");
+            lista.add(uno);
+        }
+        NodoObjeto nuevo = new NodoObjeto(lista);
+        return nuevo;
+    }
 }

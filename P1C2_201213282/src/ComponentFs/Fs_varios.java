@@ -26,6 +26,11 @@ public class Fs_varios {
                 retorno.dato = actual.nombre;
                 retorno.tipo = actual.tipo;
                 return retorno;
+            } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("arrayespecial")) {
+                NodoRespuesta retorno = new NodoRespuesta(actual.valor);
+                retorno.dato = actual.nombre;
+                retorno.tipo = actual.tipo;
+                return retorno;
             } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("array")) {
                 NodoRespuesta retorno = new NodoRespuesta(actual.valor);
                 retorno.dato = actual.nombre;
@@ -71,13 +76,16 @@ public class Fs_varios {
     }
 
     public Boolean ret_Existencia_ID(String nombre, TablaSimbolos tabla) {
+        System.out.println(nombre+" <---nombre");
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
                 return true;
             } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("ventana")) {
                 return true;
-            } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("contenedor")) {
+            }  else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("arrayespecial")) {
+                return true;
+            }else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("contenedor")) {
                 return true;
             } else if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("boton")) {
                 return true;

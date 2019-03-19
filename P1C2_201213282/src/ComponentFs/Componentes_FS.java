@@ -31,24 +31,27 @@ public class Componentes_FS {
         NodoRespuesta dato1 = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         NodoRespuesta dato2 = OP.Cuerpo_G(raiz.hijos.get(1), errores);
         NodoRespuesta dato3 = OP.Cuerpo_G(raiz.hijos.get(2), errores);
+        NodoRespuesta dato4 = OP.Cuerpo_G(raiz.hijos.get(3), errores);
         /*ERROES*/
-        if (dato1.error || dato2.error || dato3.error) {
+        if (dato1.error || dato2.error || dato3.error|| dato4.error) {
             return new NodoRespuesta(true);
         } else {
             String tipo1 = ret_tipo(dato1.resultado.toString());
             String tipo2 = ret_tipo(dato2.resultado.toString());
             String tipo3 = ret_tipo(dato3.resultado.toString());
+            String tipo4 = ret_tipo(dato4.resultado.toString());
             /*System.out.println(dato1.resultado.toString() + " es tipo: " + tipo1);
             System.out.println(dato2.resultado.toString() + " es tipo: " + tipo2);
             System.out.println(dato3.resultado.toString() + " es tipo: " + tipo3);*/
-            if (!tipo1.equalsIgnoreCase("cadena") || !tipo2.equalsIgnoreCase("numero") || !tipo3.equalsIgnoreCase("numero")) {
+            if (!tipo4.equalsIgnoreCase("cadena") ||!tipo1.equalsIgnoreCase("cadena") || !tipo2.equalsIgnoreCase("numero") || !tipo3.equalsIgnoreCase("numero")) {
                 return new NodoRespuesta(true);
             }
             String id = raices.lista.get(raices.lista.size() - 1);
             int largo = Integer.valueOf(dato2.resultado.toString());
             int ancho = Integer.valueOf(dato3.resultado.toString());
             String color = dato1.resultado.toString().replace("\"", "");
-            boolean resultado = Menu.Lista.get(num).Add_ventana(color, largo, ancho, id);
+            String path = dato4.resultado.toString().replace("\"", "");
+            boolean resultado = Menu.Lista.get(num).Add_ventana(color, largo, ancho, id,path);
             if (resultado) {
                 return new NodoRespuesta(false);
             } else {

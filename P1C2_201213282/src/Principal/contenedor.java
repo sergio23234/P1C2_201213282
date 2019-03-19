@@ -27,6 +27,7 @@ public class contenedor extends JPanel implements ActionListener {
     private ArrayList<Numberfield> Numeros;
     /*------------------------Donde no se obtiene nada--------------------------*/
     private ArrayList<Musica> Reproductor;
+    private ArrayList<Video> Videos;
     private ArrayList<Label> Labels;
     private ArrayList<Buton> Botones;
     private ArrayList<Imagenes> imagenes;
@@ -43,6 +44,7 @@ public class contenedor extends JPanel implements ActionListener {
         Reproductor = new ArrayList();
         Numeros = new ArrayList();
         imagenes = new ArrayList();
+        Videos = new ArrayList();
     }
 
     public void inicializar_contendor(int num, int alto, int ancho, String color, boolean border, int x, int y) {
@@ -178,8 +180,14 @@ public class contenedor extends JPanel implements ActionListener {
             Reproductor.add(music);
             this.add(music);
             return true;
+        } else {
+            String nuevopat = Menu.Lista.get(num_pest).ABpath + "\\" + ruta;
+            System.out.println(nuevopat + "este es el nuevopat");
+            Video music = new Video(nuevopat, x, y, auto, alto, ancho);
+            Videos.add(music);
+            this.add(music);
+            return true;
         }
-        return false;
     }
 
     boolean add_Numero(int alto, int ancho, int maximo, int minimo, int x, int y, int defecto, String nombre) {
@@ -206,24 +214,24 @@ public class contenedor extends JPanel implements ActionListener {
 
     public String obtener_datos() {
         String datos = "";
-        for(int i=0;i<Fields.size();i++){
+        for (int i = 0; i < Fields.size(); i++) {
             Texto_Lab actual = Fields.get(i);
-            String dato = "<"+actual.nombre+">\""+actual.getText()+"\"</"+actual.nombre+">";
+            String dato = "<" + actual.nombre + ">\"" + actual.getText() + "\"</" + actual.nombre + ">\n";
             datos += dato;
         }
-        for(int i=0;i<Areas.size();i++){
+        for (int i = 0; i < Areas.size(); i++) {
             AreaTexto actual = Areas.get(i);
-            String dato = "<"+actual.nombre+">\""+actual.getText().replace("\n","\\n")+"\"</"+actual.nombre+">";
+            String dato = "<" + actual.nombre + ">\"" + actual.getText().replace("\n", "\\n") + "\"</" + actual.nombre + ">\n";
             datos += dato;
         }
-        for(int i=0;i<Combos.size();i++){
+        for (int i = 0; i < Combos.size(); i++) {
             Desplegable actual = Combos.get(i);
-            String dato = "<"+actual.nombre+">\""+actual.getSelectedItem().toString()+"\"</"+actual.nombre+">";
+            String dato = "<" + actual.nombre + ">\"" + actual.getSelectedItem().toString() + "\"</" + actual.nombre + ">\n";
             datos += dato;
         }
-        for(int i=0;i<Numeros.size();i++){
+        for (int i = 0; i < Numeros.size(); i++) {
             Numberfield actual = Numeros.get(i);
-            String dato = "<"+actual.nombre+">"+actual.getValue()+"</"+actual.nombre+">";
+            String dato = "<" + actual.nombre + ">" + actual.getValue() + "</" + actual.nombre + ">\n";
             datos += dato;
         }
         return datos;

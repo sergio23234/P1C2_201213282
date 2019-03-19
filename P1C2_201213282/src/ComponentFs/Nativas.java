@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import ComponentGxml.NodoGxml;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -36,6 +37,9 @@ public class Nativas {
             } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                 //System.out.println("es vector de objetos");
                 return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
+            } else if (resultadoid.tipo.equalsIgnoreCase("arrayespecial")) {
+                //System.out.println("es vector de objetos");
+                return Analizarp2_ES(raiz.hijos.get(0), errores, resultadoid);
             } else {
                 return new NodoRespuesta(true);
             }
@@ -49,6 +53,9 @@ public class Nativas {
                 } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                     //System.out.println("es vector de objetos");
                     return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
+                } else if (resultadoid.tipo.equalsIgnoreCase("arrayespecial")) {
+                    //System.out.println("es vector de objetos");
+                    return Analizarp2_ES(raiz.hijos.get(0), errores, resultadoid);
                 } else {
                     return new NodoRespuesta(true);
                 }
@@ -62,6 +69,7 @@ public class Nativas {
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
         if (existe) {//existe 
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
+            System.out.println(existe + ">>>>" + raiz.valor);
             NodoFs actual1 = raiz.hijos.get(0);
             NodoRespuesta result = resultadoid;
             for (int i = 0; i < actual1.hijos.size(); i++) {
@@ -70,6 +78,8 @@ public class Nativas {
                     result = Analizarp2(raiz.valor, actual, errores, result);
                 } else if (result.tipo.equalsIgnoreCase("array")) {
                     result = Analizarp2_A(actual, errores, result);
+                } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
+                    result = Analizarp2_ES(actual, errores, result);
                 } else {
                     return new NodoRespuesta(true);
                 }
@@ -87,6 +97,8 @@ public class Nativas {
                         result = Analizarp2(raiz.valor, actual, errores, result);
                     } else if (result.tipo.equalsIgnoreCase("array")) {
                         result = Analizarp2_A(actual, errores, result);
+                    } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
+                        result = Analizarp2_ES(actual, errores, result);
                     } else {
                         return new NodoRespuesta(true);
                     }
@@ -118,6 +130,16 @@ public class Nativas {
         if (actual.Tipo.equalsIgnoreCase("filtros")) {
             llamada_fun ord_fun = new llamada_fun(global, num);
             result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
+        }
+        //System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
+        return result;
+    }
+
+    private NodoRespuesta Analizarp2_ES(NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta objetos) {
+        NodoRespuesta result = objetos;
+        if (actual.Tipo.equalsIgnoreCase("obtencion")) {
+            llamada_fun ord_fun = new llamada_fun(global, num);
+            result = ord_fun.analizar_nati3(actual, errores, (NodoGxml) objetos.resultado);
         }
         //System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
         return result;
@@ -303,4 +325,5 @@ public class Nativas {
         }
         return -1;
     }
+
 }

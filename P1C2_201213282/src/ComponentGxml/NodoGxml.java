@@ -5,6 +5,7 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class NodoGxml {
     public NodoGxml() {
         Ventanas = new ArrayList();
         Importaciones = new ArrayList();
-        errores =new ArrayList();
+        errores = new ArrayList();
     }
 
     public void Recorrer_Ventanas() {
@@ -59,5 +60,81 @@ public class NodoGxml {
                 }
             }
         }
+    }
+
+    public ArrayList<NodoObjeto> Dev_Ventanas_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            lista.add(Ventanas.get(i).dev_ventana());
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_Conte_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            ArrayList<NodoObjeto> aux = Ventanas.get(i).Dev_Contenedores_Objeto();
+            for (int j = 0; j < aux.size(); j++) {
+                lista.add(aux.get(j));
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_botones_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            ArrayList<NodoObjeto> aux = Ventanas.get(i).Dev_botones_Objeto();
+            for (int j = 0; j < aux.size(); j++) {
+                lista.add(aux.get(j));
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_multi_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            ArrayList<NodoObjeto> aux = Ventanas.get(i).Dev_Multi_Objeto();
+            for (int j = 0; j < aux.size(); j++) {
+                lista.add(aux.get(j));
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_textos_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            ArrayList<NodoObjeto> aux = Ventanas.get(i).Dev_textos_Objeto();
+            for (int j = 0; j < aux.size(); j++) {
+                lista.add(aux.get(j));
+            }
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_controles_Objeto() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Ventanas.size(); i++) {
+            ArrayList<NodoObjeto> aux = Ventanas.get(i).Dev_controles_Objeto();
+            for (int j = 0; j < aux.size(); j++) {
+                lista.add(aux.get(j));
+            }
+        }
+        return lista;
+    }
+
+    public NodoObjeto Dev_Ventanas_Objeto(String nombre, String objeto) {
+        for (int i = 0; i < Ventanas.size(); i++) {
+            if(Ventanas.get(i).Dev_Objeto(objeto)!=null){
+                return Ventanas.get(i).Dev_Objeto(objeto);
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Ventana> dev_ventanas(){
+        return Ventanas;
     }
 }

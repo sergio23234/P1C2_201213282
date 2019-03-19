@@ -20,7 +20,7 @@ public class ListaDatos {
 
     public ListaDatos() {
         Datos = new ArrayList();
-        accion="nulo";
+        accion = "nulo";
         linea = columna = 0;
     }
 
@@ -56,4 +56,11 @@ public class ListaDatos {
         System.out.println("---DATOS----");
     }
 
+    public ArrayList<String> dev_lista_datos() {
+        ArrayList<String> lista = new ArrayList();
+        for (int i = 0; i < Datos.size(); i++) {
+            lista.add(Datos.get(i).Dato);
+        }
+        return lista;
+    }
 }

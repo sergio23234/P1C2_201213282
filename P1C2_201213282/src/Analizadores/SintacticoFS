@@ -242,7 +242,7 @@ Tipo_Obte ::= 	opet									{:RESULT="obt_etiquieta";:}/*ObtenerporEtiqueta();*/
 
 
 /*---------------------------- Acciones de 	Crear ----------------------------*/				
-Acc_venta ::= cven ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 fpa 													 /*CrearVentana--->Solo creacion o asignacio de variable */		{:NodoFs nuevo = new NodoFs("Ventana");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); RESULT=nuevo;:}; 
+Acc_venta ::= cven ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 fpa 													 /*CrearVentana--->Solo creacion o asignacio de variable */		{:NodoFs nuevo = new NodoFs("Ventana");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); RESULT=nuevo;:}; 
 
 Acc_conte ::= idva:e0 ccon	ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa 	/*Crear contenedor--->Solo creacion o asignacio de variable */	{:NodoFs nuevo = new NodoFs("Contenedor");  nuevo.valor=e0; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);RESULT=nuevo;:}; 
 

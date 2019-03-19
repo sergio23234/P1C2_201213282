@@ -65,7 +65,9 @@ public class AS_ID {
         if (tipo.equalsIgnoreCase("vector") || tipo.equalsIgnoreCase("objeto")) {
             if (ID.dato.contains("[") || ID.dato.contains(".")) {
                 return new NodoRespuesta(true);
-            } else {
+            } else if (tipo.equalsIgnoreCase("arrayespecial")) {
+                return new NodoRespuesta(true);
+            }else {
                 set_Nuevoval_ID(resultado, ID.dato, tabla);
             }
         } else {

@@ -82,6 +82,10 @@ public class Accion_ID {
                 area = new Componentes_FS(tabla, global, num);
                 area.Analizar_IMV(raiz, errores, id, 1);
                 break;
+            case "video":
+                area = new Componentes_FS(tabla, global, num);
+                area.Analizar_IMV(raiz, errores, id, 2);
+                break;                
             case "imagen":
                 area = new Componentes_FS(tabla, global, num);
                 area.Analizar_Imagen(raiz, errores, id);

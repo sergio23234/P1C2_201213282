@@ -5,6 +5,8 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
+import ComponentFs.Raiz;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -118,5 +120,25 @@ public class Multimedia {
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         Set_Attributos(Nodo.listas);
        // this.texto = texto.replace("\"","");
+    }
+
+ public NodoObjeto dev_multi(){
+        ArrayList<Raiz> lista = new ArrayList();
+        Raiz uno = new Raiz("path",Path,"variable");
+        lista.add(uno);
+        uno = new Raiz("alto",alto,"variable");
+        lista.add(uno);
+        uno = new Raiz("ancho",ancho,"variable");
+        lista.add(uno);
+         uno = new Raiz("y",y,"variable");
+        lista.add(uno);
+        uno = new Raiz("x",x,"variable");
+        lista.add(uno);
+        uno = new Raiz("Auto",Auto,"variable");
+        lista.add(uno);
+        uno = new Raiz("Nombre",Nombre,"variable");
+        lista.add(uno);
+        NodoObjeto nuevo = new NodoObjeto(lista);
+        return nuevo;
     }
 }

@@ -38,6 +38,7 @@ public class Declarar_variables {
     public NodoRespuesta Cuerpo_Var(NodoFs raiz, ArrayList<NodoError> errores, NodoFs raices) {
         NodoRespuesta nuevo;
         NodoRespuesta retorn;
+        System.out.println(raiz.Tipo+"<<<<");
         switch (raiz.Tipo.toLowerCase()) {
             case "vector":
                 return Ana_vect(raiz, errores, raices);
@@ -77,11 +78,17 @@ public class Declarar_variables {
                 Est_Array array = new Est_Array(tabla, global, num);
                 nuevo = array.Analizar(raiz, errores);
                 if (!nuevo.error) {
-                    return Add_array(raices, nuevo);
+                    return Add_array(raices, nuevo,0);
                 }
                 return new NodoRespuesta(true);
             case "leergxml":
-                break;
+                 Est_gxml arrayes = new Est_gxml(tabla, global, num);
+                nuevo = arrayes.Analizar(raiz, errores);
+                if (!nuevo.error) {
+                    return Add_array(raices, nuevo,5);
+                }
+                return new NodoRespuesta(true);
+                
             case "nada":
                 nuevo = new NodoRespuesta("undefined");
                 Add_var_Tabla_variable(raices, nuevo);
@@ -149,10 +156,9 @@ public class Declarar_variables {
                 }
                 return new NodoRespuesta(true);
             case "nativas":
-                Nativas nat = new Nativas(tabla, global, num);
+                 Nativas nat = new Nativas(tabla, global, num);
                 retorn = nat.Analizar(raiz, errores);
                 if (!retorn.error) {
-                    // System.out.println("vino funcion" + retorn.tipo);
                     Add_var_Tabla_variable(raices, retorn);
                     return new NodoRespuesta(false);
                 }
@@ -162,7 +168,7 @@ public class Declarar_variables {
                 llamada_fun funcion = new llamada_fun(global, num);
                 retorn = funcion.analizar(raiz, errores, tabla);
                 if (!retorn.error) {
-                    // System.out.println("vino funcion" + retorn.tipo);
+                    //System.out.println("vino funcion" + retorn.tipo);
                     Add_var_Tabla_variable(raices, retorn);
                     return new NodoRespuesta(false);
                 }
@@ -212,6 +218,8 @@ public class Declarar_variables {
             tipos = "objeto";
         } else if (respuesta.tipo.equalsIgnoreCase("array")) {
             tipos = "array";
+        }else if (respuesta.tipo.equalsIgnoreCase("arrayespecial")) {
+            tipos = "arrayespecial";
         }
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla(tipos, raices.lista.get(i));
@@ -312,16 +320,23 @@ public class Declarar_variables {
         tabla.Tabla.add(nodo);
     }
 
-    private NodoRespuesta Add_array(NodoFs raices, NodoRespuesta respuesta) {
+    private NodoRespuesta Add_array(NodoFs raices, NodoRespuesta respuesta,int tipo) {
         for (int i = 0; i < raices.lista.size() - 1; i++) {
             NodoTabla nodo = new NodoTabla("variable", raices.lista.get(i));
             nodo.valor = "undefined";
             tabla.Tabla.add(nodo);
         }
+        if(tipo==0){//array normal
         String var = raices.lista.get(raices.lista.size() - 1);
         NodoTabla nodo = new NodoTabla("array", var);
         nodo.valor = respuesta.resultado;
         tabla.Tabla.add(nodo);
+        }else{ // array especial
+          String var = raices.lista.get(raices.lista.size() - 1);
+        NodoTabla nodo = new NodoTabla("arrayespecial", var);
+        nodo.valor = respuesta.resultado;
+        tabla.Tabla.add(nodo);  
+        }
         return new NodoRespuesta(false);
     }
 

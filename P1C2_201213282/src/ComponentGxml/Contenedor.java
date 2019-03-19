@@ -5,6 +5,8 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
+import ComponentFs.Raiz;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -281,5 +283,81 @@ public class Contenedor {
         Analizar_Nombres_multimedia(lista);
         Analizar_Nombres_Botones(lista);
 
+    }
+
+    public NodoObjeto dev_contenedor() {
+        ArrayList<Raiz> lista = new ArrayList();
+        Raiz uno = new Raiz("color", color, "variable");
+        lista.add(uno);
+        uno = new Raiz("alto", alto, "variable");
+        lista.add(uno);
+        uno = new Raiz("ancho", ancho, "variable");
+        lista.add(uno);
+        uno = new Raiz("y", y, "variable");
+        lista.add(uno);
+        uno = new Raiz("x", x, "variable");
+        lista.add(uno);
+        uno = new Raiz("borde", Borde, "variable");
+        lista.add(uno);
+        uno = new Raiz("Id", Id, "variable");
+        lista.add(uno);
+        NodoObjeto nuevo = new NodoObjeto(lista);
+        return nuevo;
+    }
+
+    public ArrayList<NodoObjeto> Dev_botones() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Botones.size(); i++) {
+            lista.add(Botones.get(i).dev_boton());
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_textos() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Textos.size(); i++) {
+            lista.add(Textos.get(i).dev_texto());
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_multi() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < Multi.size(); i++) {
+            lista.add(Multi.get(i).dev_multi());
+        }
+        return lista;
+    }
+
+    public ArrayList<NodoObjeto> Dev_controloes() {
+        ArrayList<NodoObjeto> lista = new ArrayList();
+        for (int i = 0; i < controles.size(); i++) {
+            lista.add(controles.get(i).dev_Control());
+        }
+        return lista;
+    }
+
+    public NodoObjeto Dev_por_objeto(String nombre) {
+        for (int i = 0; i < Botones.size(); i++) {
+            if (Botones.get(i).Nombre.equalsIgnoreCase(nombre)) {
+                return Botones.get(i).dev_boton();
+            }
+        }
+        for (int i = 0; i < Textos.size(); i++) {
+            if (Textos.get(i).Nombre.equalsIgnoreCase(nombre)) {
+                return Textos.get(i).dev_texto();
+            }
+        }
+        for (int i = 0; i < controles.size(); i++) {
+            if (controles.get(i).Nombre.equalsIgnoreCase(nombre)) {
+                return controles.get(i).dev_Control();
+            }
+        }
+        for (int i = 0; i < Multi.size(); i++) {
+            if (Multi.get(i).Nombre.equalsIgnoreCase(nombre)) {
+                return Multi.get(i).dev_multi();
+            }
+        }
+        return null;
     }
 }

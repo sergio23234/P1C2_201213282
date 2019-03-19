@@ -5,6 +5,8 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
+import ComponentFs.Raiz;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -116,5 +118,23 @@ public class Boton {
                     break;
             }
         }
+    }
+
+     public NodoObjeto dev_boton(){
+        ArrayList<Raiz> lista = new ArrayList();
+        Raiz uno = new Raiz("referencia",referencia,"variable");
+        lista.add(uno);
+        uno = new Raiz("alto",alto,"variable");
+        lista.add(uno);
+        uno = new Raiz("ancho",ancho,"variable");
+        lista.add(uno);
+         uno = new Raiz("y",y,"variable");
+        lista.add(uno);
+        uno = new Raiz("x",x,"variable");
+        lista.add(uno);
+        uno = new Raiz("Nombre",Nombre,"variable");
+        lista.add(uno);
+        NodoObjeto nuevo = new NodoObjeto(lista);
+        return nuevo;
     }
 }

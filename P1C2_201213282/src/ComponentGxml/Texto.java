@@ -5,6 +5,8 @@
  */
 package ComponentGxml;
 
+import ComponentFs.NodoObjeto;
+import ComponentFs.Raiz;
 import Principal.NodoError;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -160,5 +162,29 @@ public class Texto {
                     break;
             }
         }
+    }
+
+    public NodoObjeto dev_texto() {
+        ArrayList<Raiz> lista = new ArrayList();
+        Raiz uno = new Raiz("color", color, "variable");
+        lista.add(uno);
+        uno = new Raiz("Fuente", Fuente, "variable");
+        lista.add(uno);
+        uno = new Raiz("tamañio", tam, "variable");
+        lista.add(uno);
+        uno = new Raiz("y", y, "variable");
+        lista.add(uno);
+        uno = new Raiz("x", x, "variable");
+        lista.add(uno);
+        uno = new Raiz("negrita", negrita, "variable");
+        lista.add(uno);
+        uno = new Raiz("cursiva", cursiva, "variable");
+        lista.add(uno);
+        uno = new Raiz("nombre", Nombre, "variable");
+        lista.add(uno);
+        uno = new Raiz("valor", Valor, "variable");
+        lista.add(uno);
+        NodoObjeto nuevo = new NodoObjeto(lista);
+        return nuevo;
     }
 }

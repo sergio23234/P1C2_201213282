@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import ComponentGxml.NodoGxml;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class llamada_fun {
         Fs_varios fs = new Fs_varios();
         String nombre_fun = raiz.valor;
         boolean existe_func = fs.ret_Existencia_fun(nombre_fun, global);//para saber si existe la funcion
-       // System.out.println("llego a este punto 0"+nombre_fun);
+        // System.out.println("llego a este punto 0"+nombre_fun);
         if (existe_func) {
             NodoFs raiz_fun = fs.ret_fun_Tabla(nombre_fun, global); //raiz de la funcion
             if (raiz_fun.hijos.size() > 1) {        //si tienes mas hijos
@@ -133,9 +134,9 @@ public class llamada_fun {
                 return est.Analizar(raiz, errores);
             case "as_id":
                 /*!Estructura asignacion id!*/
-                 AS_ID id = new AS_ID(tabla,global,num);
+                AS_ID id = new AS_ID(tabla, global, num);
                 return id.Analizar(raiz, errores);
-                
+
             case "es_sel":
                 /*!Estructura seleccionar!*/
                 Est_sel sel = new Est_sel(tabla, global, num);
@@ -330,7 +331,7 @@ public class llamada_fun {
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                  //  System.out.println("entro a retorno" + retornara.resultado.toString());
+                    //  System.out.println("entro a retorno" + retornara.resultado.toString());
                     respuesta.add(retornara.resultado.toString());
                     break;
                 } else {
@@ -364,7 +365,7 @@ public class llamada_fun {
                 if (retornara.error) {
                     return retornara;
                 } else if (retornara.es_retorno) {
-                  //  System.out.println("entro a retorno" + retornara.resultado.toString());
+                    //  System.out.println("entro a retorno" + retornara.resultado.toString());
                     if (retornara.resultado.toString().equalsIgnoreCase("verdadero")) {
                         retorno = new NodoRespuesta(resultados.get(i - 1).resultado.toString());
                         retorno.tipo = "variable";
@@ -372,7 +373,7 @@ public class llamada_fun {
                     }
                     break;
                 } else {
-                   // System.out.println("no retorno nada");
+                    // System.out.println("no retorno nada");
                 }
             }
         }
@@ -604,7 +605,7 @@ public class llamada_fun {
                     } else if (retornara.resultado.toString().equalsIgnoreCase("falso")) {
 
                     } else {
-                       // System.out.println("hay error ->" + retornara.resultado);
+                        // System.out.println("hay error ->" + retornara.resultado);
                         return new NodoRespuesta(true);
                     }
                     break;
@@ -635,7 +636,7 @@ public class llamada_fun {
             NodoFs actual = raiz.hijos.get(1);
             NodoRespuesta retornara;
             for (int k = 0; k < actual.hijos.size(); k++) {
-               // System.out.println(actual.hijos.get(k).Tipo);
+                // System.out.println(actual.hijos.get(k).Tipo);
                 retornara = Analizar_Cuerpo(actual.hijos.get(k), errores);
                 if (retornara.error) {
                     //System.out.println("dio un error");
@@ -818,16 +819,72 @@ public class llamada_fun {
 
     private Object analizar_resultado(Object resultado) {
         String resultados = resultado.toString();
-        if(resultados.contains("\"")){
+        if (resultados.contains("\"")) {
             resultados = resultados.replace("\"", "");
-           String nuevo="";
-           char[] fac = resultados.toCharArray();
-           for(int i=1;i<fac.length;i++){
-               nuevo = nuevo+fac[i];
-           }
-           return "\""+nuevo+"\"";
+            String nuevo = "";
+            char[] fac = resultados.toCharArray();
+            for (int i = 1; i < fac.length; i++) {
+                nuevo = nuevo + fac[i];
+            }
+            return "\"" + nuevo + "\"";
         }
         return resultado;
     }
 
+    NodoRespuesta analizar_nati3(NodoFs raiz, ArrayList<NodoError> errores, NodoGxml nodo) {
+        String tipo = raiz.valor;
+        Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
+        if (raiz.hijos.size() == 2 && tipo.equalsIgnoreCase("obtenerpornombre")) {
+          
+            NodoRespuesta nombre = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+            NodoRespuesta id = OP.Cuerpo_G(raiz.hijos.get(1), errores);
+            NodoObjeto resultado = nodo.Dev_Ventanas_Objeto(id.resultado.toString().replace("\"", ""), nombre.resultado.toString().replace("\"", ""));
+            NodoRespuesta nuevo = new NodoRespuesta(resultado);
+            nuevo.tipo = "objeto";
+            return nuevo;
+
+        } else if (raiz.hijos.size() == 1 && !tipo.equalsIgnoreCase("obtenerpornombre")) {
+            NodoRespuesta nombre = OP.Cuerpo_G(raiz.hijos.get(0), errores);
+            if (tipo.equalsIgnoreCase("obt_etiquieta")) {
+                String tipo1 = nombre.resultado.toString().toLowerCase();
+                System.out.println("entro aqui"+tipo1);
+                switch (tipo1.replace("\"", "")) {
+                    case "ventana":
+                        ArrayList<NodoObjeto> valores = nodo.Dev_Ventanas_Objeto();
+                        NodoRespuesta nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                    case "contenedor":
+                        valores = nodo.Dev_Conte_Objeto();
+                        nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                    case "texto":
+                        valores = nodo.Dev_textos_Objeto();
+                        nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                    case "control":
+                        valores = nodo.Dev_controles_Objeto();
+                        nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                    case "boton":
+                        valores = nodo.Dev_botones_Objeto();
+                        nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                    case "multimedia":
+                        valores = nodo.Dev_multi_Objeto();
+                        nuevo = new NodoRespuesta(valores);
+                        nuevo.tipo = "array";
+                        return nuevo;
+                }
+                return new NodoRespuesta(true);
+            } else {
+
+            }
+        }
+        return new NodoRespuesta(false);
+    }
 }

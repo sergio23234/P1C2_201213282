@@ -84,7 +84,7 @@ public class Generar_Archivo_FS {
 
     private void Crear_Ventana(Ventana raiz,boolean principal) {
         String nuevo = "var ven_";
-        nuevo += raiz.Id + "= CrearVentana(\"" + raiz.color + "\"," + raiz.alto + "," + raiz.ancho + ");\n";
+        nuevo += raiz.Id + "= CrearVentana(\"" + raiz.color + "\"," + raiz.alto + "," + raiz.ancho +",\"" + raiz.Id + "\");\n";
         Datos.add(nuevo);
         for (int i = 0; i < raiz.contenedores.size(); i++) {
             Crear_Contenedor(raiz.contenedores.get(i), raiz.Id);

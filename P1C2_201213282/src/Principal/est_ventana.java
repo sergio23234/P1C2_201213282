@@ -8,7 +8,10 @@ package Principal;
 import ComponentFs.NodoFs;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,9 +21,10 @@ public class est_ventana extends javax.swing.JFrame {
 
     public String id;
     public int path;
+    String guardado;
     private String color;
-    public boolean alcerrar,alcargar;
-    public NodoFs cerrar,cargar;
+    public boolean alcerrar, alcargar;
+    public NodoFs cerrar, cargar;
     public ArrayList<contenedor> contenedores;
     private boolean primero = true;
     /**
@@ -28,7 +32,7 @@ public class est_ventana extends javax.swing.JFrame {
      */
     private int max_alto, max_ancho;
 
-    public est_ventana(String id, int alto, int ancho, String color,int path) {
+    public est_ventana(String id, int alto, int ancho, String color, int path, String guardado) {
         initComponents();
         this.id = id;
         contenedores = new ArrayList();
@@ -40,10 +44,11 @@ public class est_ventana extends javax.swing.JFrame {
         this.color = color.replace("#", "").trim();
         master.setBackground(new Color(hex(this.color)));
         Refrescar();
-        alcerrar=alcargar=false;
+        alcerrar = alcargar = false;
         this.path = path;
         cerrar = null;
-        cargar=null;
+        cargar = null;
+        this.guardado = guardado;
     }
 
     /**
@@ -94,9 +99,9 @@ public class est_ventana extends javax.swing.JFrame {
         master.repaint();
     }
 
-    public boolean add_contenedor(int nump,String id, int alto, int ancho, String color, boolean boder, int x, int y) {
+    public boolean add_contenedor(int nump, String id, int alto, int ancho, String color, boolean boder, int x, int y) {
         contenedor nuevo = new contenedor(id);
-        nuevo.inicializar_contendor(nump,alto, ancho, color, boder, x, y);
+        nuevo.inicializar_contendor(nump, alto, ancho, color, boder, x, y);
         boolean add = true;
         for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).id.equalsIgnoreCase(id)) {
@@ -162,9 +167,9 @@ public class est_ventana extends javax.swing.JFrame {
     }
 
     boolean set_FS_boton(String id, NodoFs accion) {
-         for (int i = 0; i < contenedores.size(); i++) {
+        for (int i = 0; i < contenedores.size(); i++) {
             if (contenedores.get(i).Buscar_boton(id)) {
-                return contenedores.get(i).set_FS_boton(id,accion);
+                return contenedores.get(i).set_FS_boton(id, accion);
             }
         }
         return false;
@@ -179,15 +184,49 @@ public class est_ventana extends javax.swing.JFrame {
         return -1;
     }
 
-    public void Guardar_datosContenedor(){
-        String texto ="";
-        for(int i=0;i<contenedores.size();i++){
-            String textoad = contenedores.get(i).obtener_datos();
-            if(!textoad.equalsIgnoreCase("")){
-                texto+=textoad;
+    public void Guardar_datosContenedor() {
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+        String texto = "";
+        try {
+             fr = new FileReader (guardado);
+             br = new BufferedReader(fr);
+            ArrayList<String> lineas = new ArrayList();
+             String linea;
+            while((linea=br.readLine())!=null){
+                lineas.add(linea);
             }
+            fr.close();
+            br.close();
+            lineas.remove(lineas.size()-1);
+            fichero = new FileWriter(guardado);
+            pw = new PrintWriter(fichero);
+            for (int i = 0; i < contenedores.size(); i++) {
+                String textoad = contenedores.get(i).obtener_datos();
+                if (!textoad.equalsIgnoreCase("")) {
+                    texto += textoad;
+                }
+            }
+            if(!texto.equalsIgnoreCase("")){
+               String sublineas [] =texto.split("\n");
+                lineas.add("\t<principal>");
+                for(int i=0;i<sublineas.length;i++){
+                   lineas.add(sublineas[i]);
+                }
+                lineas.add("\t</principal>");
+                for(int i=0;i<lineas.size();i++){
+                    pw.println("\t\t"+lineas.get(i));
+                }
+                pw.println("</lista>");
+            }
+            pw.close();
+            fichero.close();
+        } catch (IOException ex) {
+            Logger.getLogger(est_ventana.class.getName()).log(Level.SEVERE, null, ex);
         }
         System.out.println(texto);
     }
-    
+
 }
