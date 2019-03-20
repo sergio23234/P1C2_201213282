@@ -21,10 +21,12 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
  * @author sergi
  */
 public class Videoview extends javax.swing.JFrame {
- MediaPlayerFactory mpf;
- EmbeddedMediaPlayer emp;
-    public Videoview(String ruta,int x,int y,int alto,int ancho) {
-        this.setBounds(x,y,ancho,alto);
+
+    MediaPlayerFactory mpf;
+    EmbeddedMediaPlayer emp;
+
+    public Videoview(String ruta, int x, int y, int alto, int ancho) {
+        this.setBounds(x, y, ancho, alto);
         Canvas c = new Canvas();
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
@@ -32,7 +34,7 @@ public class Videoview extends javax.swing.JFrame {
         add(p);
         setVisible(true);
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:/Program Files/VideoLAN/VLC");
-        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(),LibVlc.class);
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
         mpf = new MediaPlayerFactory();
         emp = mpf.newEmbeddedMediaPlayer(new Win32FullScreenStrategy(this));
         emp.setVideoSurface(mpf.newVideoSurface(c));
@@ -42,13 +44,11 @@ public class Videoview extends javax.swing.JFrame {
         emp.prepareMedia(ruta.replace("/", "\\\\"));
         emp.play();
     }
-    
-    public void cerrar(){
+
+    public void cerrar() {
         emp.pause();
         emp.stop();
         this.setVisible(false);
     }
-    
-    
 
 }

@@ -229,4 +229,16 @@ public class est_ventana extends javax.swing.JFrame {
         System.out.println(texto);
     }
 
+    void inicializarSV() {
+       for (int i = 0; i < contenedores.size(); i++) {
+            contenedores.get(i).inicializar_SV();
+        }
+    }
+
+    void finalizarSV() {
+        for (int i = 0; i < contenedores.size(); i++) {
+            contenedores.get(i).finalizar_SV();
+        }
+        }
+
 }

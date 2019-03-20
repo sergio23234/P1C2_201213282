@@ -72,6 +72,7 @@ public class AS_ID {
                 set_Nuevoval_ID(resultado, ID.dato, tabla);
             }
         } else {
+            System.out.println(ID.dato+"____"+resultado.resultado.toString());
             set_Nuevoval_ID(resultado, ID.dato, tabla);
         }
 
@@ -82,7 +83,7 @@ public class AS_ID {
         for (int i = 0; i < tabla.Tabla.size(); i++) {//recorrer toda la tabla
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
-                //System.out.println("entro en esta parte");
+                
                 if (valor.tipo.equalsIgnoreCase("")) {
                     actual.tipo = "variable";
                 } else {
@@ -95,11 +96,15 @@ public class AS_ID {
                 String pos_num = nombre.replace(nombre_var, "").replace("[", "").replace("]", "");
                 int num = Integer.valueOf(pos_num);
                 ArrayList<String> valores = (ArrayList<String>) actual.valor;
-                valores.set(num, valor.toString());
+                if(valor.resultado.toString().equalsIgnoreCase("nulo")){
+                    valores.set(num, "undefined");               
+                }else{
+                    valores.set(num, valor.resultado.toString());               
+                }
                 if (nombre.contains(".")) {
 
                 } else {
-                    actual.tipo = valor.tipo;
+                    actual.tipo ="vector";
                 }
                 actual.valor = valores;
                 return true;

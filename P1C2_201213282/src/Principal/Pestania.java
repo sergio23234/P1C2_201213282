@@ -287,9 +287,11 @@ public class Pestania extends javax.swing.JPanel {
                     if (temp.alcerrar) {
                         Ejecutar_funcion(temp.cerrar);
                     }
+                    temp.finalizarSV();
                     temp.hide();
                 }
                 ventanas.get(i).show();
+                ventanas.get(i).inicializarSV();
                 abierta_actual = i;
             }
         }

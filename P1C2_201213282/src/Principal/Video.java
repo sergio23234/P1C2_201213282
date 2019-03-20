@@ -17,17 +17,19 @@ import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
 import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
-
 /**
  *
  * @author sergi
  */
 public class Video extends javax.swing.JPanel {
-String ruta;
-int x,y;
-int alto,ancho;
-Videoview nuevo;
-boolean entro = true;
+
+    String ruta;
+    int x, y;
+    int alto, ancho;
+    Videoview nuevo;
+    boolean entro = true;
+    boolean auto;
+
     /**
      * Creates new form Video
      *
@@ -40,13 +42,14 @@ boolean entro = true;
      */
     public Video(String ruta, int x, int y, boolean auto, int alto, int ancho) {
         initComponents();
-      this.setLocation(x, y);
-      this.setSize(ancho,25);
-      this.x = x;
-      this.y = y;
-      this.ruta = ruta.replace("/", "\\\\");
-      this.alto= alto;
-      this.ancho = ancho;
+        this.setLocation(x, y);
+        this.setSize(ancho, 25);
+        this.x = x;
+        this.y = y;
+        this.ruta = ruta.replace("/", "\\\\");
+        this.alto = alto;
+        this.ancho = ancho;
+        this.auto = auto;
     }
 
     /**
@@ -84,17 +87,31 @@ boolean entro = true;
 
     private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
         // TODO add your handling code here:
-       if(entro){
-            nuevo = new Videoview(ruta,x,y,alto,ancho);
-            entro= false;
-       }else{
-           nuevo.cerrar();
-           entro = true;
-       }
+        if (entro) {
+            nuevo = new Videoview(ruta, x, y, alto, ancho);
+            entro = false;
+        } else {
+            nuevo.cerrar();
+            entro = true;
+        }
     }//GEN-LAST:event_StopActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Stop;
     // End of variables declaration//GEN-END:variables
+
+    void inicializar() {
+        if(auto){
+        nuevo = new Videoview(ruta, x, y, alto, ancho);
+        entro = false;
+        }
+    }
+
+    void finalizar() {
+        if(!entro){
+            nuevo.cerrar();
+            entro = true;
+        }
+    }
 }

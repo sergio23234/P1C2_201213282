@@ -555,15 +555,19 @@ public class Menu extends javax.swing.JFrame {
                    }
                 }
             }
-//            String nuevo = "";
-//            lineas = devuelto.split("\\}");
-//            for (int i = 0; i < lineas.length; i++) {
-//                if (!lineas[i].equalsIgnoreCase("\n")) {
-//                    nuevo += lineas[i].trim() + "}\n";
-//                }
-//            }
+            String nuevo = "";
+            lineas = devuelto.split("\\}");
+            for (int i = 0; i < lineas.length; i++) {
+                if (!lineas[i].equalsIgnoreCase("\n")) {
+                    if(i!=lineas.length-1){ 
+                        nuevo += lineas[i].trim() + "}\n";
+                    }else{
+                       nuevo += lineas[i].trim() + "\n";
+                   }
+                }
+            }
             String retorno = "";
-            lineas = devuelto.split(";");
+            lineas = nuevo.split(";");
             for (int i = 0; i < lineas.length; i++) {
                 if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
                     if(i!=lineas.length-1){

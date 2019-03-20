@@ -48,6 +48,7 @@ public class Fs_varios {
                 int num = Integer.valueOf(pos_num);
                 ArrayList<String> valores = (ArrayList<String>) actual.valor;
                 NodoRespuesta retorno = new NodoRespuesta(valores.get(num));
+                System.out.println("llego a esta parte");
                 retorno.dato = super_name;
                 retorno.tipo = "variable";
                 return retorno;
@@ -81,7 +82,7 @@ public class Fs_varios {
     }
 
     public Boolean ret_Existencia_ID(String nombre, TablaSimbolos tabla) {
-        //System.out.println(nombre+" <---nombre");
+       
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {

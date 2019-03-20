@@ -30,19 +30,24 @@ public class Cuerpo_op {
             case "ope_l":
                 OPA_L operal = new OPA_L(tabla, global, num);
                 return operal.Analizar_OPL(raiz, errores);
-                
+
             case "ope_c":
                 OPA_C operac = new OPA_C(tabla, global, num);
                 return operac.Analizar_OPC(raiz, errores);
-                
+
             case "ope_a":
                 OPA_A operacon = new OPA_A(tabla, global, num);
                 return operacon.Analizar_OPA(raiz, errores);
 
             case "dato":
+                if (raiz.valor.equals("")) {
+                    nuevo = new NodoRespuesta("undefined");
+                    return nuevo;
+                }
                 nuevo = new NodoRespuesta(raiz.valor);
+
                 return nuevo;
-                
+
             case "dato negado":
                 operacon = new OPA_A(tabla, global, num);
                 return operacon.negar_dato(raiz, errores);
@@ -56,21 +61,20 @@ public class Cuerpo_op {
                 return retorno.autodecrementar(raiz, errores);
 
             case "nativas":
-                Nativas nat = new Nativas(tabla,global,num);
-                return nat.Analizar(raiz, errores);   
-                
+                Nativas nat = new Nativas(tabla, global, num);
+                return nat.Analizar(raiz, errores);
+
             case "llamadafun":
-                /* llamada_Fun(raiz, errores);*/
                 llamada_fun funcion = new llamada_fun(global, num);
                 nuevo = funcion.analizar(raiz, errores, tabla);
                 if (!nuevo.es_retorno) {
-                    nuevo.resultado="undefinded";
-                    nuevo.tipo="undefinded";
+                    nuevo.resultado = "undefinded";
+                    nuevo.tipo = "undefinded";
                     return nuevo;
                 } else {
                     return nuevo;
                 }
-              
+
             case "id":
                 ES_ID id = new ES_ID(tabla, global, num);
                 return id.Analizar(raiz, errores);
@@ -80,5 +84,4 @@ public class Cuerpo_op {
         return nuevo;
     }
 
- 
 }

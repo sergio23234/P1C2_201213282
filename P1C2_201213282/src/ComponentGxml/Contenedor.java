@@ -8,7 +8,10 @@ package ComponentGxml;
 import ComponentFs.NodoObjeto;
 import ComponentFs.Raiz;
 import Principal.NodoError;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -55,10 +58,37 @@ public class Contenedor {
         Analizar_Attributos_obligatorios(Nodo.listas, lista);
         Analizar_Attributo_Borde(Nodo.listas, lista);
         Analizar_Attributo_Numeros(Nodo.listas, lista);
-        //Analizar_Attributo_Color(Nodo.listas,lista);
+        Analizar_Attributo_Color(Nodo.listas,lista);
         Set_Attributos(Nodo.listas);
     }
 
+private void Analizar_Attributo_Color(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
+        for (int i = 0; i < hijos.size(); i++) {
+            if (hijos.get(i).tipo.equalsIgnoreCase("color")) {
+                String hijo = hijos.get(i).val.replace("\"", "");
+                try {
+                    Pattern pattern = Pattern.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                    Matcher matcher;
+                    Color color = Color.decode(hijo);
+                    matcher = pattern.matcher("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                    if (!matcher.matches()) {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "El color definido:" + hijo + " no es un color valido tiene que extar en hexadecimal";
+                        error.linea = String.valueOf(hijos.get(i).linea);
+                        error.columna = String.valueOf(hijos.get(i).columna);
+                        lista.add(error);
+                    }
+                } catch (Exception e) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "El color definido:" + hijo + " no es un color valido tiene que extar en hexadecimal";
+                    error.linea = String.valueOf(hijos.get(i).linea);
+                    error.columna = String.valueOf(hijos.get(i).columna);
+                    lista.add(error);
+                }
+            }
+        }
+    }     
+    
     private void Analizar_Attributos_repetidos(ArrayList<NodoSGxml> hijos, ArrayList<NodoError> lista) {
         for (int i = 0; i < hijos.size(); i++) {
             for (int j = i + 1; j < hijos.size(); j++) {

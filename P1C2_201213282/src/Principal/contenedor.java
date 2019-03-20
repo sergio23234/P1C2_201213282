@@ -236,4 +236,22 @@ public class contenedor extends JPanel implements ActionListener {
         }
         return datos;
     }
+
+    void inicializar_SV() {
+        for (int i = 0; i < Reproductor.size(); i++) {
+            Reproductor.get(i).inicializar();
+        }
+        for (int i = 0; i < Videos.size(); i++) {
+            Videos.get(i).inicializar();
+        }
+    }
+
+    void finalizar_SV() {
+        for (int i = 0; i < Reproductor.size(); i++) {
+            Reproductor.get(i).finalizar();
+        }
+        for (int i = 0; i < Videos.size(); i++) {
+            Videos.get(i).finalizar();
+        }
+    }
 }

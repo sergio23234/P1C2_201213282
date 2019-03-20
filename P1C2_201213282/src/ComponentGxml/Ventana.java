@@ -12,6 +12,8 @@ import ComponentGxml.NodoSGxml;
 import java.util.ArrayList;
 import Principal.NodoError;
 import java.awt.Color;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -114,7 +116,17 @@ public class Ventana {
             if (hijos.get(i).tipo.equalsIgnoreCase("color")) {
                 String hijo = hijos.get(i).val.replace("\"", "");
                 try {
+                    Pattern pattern = Pattern.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                    Matcher matcher;
                     Color color = Color.decode(hijo);
+                    matcher = pattern.matcher("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                    if (!matcher.matches()) {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "El color definido:" + hijo + " no es un color valido tiene que extar en hexadecimal";
+                        error.linea = String.valueOf(hijos.get(i).linea);
+                        error.columna = String.valueOf(hijos.get(i).columna);
+                        lista.add(error);
+                    }
                 } catch (Exception e) {
                     NodoError error = new NodoError("semantico");
                     error.descripcion = "El color definido:" + hijo + " no es un color valido tiene que extar en hexadecimal";
@@ -122,13 +134,6 @@ public class Ventana {
                     error.columna = String.valueOf(hijos.get(i).columna);
                     lista.add(error);
                 }
-                /*if(){
-                    NodoError error = new NodoError("semantico");
-                    error.descripcion = "El tipo definido no es ni Secundario ni Principal es: " + hijos.get(i).val;
-                    error.linea = String.valueOf(hijos.get(i).linea);
-                    error.columna = String.valueOf(hijos.get(i).columna);
-                    lista.add(error);
-                    }*/
             }
         }
     }
@@ -249,17 +254,18 @@ public class Ventana {
     public NodoObjeto Dev_Objeto(String objeto) {
         ArrayList<NodoObjeto> lista = new ArrayList();
         for (int i = 0; i < contenedores.size(); i++) {
-           if(contenedores.get(i).Dev_por_objeto(objeto)!=null){
-               return contenedores.get(i).Dev_por_objeto(objeto);
-           } 
+            if (contenedores.get(i).Dev_por_objeto(objeto) != null) {
+                return contenedores.get(i).Dev_por_objeto(objeto);
+            }
         }
         return null;
     }
+
     public NodoObjeto Dev_Conte(String ID) {
         for (int i = 0; i < contenedores.size(); i++) {
-           if(contenedores.get(i).Id.equalsIgnoreCase(ID)){
-               return contenedores.get(i).dev_contenedor();
-           }
+            if (contenedores.get(i).Id.equalsIgnoreCase(ID)) {
+                return contenedores.get(i).dev_contenedor();
+            }
         }
         return null;
     }

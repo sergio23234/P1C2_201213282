@@ -100,31 +100,25 @@ public class Musica extends javax.swing.JPanel {
                 break;
         }
     }//GEN-LAST:event_reproducirActionPerformed
-//public void Play() throws Exception {
-//  player.play();
-//}
-// 
-//public void AbrirFichero(String ruta) throws Exception {
-//  File archivo = new File(ruta);
-//  player.open(archivo);
-//}
-// 
-//public void Pausa() throws Exception {
-//  player.pause();
-//}
-// 
-//public void Continuar() throws Exception {
-//  player.resume();
-//}
-// 
-//public void Stop() throws Exception {
-//  player.stop();
-//}
 
-    public void reproducir() {
 
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton reproducir;
     // End of variables declaration//GEN-END:variables
+
+    void inicializar() {
+        if(auto){
+            reproducir.setText("detener");
+        iniciado = 1;
+        hilo.start();
+        }
+    }
+
+    void finalizar() {
+        if(iniciado==1){
+                    reproducir.setText("iniciar");
+        iniciado = 2;
+        hilo.stop();
+        }
+    }
 }
