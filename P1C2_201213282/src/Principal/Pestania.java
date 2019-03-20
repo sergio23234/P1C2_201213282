@@ -299,11 +299,16 @@ public class Pestania extends javax.swing.JPanel {
     }
 
     public void Ejecutar_funcion(NodoFs raiz) {
+        try{
         Inicio ini = new Inicio(tabla, tabla, num);
         NodoFs nuevo = new NodoFs("cuerpo");
         nuevo.add_NodoFs(raiz);
         //System.out.println("llamo a la funcion" + raiz.Tipo);
-        ini.Analizar(nuevo, errores);
+        ini.Analizar(nuevo, errores);    
+        }
+        catch(Exception e){
+            Consola.append(e.toString()+"\n");
+        }
     }
 
 
