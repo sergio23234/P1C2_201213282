@@ -142,7 +142,7 @@ public class ES_ID {
     public NodoRespuesta autoincrementar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta uno;
         uno = Analizar(raiz.hijos.get(0), errores);
-        System.out.println(uno.error + "_" + uno.resultado + "<---");
+        //System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
             OPA_A nueva = new OPA_A(tabla, global, num);
             NodoRespuesta dos = nueva.sumar_uno(uno, tabla, raiz.linea, raiz.columna);
@@ -157,7 +157,7 @@ public class ES_ID {
         NodoRespuesta uno;
         // System.out.println(raiz.Tipo);
         uno = Analizar(raiz.hijos.get(0), errores);
-        System.out.println(uno.error + "_" + uno.resultado + "<---");
+        //System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
             OPA_A nueva = new OPA_A(tabla, global, num);
             NodoRespuesta dos = nueva.restar_uno(uno, tabla, raiz.linea, raiz.columna);

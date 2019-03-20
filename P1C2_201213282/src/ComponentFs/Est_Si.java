@@ -31,7 +31,7 @@ public class Est_Si {
     }
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
-      NodoRespuesta defaultsi = new NodoRespuesta(false);
+        NodoRespuesta defaultsi = new NodoRespuesta(false);
         for (int i = 0; i < raiz.hijos.size(); i++) {
             NodoFs actual = raiz.hijos.get(i);
             if (actual.Tipo.equalsIgnoreCase("si")) {
@@ -46,7 +46,7 @@ public class Est_Si {
                             if (condicion.error) {
                                 condicion.tipo = "si";
                                 return condicion;
-                            }else if(condicion.es_retorno){
+                            } else if (condicion.es_retorno) {
                                 return condicion;
                             }
                         }
@@ -60,9 +60,9 @@ public class Est_Si {
                     condicion = Analizar_Cuerpo(newactual.hijos.get(j), errores);
                     if (condicion.error) {
                         return condicion;
-                    }else if(condicion.es_retorno){
-                                return condicion;
-                            }
+                    } else if (condicion.es_retorno) {
+                        return condicion;
+                    }
                 }
                 return new NodoRespuesta(false, "si");
             }
@@ -75,81 +75,62 @@ public class Est_Si {
             case "dec_var":
                 Declarar_variables nnuevo = new Declarar_variables(tabla, global, num);
                 return nnuevo.Analizar(raiz, errores);/*!Estructura variable!*/
+                
             case "imprimir":
                 /*!Estructura imprimir!*/
                 Es_Imprimir nuevoi = new Es_Imprimir(tabla, global, num);
                 return nuevoi.Analizar(raiz, errores);
+                
             case "est_si":
                 /*!Estructura si!*/
                 Est_Si est = new Est_Si(tabla, global, num);
                 return est.Analizar(raiz, errores);
+                
             case "as_id":
                 /*!Estructura asignacion id!*/
-                break;
+                AS_ID id = new AS_ID(tabla, global, num);
+                return id.Analizar(raiz, errores);
+
             case "es_sel":
                 /*!Estructura seleccionar!*/
-                Est_sel sel = new Est_sel(tabla,global,num);
+                Est_sel sel = new Est_sel(tabla, global, num);
                 return sel.analizar(raiz, errores);
 
             case "llamadafun":
                 /*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                NodoRespuesta nuevo = funcion.analizar(raiz, errores,tabla);
+                NodoRespuesta nuevo = funcion.analizar(raiz, errores, tabla);
                 return nuevo;
+                
             case "id_accion":
                 /*!Estructura acciones ID!*/
-                break;
+                Accion_ID ID_A = new Accion_ID(tabla, global, num);
+                return ID_A.Analizar(raiz, errores);
+
             case "retornar":
                 /*!Estructura de retornar!*/
-                Est_return retorno = new Est_return(tabla, global, num);
-                return retorno.Analizar(raiz, errores);
+                if (in_global) {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "no se puede retornar nada en el inicio";
+                    error.linea = String.valueOf(raiz.linea);
+                    error.columna = String.valueOf(raiz.columna);
+                    errores.add(error);
+                    return new NodoRespuesta(true);
+                } else {
+                    Est_return retorno = new Est_return(tabla, global, num);
+                    return retorno.Analizar(raiz, errores);
+                }
 
             case "detener":
-                /*!Estructura de detener!*/ 
-                    return new NodoRespuesta(true);
+                /*!Estructura de detener!*/
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "error no esta permitido detener en el inicio";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                errores.add(error);
+                return new NodoRespuesta(true);
         }
         return new NodoRespuesta(true);
     }
 
 }
-
-//    private NodoRespuesta Analizar_Condicion(NodoFs raiz, ArrayList<NodoError> errores) {
-//        NodoRespuesta nuevo;
-//        switch (raiz.Tipo.toLowerCase()) {
-//            case "ope_l":
-//                OPA_L operal = new OPA_L(tabla, global);
-//                return operal.Analizar_OPL(raiz, errores);
-//            case "ope_c":
-//                OPA_C operac = new OPA_C(tabla, global);
-//                return operac.Analizar_OPC(raiz, errores);
-//            case "ope_a":
-//                OPA_A operacon = new OPA_A(tabla, global);
-//                return operacon.Analizar_OPA(raiz, errores);
-//
-//            case "dato":
-//                nuevo = new NodoRespuesta(raiz.valor);
-//                return nuevo;
-//            case "dato negado":
-//                operacon = new OPA_A(tabla, global);
-//                return operacon.negar_dato(raiz, errores);
-//                
-//            case "autoincremento":
-//                ES_ID retorno = new ES_ID(tabla, global);
-//                return retorno.autoincrementar(raiz, errores);
-//
-//            case "autodecremento":
-//                retorno = new ES_ID(tabla, global);
-//                return retorno.autodecrementar(raiz, errores);
-//
-//            case "nativas":
-//                break;
-//            case "llamadafun":
-//                break;
-//            case "id":
-//                ES_ID id = new ES_ID(tabla, global);
-//                return id.Analizar(raiz, errores);
-//
-//        }
-//        nuevo = new NodoRespuesta(true);
-//        return nuevo;
-//    }

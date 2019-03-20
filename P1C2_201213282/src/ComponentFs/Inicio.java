@@ -57,9 +57,9 @@ public class Inicio {
                 break;
             case "as_id":
                 /*!Estructura asignacion id!*/
-                AS_ID id = new AS_ID(tabla,global,num);
+                AS_ID id = new AS_ID(tabla, global, num);
                 return id.Analizar(raiz, errores);
-                
+
             case "es_sel":
                 /*!Estructura seleccionar!*/
                 Est_sel sel = new Est_sel(tabla, global, num);
@@ -67,20 +67,30 @@ public class Inicio {
 
             case "llamadafun":/*!Estructura llamada a funcion!*/
                 llamada_fun funcion = new llamada_fun(global, num);
-                return funcion.analizar(raiz, errores,tabla);
+                return funcion.analizar(raiz, errores, tabla);
 
             case "id_accion":
                 /*!Estructura acciones ID!*/
-                Accion_ID ID_A =new Accion_ID(tabla,global,num);
+                Accion_ID ID_A = new Accion_ID(tabla, global, num);
                 return ID_A.Analizar(raiz, errores);
-                
+
             case "retornar":
                 /*!Estructura de retornar!*/
-                Est_return retorno = new Est_return(tabla, global, num);
+                //Est_return retorno = new Est_return(tabla, global, num);
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "no se puede retornar nada en el inicio";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                errores.add(error);
                 return new NodoRespuesta(true);
 
             case "detener":
-                /*!Estructura de detener!*/ break;
+                error = new NodoError("semantico");
+                error.descripcion = "error no esta permitido detener en el inicio";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                errores.add(error);
+                return new NodoRespuesta(true);
         }
 
         return null;

@@ -51,7 +51,7 @@ public class Est_sel {
             if (actual.Tipo.equalsIgnoreCase("caso")) {
                 NodoRespuesta Respuesta = OP.Cuerpo_G(actual.hijos.get(0), errores);
                 OPA_C compa = new OPA_C(tabla,global,num);
-                NodoRespuesta caso = compa.Comparar_Caso(Respuesta.resultado.toString(), respuesta);
+                NodoRespuesta caso = compa.Comparar_Caso(Respuesta.resultado.toString(), respuesta,raiz.linea,raiz.columna);
                 if (caso.resultado.toString().equalsIgnoreCase("verdadero") || confirmado) {
                     NodoFs cuerpo = actual.hijos.get(1);
                     confirmado = true;
@@ -90,6 +90,7 @@ public class Est_sel {
             case "dec_var":
                 Declarar_variables nnuevo = new Declarar_variables(tabla, global, num);
                 return nnuevo.Analizar(raiz, errores);/*!Estructura variable!*/
+                
             case "imprimir":
                 /*!Estructura imprimir!*/
                 Es_Imprimir nuevoi = new Es_Imprimir(tabla, global, num);
@@ -98,9 +99,11 @@ public class Est_sel {
                 /*!Estructura si!*/
                 Est_Si est = new Est_Si(tabla, global, num);
                 return est.Analizar(raiz, errores);
+                
             case "as_id":
-                /*!Estructura asignacion id!*/
-                break;
+                AS_ID id = new AS_ID(tabla, global, num);
+                return id.Analizar(raiz, errores);
+                
             case "es_sel":
                 /*!Estructura seleccionar!*/
                 Est_sel sel = new Est_sel(tabla, global, num);
@@ -111,9 +114,12 @@ public class Est_sel {
                 llamada_fun funcion = new llamada_fun(global, num);
                 NodoRespuesta nuevo = funcion.analizar(raiz, errores, tabla);
                 return nuevo;
+                
             case "id_accion":
                 /*!Estructura acciones ID!*/
-                break;
+                Accion_ID ID_A = new Accion_ID(tabla, global, num);
+                return ID_A.Analizar(raiz, errores);
+                
             case "retornar":
                 /*!Estructura de retornar!*/
                 Est_return retorno = new Est_return(tabla, global, num);

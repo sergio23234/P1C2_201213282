@@ -21,7 +21,12 @@ public class Fs_varios {
     public NodoRespuesta ret_ID_Tabla(String nombre, TablaSimbolos tabla) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
-            if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
+            if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("ventana")) {
+                NodoRespuesta retorno = new NodoRespuesta("undefined");
+                retorno.dato = actual.nombre;
+                retorno.tipo = actual.tipo;
+                return retorno;
+            }if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {
                 NodoRespuesta retorno = new NodoRespuesta(actual.valor);
                 retorno.dato = actual.nombre;
                 retorno.tipo = actual.tipo;
@@ -76,7 +81,7 @@ public class Fs_varios {
     }
 
     public Boolean ret_Existencia_ID(String nombre, TablaSimbolos tabla) {
-        System.out.println(nombre+" <---nombre");
+        //System.out.println(nombre+" <---nombre");
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre) && actual.tipo.equalsIgnoreCase("variable")) {

@@ -26,11 +26,10 @@ public class Declarar_variables {
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoFs raices = raiz.hijos.get(0);
-        boolean actualizar = Analizar_ID(raices, errores);
+        boolean actualizar = Analizar_ID(raices, errores,raices.linea,raices.columna);
         if (actualizar) {
             NodoRespuesta respuestas = Cuerpo_Var(raiz.hijos.get(1), errores, raices);
             return respuestas;
-
         }
         return new NodoRespuesta(true);
     }
@@ -38,7 +37,7 @@ public class Declarar_variables {
     public NodoRespuesta Cuerpo_Var(NodoFs raiz, ArrayList<NodoError> errores, NodoFs raices) {
         NodoRespuesta nuevo;
         NodoRespuesta retorn;
-        System.out.println(raiz.Tipo+"<<<<");
+       // System.out.println(raiz.Tipo+"<<<<");
         switch (raiz.Tipo.toLowerCase()) {
             case "vector":
                 return Ana_vect(raiz, errores, raices);
@@ -137,7 +136,8 @@ public class Declarar_variables {
                     Add_var_Tabla_variable(raices, nuevo);
                     return new NodoRespuesta(false);
                 }
-
+                return new NodoRespuesta(true);
+                
             case "autoincremento":
                 ES_ID retorno = new ES_ID(tabla, global, num);
                 retorn = retorno.autoincrementar(raiz, errores);
@@ -187,22 +187,24 @@ public class Declarar_variables {
         return nuevo;
     }
 
-    private boolean Analizar_ID(NodoFs raiz, ArrayList<NodoError> errores) {
+    private boolean Analizar_ID(NodoFs raiz, ArrayList<NodoError> errores,int linea,int columna) {
         for (int i = 0; i < raiz.lista.size(); i++) {
-            if (buscar_ID_Tabla(raiz.lista.get(i), errores)) {
+            if (buscar_ID_Tabla(raiz.lista.get(i), errores,linea,columna)) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean buscar_ID_Tabla(String nombre, ArrayList<NodoError> errores) {
+    private boolean buscar_ID_Tabla(String nombre, ArrayList<NodoError> errores,int linea,int columna) {
         for (int i = 0; i < tabla.Tabla.size(); i++) {
             NodoTabla actual = tabla.Tabla.get(i);
             if (actual.nombre.equalsIgnoreCase(nombre)&&!actual.tipo.equalsIgnoreCase("funcion")) {
                 NodoError nuevo = new NodoError("sintactico");
                 // System.out.println("entro en este error");
                 nuevo.descripcion = "la variable" + actual.nombre + " ya ha sido declarada";
+                nuevo.linea = String.valueOf(linea);
+                nuevo.columna = String.valueOf(columna);
                 errores.add(nuevo);
                 return true;
             }
@@ -362,39 +364,4 @@ public class Declarar_variables {
         tabla.Tabla.add(nodo);
     }
 }
-//  private NodoRespuesta cuerpo_Vect(NodoFs raiz, ArrayList<NodoError> errores) {
-//        NodoRespuesta nuevo;
-//        switch (raiz.Tipo.toLowerCase()) {
-//            case "ope_l":
-//                OPA_L operal = new OPA_L(tabla, global);
-//                return operal.Analizar_OPL(raiz, errores);
-//            case "ope_c":
-//                OPA_C operac = new OPA_C(tabla, global);
-//                return operac.Analizar_OPC(raiz, errores);
-//            case "ope_a":
-//                OPA_A operacon = new OPA_A(tabla, global);
-//                return operacon.Analizar_OPA(raiz, errores);
-//            case "dato":
-//                nuevo = new NodoRespuesta(raiz.valor);
-//                return nuevo;
-//            case "dato negado":
-//                operacon = new OPA_A(tabla, global);
-//                return operacon.negar_dato(raiz, errores);
-//                
-//            case "autoincremento":
-//                ES_ID retorno = new ES_ID(tabla, global);
-//                return retorno.autoincrementar(raiz, errores);
-//
-//            case "autodecremento":
-//                retorno = new ES_ID(tabla, global);
-//                return retorno.autodecrementar(raiz, errores);
-//            case "nativas":
-//                break;
-//            case "llamadafun":
-//                break;
-//            case "id":
-//                ES_ID id = new ES_ID(tabla, global);
-//                return id.Analizar(raiz, errores);
-//        }
-//        return new NodoRespuesta(true);
-//    }
+

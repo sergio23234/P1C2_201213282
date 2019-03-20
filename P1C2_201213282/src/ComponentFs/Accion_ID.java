@@ -32,7 +32,7 @@ public class Accion_ID {
 
     private NodoRespuesta Cuerpo_Accion(NodoRespuesta id, NodoFs raizid,NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta nuevo;
-        System.out.println("-->"+raiz.Tipo+"<---");
+        //System.out.println("-->"+raiz.Tipo+"<---");
         switch (raiz.Tipo.toLowerCase()) {
             case "funciones":
                 NodoFs prueba = new NodoFs("Nativas");
@@ -48,7 +48,7 @@ public class Accion_ID {
                 if (raiz.hijos.size() > 0) {
                     Menu.Lista.get(num).add_cargar_Fs(raiz.hijos.get(0), id.resultado.toString(), 0);
                 } else {
-                    System.out.println("llego a cargar: " + id.resultado.toString());
+                   // System.out.println("llego a cargar: " + id.resultado.toString());
                     Menu.Lista.get(num).mostrar_ventana(id.resultado.toString());
                 }
                 break;

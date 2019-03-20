@@ -40,31 +40,46 @@ public class Est_gxml {
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta tres = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         path = path + "/" + tres.resultado.toString().replace("\"", "");
-        paths.add(path);
-        File archivo = new File(path);
-        if (archivo.exists()) {
-            try {
-                FileReader fr = new FileReader(archivo);
-                LexicoGxml lex = new LexicoGxml(fr);
-                SintacticoGxml miParser = new SintacticoGxml(lex);
-                miParser.parse();
-                NodoGxml resultado = miParser.RCCSS;
-                ArrayList<Ventana> analizado = Analizar_Import(resultado);
-                if (analizado != null) {
-                    for (int j = 0; j < analizado.size(); j++) {
-                        resultado.Ventanas.add(analizado.get(j));
+        if (path.toLowerCase().endsWith(".gxml")) {
+            paths.add(path);
+            File archivo = new File(path);
+            if (archivo.exists()) {
+                try {
+                    FileReader fr = new FileReader(archivo);
+                    LexicoGxml lex = new LexicoGxml(fr);
+                    SintacticoGxml miParser = new SintacticoGxml(lex);
+                    miParser.parse();
+                    NodoGxml resultado = miParser.RCCSS;
+                    ArrayList<Ventana> analizado = Analizar_Import(resultado);
+                    if (analizado != null) {
+                        for (int j = 0; j < analizado.size(); j++) {
+                            resultado.Ventanas.add(analizado.get(j));
+                        }
                     }
+                    NodoRespuesta nuevo = new NodoRespuesta(miParser.RCCSS);
+                    nuevo.tipo = "arrayespecial";
+                    return nuevo;
+                } catch (Exception e) {
+                    return new NodoRespuesta(true);
                 }
-                NodoRespuesta nuevo = new NodoRespuesta(miParser.RCCSS);
-                nuevo.tipo = "arrayespecial";
-                return nuevo;
-            } catch (Exception e) {
+            } else {
+                System.out.println("El archivo no existe");
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "error la direccion de archivo no existe: " + path;
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                errores.add(error);
                 return new NodoRespuesta(true);
             }
-        } else {
-            System.out.println("El archivo no existe");
+        }else {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "error no tiene extencion gxml: " + path;
+            error.linea = String.valueOf(raiz.linea);
+            error.columna = String.valueOf(raiz.columna);
+            errores.add(error);
+            return new NodoRespuesta(true);
         }
-        return new NodoRespuesta(false);
+
     }
 
     public ArrayList<Ventana> Analizar_Import(NodoGxml resultado) {

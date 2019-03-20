@@ -25,45 +25,6 @@ public class Nativas {
         this.num = num;
     }
 
-    private NodoRespuesta Analizarv2(NodoFs raiz, ArrayList<NodoError> errores) {
-        Fs_varios varios = new Fs_varios();
-        boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
-        //System.out.println("el ID es:" + raiz.valor + " y si existe:" + existe);
-        if (existe) {
-            NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
-            //System.out.println(resultadoid.tipo + " es estetipo");
-            if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid,raiz.linea,raiz.columna);
-            } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
-                //System.out.println("es vector de objetos");
-                return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
-            } else if (resultadoid.tipo.equalsIgnoreCase("arrayespecial")) {
-                //System.out.println("es vector de objetos");
-                return Analizarp2_ES(raiz.hijos.get(0), errores, resultadoid);
-            } else {
-                return new NodoRespuesta(true);
-            }
-        } else {
-            existe = varios.ret_Existencia_ID(raiz.valor, global);
-            if (existe) {
-                NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, global);
-                //System.out.println(resultadoid.tipo + " es estetipo");
-                if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                    return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid,raiz.linea,raiz.columna);
-                } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
-                    //System.out.println("es vector de objetos");
-                    return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
-                } else if (resultadoid.tipo.equalsIgnoreCase("arrayespecial")) {
-                    //System.out.println("es vector de objetos");
-                    return Analizarp2_ES(raiz.hijos.get(0), errores, resultadoid);
-                } else {
-                    return new NodoRespuesta(true);
-                }
-            }
-            return new NodoRespuesta(true);
-        }
-    }
-
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         Fs_varios varios = new Fs_varios();
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
@@ -74,12 +35,17 @@ public class Nativas {
             for (int i = 0; i < actual1.hijos.size(); i++) {
                 NodoFs actual = actual1.hijos.get(i);
                 if (result.tipo.equalsIgnoreCase("vector")) {
-                    result = Analizarp2(raiz.valor, actual, errores, result,actual.linea,actual.columna);
+                    result = Analizarp2(raiz.valor, actual, errores, result, actual.linea, actual.columna);
                 } else if (result.tipo.equalsIgnoreCase("array")) {
                     result = Analizarp2_A(actual, errores, result);
                 } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
                     result = Analizarp2_ES(actual, errores, result);
                 } else {
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "este tipo de Dato no se puede analizar con las funciones nativas ";
+                    error.linea = String.valueOf(raiz.linea);
+                    error.columna = String.valueOf(raiz.columna);
+                    errores.add(error);
                     return new NodoRespuesta(true);
                 }
             }
@@ -93,12 +59,17 @@ public class Nativas {
                 for (int i = 0; i < actual1.hijos.size(); i++) {
                     NodoFs actual = actual1.hijos.get(i);
                     if (result.tipo.equalsIgnoreCase("vector")) {
-                        result = Analizarp2(raiz.valor, actual, errores, result,actual.linea,actual.columna);
+                        result = Analizarp2(raiz.valor, actual, errores, result, actual.linea, actual.columna);
                     } else if (result.tipo.equalsIgnoreCase("array")) {
                         result = Analizarp2_A(actual, errores, result);
                     } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
                         result = Analizarp2_ES(actual, errores, result);
                     } else {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "este tipo de Dato no se puede analizar con las funciones nativas ";
+                        error.linea = String.valueOf(raiz.linea);
+                        error.columna = String.valueOf(raiz.columna);
+                        errores.add(error);
                         return new NodoRespuesta(true);
                     }
                 }
@@ -108,19 +79,18 @@ public class Nativas {
         }
     }
 
-    private NodoRespuesta Analizarp2(String ID, NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta vector,int linea,int columna) {
+    private NodoRespuesta Analizarp2(String ID, NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta vector, int linea, int columna) {
         NodoRespuesta result = vector;
         if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
             int tipo = ret_tipo(vector);
-            if(tipo==-1)
-            {
-                 NodoError error = new NodoError("semantico");
-                error.descripcion = "no se puede ordenar este vector: ->"+ID+"<-";
+            if (tipo == -1) {
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "no se puede ordenar este vector: ->" + ID + "<-";
                 error.linea = String.valueOf(linea);
                 error.columna = String.valueOf(columna);
                 errores.add(error);
                 return new NodoRespuesta(true);
-            
+
             }
             result = Ordenamiento(actual.valor, errores, result, tipo);
             Fs_varios varios = new Fs_varios();
@@ -130,6 +100,13 @@ public class Nativas {
         } else if (actual.Tipo.equalsIgnoreCase("filtros")) {
             llamada_fun ord_fun = new llamada_fun(global, num);
             result = ord_fun.analizar_nati(actual, errores, (ArrayList<String>) vector.resultado);
+        } else {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "este tipo de Dato no se puede analizar con estaas funciones nativas:" + actual.Tipo;
+            error.linea = String.valueOf(actual.linea);
+            error.columna = String.valueOf(actual.columna);
+            errores.add(error);
+            return new NodoRespuesta(true);
         }
         return result;
     }
@@ -139,6 +116,13 @@ public class Nativas {
         if (actual.Tipo.equalsIgnoreCase("filtros")) {
             llamada_fun ord_fun = new llamada_fun(global, num);
             result = ord_fun.analizar_nati2(actual, errores, (ArrayList<NodoObjeto>) objetos.resultado);
+        } else {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "este tipo de Dato no se puede analizar con estaas funciones nativas:" + actual.Tipo;
+            error.linea = String.valueOf(actual.linea);
+            error.columna = String.valueOf(actual.columna);
+            errores.add(error);
+            return new NodoRespuesta(true);
         }
         //System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
         return result;
@@ -149,6 +133,13 @@ public class Nativas {
         if (actual.Tipo.equalsIgnoreCase("obtencion")) {
             llamada_fun ord_fun = new llamada_fun(global, num);
             result = ord_fun.analizar_nati3(actual, errores, (NodoGxml) objetos.resultado);
+        } else {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "este tipo de Dato no se puede analizar con estaas funciones nativas:" + actual.Tipo;
+            error.linea = String.valueOf(actual.linea);
+            error.columna = String.valueOf(actual.columna);
+            errores.add(error);
+            return new NodoRespuesta(true);
         }
         //System.out.println("este fue el resultado: "+result.resultado.toString()+result.tipo);
         return result;

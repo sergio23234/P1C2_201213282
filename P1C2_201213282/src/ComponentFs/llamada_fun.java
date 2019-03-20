@@ -6,6 +6,7 @@
 package ComponentFs;
 
 import ComponentGxml.NodoGxml;
+import Principal.Menu;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -112,8 +113,15 @@ public class llamada_fun {
                 }
                 return new NodoRespuesta(false);
             }
+        } else {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "error no existe la funcion: " + nombre_fun;
+            error.linea = String.valueOf(raiz.linea);
+            error.columna = String.valueOf(raiz.columna);
+            Menu.Lista.get(num).errores.add(error);
+            return new NodoRespuesta(true);
         }
-        return null;
+
     }
 
     private NodoRespuesta Analizar_Cuerpo(NodoFs raiz, ArrayList<NodoError> errores) {
@@ -125,13 +133,14 @@ public class llamada_fun {
                 return ret;/*!Estructura variable!*/
             case "imprimir":
                 /*!Estructura imprimir!*/
-                System.out.println("llego a imprimir");
+                // System.out.println("llego a imprimir");
                 Es_Imprimir nuevoi = new Es_Imprimir(tabla, global, num);
                 return nuevoi.Analizar(raiz, errores);
             case "est_si":
                 /*!Estructura si!*/
                 Est_Si est = new Est_Si(tabla, global, num);
                 return est.Analizar(raiz, errores);
+
             case "as_id":
                 /*!Estructura asignacion id!*/
                 AS_ID id = new AS_ID(tabla, global, num);
@@ -158,7 +167,12 @@ public class llamada_fun {
                 return retorno.Analizar(raiz, errores);
 
             case "detener":
-                /*!Estructura de detener!*/ break;
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "error no esta permitido detener en el inicio";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                errores.add(error);
+                return new NodoRespuesta(true);
         }
         return new NodoRespuesta(true);
     }
@@ -228,6 +242,8 @@ public class llamada_fun {
                     } else {
                         NodoError error = new NodoError("semantico");
                         error.descripcion = "error la funcion:" + funcion + " tiene parametros con el mismo ID";
+                        error.linea = String.valueOf(raiz.linea);
+                        error.columna = String.valueOf(raiz.columna);
                         errores.add(error);
                         return new NodoRespuesta(true);
                     }
@@ -238,12 +254,19 @@ public class llamada_fun {
                         } else {
                             NodoError error = new NodoError("semantico");
                             error.descripcion = "error la funcion:" + funcion + " tiene parametros con el mismo ID";
+                            error.linea = String.valueOf(raiz.linea);
+                            error.columna = String.valueOf(raiz.columna);
                             errores.add(error);
                             return new NodoRespuesta(true);
                         }
                     }
                 } else {
                     System.out.println("error parametros no concuerdan");
+                    NodoError error = new NodoError("semantico");
+                    error.descripcion = "error parametros no concuerdan";
+                    error.linea = String.valueOf(raiz.linea);
+                    error.columna = String.valueOf(raiz.columna);
+                    errores.add(error);
                     return new NodoRespuesta(true);
                 }
             } else {
@@ -805,7 +828,7 @@ public class llamada_fun {
                         respuesta = retornara;
                     } else if (retornara.tipo.equalsIgnoreCase("variable")) {
                         OPA_A op = new OPA_A(tabla, global, num);
-                        respuesta = op.sumar_xdato(respuesta, retornara,actual.linea,actual.columna);
+                        respuesta = op.sumar_xdato(respuesta, retornara, actual.linea, actual.columna);
                     }
                     break;
                 } else {
@@ -835,7 +858,7 @@ public class llamada_fun {
         String tipo = raiz.valor;
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         if (raiz.hijos.size() == 2 && tipo.equalsIgnoreCase("obtenerpornombre")) {
-          
+
             NodoRespuesta nombre = OP.Cuerpo_G(raiz.hijos.get(0), errores);
             NodoRespuesta id = OP.Cuerpo_G(raiz.hijos.get(1), errores);
             NodoObjeto resultado = nodo.Dev_Ventanas_Objeto(id.resultado.toString().replace("\"", ""), nombre.resultado.toString().replace("\"", ""));
@@ -847,7 +870,7 @@ public class llamada_fun {
             NodoRespuesta nombre = OP.Cuerpo_G(raiz.hijos.get(0), errores);
             if (tipo.equalsIgnoreCase("obt_etiquieta")) {
                 String tipo1 = nombre.resultado.toString().toLowerCase();
-                System.out.println("entro aqui"+tipo1);
+                System.out.println("entro aqui" + tipo1);
                 switch (tipo1.replace("\"", "")) {
                     case "ventana":
                         ArrayList<NodoObjeto> valores = nodo.Dev_Ventanas_Objeto();
@@ -882,15 +905,15 @@ public class llamada_fun {
                 }
                 return new NodoRespuesta(true);
             } else {
-                    String tipo1 = nombre.resultado.toString().toLowerCase();
-                    NodoObjeto retorno =nodo.Dev_Ventanas_u_Objeto(tipo1);
-                    if(retorno!=null) {
-                        NodoRespuesta nuevo = new NodoRespuesta(retorno);
-                        nuevo.tipo ="objeto";
-                        return nuevo;
-                    }else{
-                        return new NodoRespuesta("undefined");
-                    }
+                String tipo1 = nombre.resultado.toString().toLowerCase();
+                NodoObjeto retorno = nodo.Dev_Ventanas_u_Objeto(tipo1);
+                if (retorno != null) {
+                    NodoRespuesta nuevo = new NodoRespuesta(retorno);
+                    nuevo.tipo = "objeto";
+                    return nuevo;
+                } else {
+                    return new NodoRespuesta("undefined");
+                }
             }
         }
         return new NodoRespuesta(false);

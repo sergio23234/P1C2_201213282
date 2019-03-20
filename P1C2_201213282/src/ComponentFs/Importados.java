@@ -32,21 +32,22 @@ public class Importados {
         this.num = num;
     }
 
-    public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores,ArrayList<String> lista) {
+    public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores, ArrayList<String> lista) {
         if (raiz.Tipo.equalsIgnoreCase("inicio")) {
             for (int i = 0; i < raiz.hijos.size(); i++) {
-               return Analizar(raiz.hijos.get(i), errores,lista);
+                return Analizar(raiz.hijos.get(i), errores, lista);
             }
         } else if (raiz.Tipo.equalsIgnoreCase("EST_IMP")) {
             for (int i = 0; i < raiz.hijos.size(); i++) {
-               NodoRespuesta nuevo= Analizar_imp(lista,raiz.hijos.get(i), errores);
-               if(nuevo.error){
-                   return nuevo;
-               }
+                NodoRespuesta nuevo = Analizar_imp(lista, raiz.hijos.get(i), errores);
+                if (nuevo.error) {
+                    return nuevo;
+                }
             }
         }
         return new NodoRespuesta(false);
     }
+
     private NodoRespuesta Analizar_imp(ArrayList<String> lista, NodoFs raiz, ArrayList<NodoError> errores) {
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta condicion = OP.Cuerpo_G(raiz.hijos.get(0), errores);
@@ -54,7 +55,7 @@ public class Importados {
             return new NodoRespuesta(true);
         } else {
             try {
-                String path = Menu.Lista.get(num).ABpath + "//" + condicion.resultado.toString().replace("\"","").trim();
+                String path = Menu.Lista.get(num).ABpath + "//" + condicion.resultado.toString().replace("\"", "").trim();
                 boolean existe = false;
                 for (int i = 0; i < lista.size(); i++) {
                     if (path.equalsIgnoreCase(lista.get(i))) {
@@ -62,21 +63,49 @@ public class Importados {
                     }
                 }
                 if (!existe) {
-                    File archivo = new File(path);
-                    FileReader fr;
-                    fr = new FileReader(archivo);
-                    LexicoFS lex = new LexicoFS(fr);
-                    SintacticoFs miParser = new SintacticoFs(lex);
-                    miParser.parse();
-                    ArrayList<NodoError> sintacticos = miParser.errores;
-                    ArrayList<NodoError> lexicos = lex.Elista;
-                    NodoFs nuevo = miParser.regresar_raiz();
-                    Pasada1 pasada = new Pasada1(nuevo);
-                    tabla = pasada.analizar(errores);
-                    Importados imp = new Importados(tabla,global,num);
-                    global.add_importado(tabla);
-                    lista.add(path);
-                    imp.Analizar(nuevo, errores, lista);                    
+                    if (path.toLowerCase().endsWith(".fs")) {
+                        File archivo = new File(path);
+                        if (archivo.exists()) {
+                            FileReader fr;
+                            fr = new FileReader(archivo);
+                            LexicoFS lex = new LexicoFS(fr);
+                            SintacticoFs miParser = new SintacticoFs(lex);
+                            miParser.parse();
+                            ArrayList<NodoError> sintacticos = miParser.errores;
+                            ArrayList<NodoError> lexicos = lex.Elista;
+                            if (lexicos.size() > 0 || sintacticos.size() > 0) {
+                                for (int i = 0; i < lexicos.size(); i++) {
+                                    errores.add(lexicos.get(i));
+                                }
+                                for (int i = 0; i < sintacticos.size(); i++) {
+                                    errores.add(sintacticos.get(i));
+                                }
+                                return new NodoRespuesta(true);
+                            }
+                            NodoFs nuevo = miParser.regresar_raiz();
+                            Pasada1 pasada = new Pasada1(nuevo);
+                            tabla = pasada.analizar(errores);
+                            Importados imp = new Importados(tabla, global, num);
+                            global.add_importado(tabla);
+                            lista.add(path);
+                            imp.Analizar(nuevo, errores, lista);
+                        } else {
+                            NodoError error = new NodoError("semantico");
+                            error.descripcion = "error la direccion de archivo no existe: " + path;
+                            error.linea = String.valueOf(raiz.linea);
+                            error.columna = String.valueOf(raiz.columna);
+                            errores.add(error);
+                            return new NodoRespuesta(true);
+                        }
+
+                    } else {
+                        NodoError error = new NodoError("semantico");
+                        error.descripcion = "error no tiene extencion fs: " + path;
+                        error.linea = String.valueOf(raiz.linea);
+                        error.columna = String.valueOf(raiz.columna);
+                        errores.add(error);
+                        return new NodoRespuesta(true);
+                    }
                 }
 
             } catch (FileNotFoundException ex) {

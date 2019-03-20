@@ -64,14 +64,13 @@ public class Cuerpo_op {
                 llamada_fun funcion = new llamada_fun(global, num);
                 nuevo = funcion.analizar(raiz, errores, tabla);
                 if (!nuevo.es_retorno) {
-                    NodoError error = new NodoError("semantico");
-                    error.descripcion = "la funcion no retorna nada";
-                    errores.add(error);
-                    return new NodoRespuesta(true);
+                    nuevo.resultado="undefinded";
+                    nuevo.tipo="undefinded";
+                    return nuevo;
                 } else {
                     return nuevo;
                 }
-                
+              
             case "id":
                 ES_ID id = new ES_ID(tabla, global, num);
                 return id.Analizar(raiz, errores);

@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import Principal.Menu;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -33,7 +34,7 @@ public class AS_ID {
             if (raiz.hijos.size() > 1) {
                 NodoFs actual = raiz.hijos.get(1);
                 NodoRespuesta res = OP.Cuerpo_G(actual, errores);
-                Analizar_paso2(var, res, raiz.valor, errores,raiz.linea,raiz.columna);
+                Analizar_paso2(var, res, raiz.valor, errores, raiz.linea, raiz.columna);
             } else {
 
             }
@@ -41,18 +42,18 @@ public class AS_ID {
         return var;
     }
 
-    private NodoRespuesta Analizar_paso2(NodoRespuesta ID, NodoRespuesta resultado, String tipo, ArrayList<NodoError> errores,int linea,int columna) {
+    private NodoRespuesta Analizar_paso2(NodoRespuesta ID, NodoRespuesta resultado, String tipo, ArrayList<NodoError> errores, int linea, int columna) {
         switch (tipo.toLowerCase()) {
             case "=":
                 return es_igualar(ID, resultado, errores);
             case "+=":
-                return es_sumar(ID, resultado, errores,linea,columna);
+                return es_sumar(ID, resultado, errores, linea, columna);
             case "-=":
-                return es_restar(ID, resultado, errores,linea,columna);
+                return es_restar(ID, resultado, errores, linea, columna);
             case "*=":
-                return es_multi(ID, resultado, errores,linea,columna);
+                return es_multi(ID, resultado, errores, linea, columna);
             case "/=":
-                return es_divi(ID, resultado, errores,linea,columna);
+                return es_divi(ID, resultado, errores, linea, columna);
             case "funcion":
                 break;
         }
@@ -67,7 +68,7 @@ public class AS_ID {
                 return new NodoRespuesta(true);
             } else if (tipo.equalsIgnoreCase("arrayespecial")) {
                 return new NodoRespuesta(true);
-            }else {
+            } else {
                 set_Nuevoval_ID(resultado, ID.dato, tabla);
             }
         } else {
@@ -152,6 +153,30 @@ public class AS_ID {
                 actual.valor = valor.resultado;
                 return true;
             }
+            if (actual.nombre.equalsIgnoreCase(nombre) && (actual.tipo.equalsIgnoreCase("ventana") || actual.tipo.equalsIgnoreCase("contenedor") || actual.tipo.equalsIgnoreCase("boton"))) {
+                //System.out.println("entro en esta parte");
+                actual.valor = valor.resultado;
+                if (valor.tipo.equalsIgnoreCase("")) {
+                    actual.tipo = "variable";
+                } else if (valor.tipo.equalsIgnoreCase("vector")) {
+                    ArrayList<String> valores = (ArrayList<String>) valor.resultado;
+                    ArrayList<String> nuevo = new ArrayList();
+                    for (int j = 0; j < valores.size(); j++) {
+                        nuevo.add(valores.get(j));
+                    }
+                    actual.tipo ="vector";
+                    actual.valor = nuevo;
+                    return true;
+                } else if (valor.tipo.equalsIgnoreCase("objeto")) {
+                    NodoObjeto valor1 = (NodoObjeto) valor.resultado;
+                    NodoObjeto nuevo = new NodoObjeto();
+                    valor1.ret_bojetos(nuevo.objetos);
+                    actual.valor = nuevo;
+                    actual.tipo ="objeto";
+                    return true;
+                }
+                return true;
+            }
         }
         if (tabla.padre != null) {
             return set_Nuevoval_ID(valor, nombre, tabla.padre);
@@ -159,12 +184,18 @@ public class AS_ID {
         return false;
     }
 
-    private NodoRespuesta es_sumar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
-        if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
+    private NodoRespuesta es_sumar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores, int linea, int columna) {
+        if (tipo_permitido(resultado.tipo.toLowerCase())) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede sumar con tipo:" + resultado.tipo;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
+
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.sumar_xdato(ID, resultado,linea,columna);
+            NodoRespuesta sumar = opa.sumar_xdato(ID, resultado, linea, columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -179,12 +210,17 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_restar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
-        if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
+    private NodoRespuesta es_restar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores, int linea, int columna) {
+        if (tipo_permitido(resultado.tipo.toLowerCase())) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede restar con tipo:" + resultado.tipo;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.restar_xdato(ID, resultado,linea,columna);
+            NodoRespuesta sumar = opa.restar_xdato(ID, resultado, linea, columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -199,12 +235,17 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_multi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
-        if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
+    private NodoRespuesta es_multi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores, int linea, int columna) {
+        if (tipo_permitido(resultado.tipo.toLowerCase())) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede multiplicar con tipo:" + resultado.tipo;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.multi_xdato(ID, resultado,linea,columna);
+            NodoRespuesta sumar = opa.multi_xdato(ID, resultado, linea, columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -219,12 +260,17 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_divi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
-        if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
+    private NodoRespuesta es_divi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores, int linea, int columna) {
+        if (tipo_permitido(resultado.tipo.toLowerCase())) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede dividir con tipo:" + resultado.tipo;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.divi_xdato(ID, resultado,linea,columna);
+            NodoRespuesta sumar = opa.divi_xdato(ID, resultado, linea, columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -249,5 +295,17 @@ public class AS_ID {
             }
         }
         return -1;
+    }
+
+    private boolean tipo_permitido(String tipo) {
+        switch (tipo) {
+            case "objeto":
+            case "vector":
+            case "ventana":
+            case "contenedor":
+            case "boton":
+                return true;
+        }
+        return false;
     }
 }

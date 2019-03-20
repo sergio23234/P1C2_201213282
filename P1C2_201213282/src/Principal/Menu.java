@@ -267,6 +267,52 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (Lista.size() > 0) {
             GuardarComo();
+             int num = Pestanias.getSelectedIndex();
+            Pestania actual = Lista.get(num);
+             File archivo = new File(actual.path);
+            if (actual.path.endsWith(".gxml")) {
+                FileReader fr = null;
+                try {
+                    fr = new FileReader(archivo);
+                    AnaGxml lexi = new AnaGxml(fr);
+                    lexi.yylex();
+                    String texto = "";
+                    for (int i = 0; i < lexi.Elista.size(); i++) {
+                        texto += lexi.Elista.get(i);
+                    }   actual.Editor.setText(texto);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fr.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } else {
+                FileReader fr = null;
+                try {
+                    fr = new FileReader(archivo);
+                    AnaFS lexi = new AnaFS(fr);
+                    lexi.yylex();
+                    String texto = "";
+                    for (int i = 0; i < lexi.Elista.size(); i++) {
+                        texto += lexi.Elista.get(i);
+                    }   actual.Editor.setText(texto);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fr.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_guardarcomoActionPerformed
 
@@ -303,6 +349,50 @@ public class Menu extends javax.swing.JFrame {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+             File archivo = new File(actual.path);
+            if (actual.path.endsWith(".gxml")) {
+                FileReader fr = null;
+                try {
+                    fr = new FileReader(archivo);
+                    AnaGxml lexi = new AnaGxml(fr);
+                    lexi.yylex();
+                    String texto = "";
+                    for (int i = 0; i < lexi.Elista.size(); i++) {
+                        texto += lexi.Elista.get(i);
+                    }   actual.Editor.setText(texto);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fr.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            } else {
+                FileReader fr = null;
+                try {
+                    fr = new FileReader(archivo);
+                    AnaFS lexi = new AnaFS(fr);
+                    lexi.yylex();
+                    String texto = "";
+                    for (int i = 0; i < lexi.Elista.size(); i++) {
+                        texto += lexi.Elista.get(i);
+                    }   actual.Editor.setText(texto);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    try {
+                        fr.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
         }
     }//GEN-LAST:event_guardarActionPerformed
 
@@ -311,12 +401,12 @@ public class Menu extends javax.swing.JFrame {
         int num = Pestanias.getSelectedIndex();
         if (num >= 0) {
             Pestania pest = Lista.get(num);
-            if(pest.errores.size()>0){
+            if (pest.errores.size() > 0) {
                 Erroresview errores = new Erroresview(pest.errores);
                 errores.Set_errores();
                 errores.show();
-            }else{
-                
+            } else {
+
             }
         }
     }//GEN-LAST:event_erroresActionPerformed
@@ -458,27 +548,35 @@ public class Menu extends javax.swing.JFrame {
             String[] lineas = texto.trim().split("\\{");
             for (int i = 0; i < lineas.length; i++) {
                 if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
-                    devuelto += lineas[i].trim() + "{\n";
+                   if(i!=lineas.length-1){
+                        devuelto += lineas[i].trim() + "{\n";
+                   }else{
+                        devuelto += lineas[i].trim() + "\n";
+                   }
                 }
             }
-            String nuevo = "";
-            lineas = devuelto.split("\\}");
-            for (int i = 0; i < lineas.length; i++) {
-                if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
-                    nuevo += lineas[i].trim() + "}\n";
-                }
-            }
+//            String nuevo = "";
+//            lineas = devuelto.split("\\}");
+//            for (int i = 0; i < lineas.length; i++) {
+//                if (!lineas[i].equalsIgnoreCase("\n")) {
+//                    nuevo += lineas[i].trim() + "}\n";
+//                }
+//            }
             String retorno = "";
-            lineas = nuevo.split(";");
+            lineas = devuelto.split(";");
             for (int i = 0; i < lineas.length; i++) {
                 if (!lineas[i].equalsIgnoreCase("") && !lineas[i].equalsIgnoreCase("\n")) {
-                    retorno += lineas[i].trim() + ";\n";
+                    if(i!=lineas.length-1){
+                        retorno += lineas[i].trim() + ";\n";
+                    }else{
+                         retorno += lineas[i].trim() + "\n";
+                    }
                 }
             }
             devuelto = "";
             lineas = retorno.split("\n");
             for (int i = 0; i < lineas.length; i++) {
-                if (i != lineas.length - 1) {
+                if (i != lineas.length) {
                     devuelto += lineas[i].trim() + "\n";
                 }
             }
