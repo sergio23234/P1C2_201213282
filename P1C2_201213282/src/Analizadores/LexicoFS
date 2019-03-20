@@ -29,11 +29,12 @@ public static String errores="";
 %ignorecase
 %line
 %column
-%state Stado, LLave
+%state Comentario
 Numero = [0-9]+
 %%
-"//"([^\n])*[\n]							{/*Ignorar Comentario Simple*/}
-"/*"([^"*/"])+"*/"							{/*Ignorar Comentario multiple*/}
+"//"([^\n])*[\n]							                {/*Ignorar Comentario Simple*/}
+"/*"							                                {System.out.println("LLego a comentario");yybegin(Comentario); /*Ignorar Comentario multiple*/}
+<YYINITIAL>{
 "+"											{return new Symbol(symf.mas,yyline,yycolumn,yytext());}
 "-"											{return new Symbol(symf.nos,yyline,yycolumn,yytext());}
 "*"											{return new Symbol(symf.por,yyline,yycolumn,yytext());}
@@ -113,3 +114,8 @@ Numero = [0-9]+
 ({Numero})					    			{return new Symbol(symf.nume,yyline,yycolumn,yytext());}	
 ([\r|\n|\r\n]|[ \t\f]|[ |\t|\r|\f|\n|" "])+ 	{/*Ignore*/}
 .											{errorLexico(yytext(),yyline,yycolumn);}
+}
+<Comentario>{
+"*/"                    {yybegin(YYINITIAL);}
+[^]                       {/*IGnorar*/}
+}

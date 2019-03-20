@@ -45,7 +45,7 @@ public class Analizador_gxml {
             NodoGxml Raiz = miParser.RCCSS;
             errores = com_errores(miParser.errores, lex.Elista);
             System.out.println("errores --->" + Raiz.errores.size() + "--->" + miParser.errores.size());
-            if (Raiz.errores.size() > 0) {
+            if (!(Raiz.errores.size() > 0)) {
                 raices.add(Raiz);
                 pats.add(path);
                 Analizar_Imports(Raiz);

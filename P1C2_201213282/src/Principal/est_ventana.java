@@ -190,47 +190,80 @@ public class est_ventana extends javax.swing.JFrame {
         FileReader fr = null;
         BufferedReader br = null;
         String texto = "";
-        try {
-             fr = new FileReader (guardado);
-             br = new BufferedReader(fr);
-            ArrayList<String> lineas = new ArrayList();
-             String linea;
-            while((linea=br.readLine())!=null){
-                lineas.add(linea);
-            }
-            fr.close();
-            br.close();
-            lineas.remove(lineas.size()-1);
-            fichero = new FileWriter(guardado);
-            pw = new PrintWriter(fichero);
-            for (int i = 0; i < contenedores.size(); i++) {
-                String textoad = contenedores.get(i).obtener_datos();
-                if (!textoad.equalsIgnoreCase("")) {
-                    texto += textoad;
+        File archiv = new File(guardado);
+        if (archiv.exists()) {
+            try {
+
+                fr = new FileReader(guardado);
+                br = new BufferedReader(fr);
+                ArrayList<String> lineas = new ArrayList();
+                String linea;
+                while ((linea = br.readLine()) != null) {
+                    lineas.add(linea);
                 }
-            }
-            if(!texto.equalsIgnoreCase("")){
-               String sublineas [] =texto.split("\n");
-                lineas.add("\t<principal>");
-                for(int i=0;i<sublineas.length;i++){
-                   lineas.add(sublineas[i]);
+                fr.close();
+                br.close();
+                lineas.remove(lineas.size() - 1);
+                fichero = new FileWriter(guardado);
+                pw = new PrintWriter(fichero);
+                for (int i = 0; i < contenedores.size(); i++) {
+                    String textoad = contenedores.get(i).obtener_datos();
+                    if (!textoad.equalsIgnoreCase("")) {
+                        texto += textoad;
+                    }
                 }
-                lineas.add("\t</principal>");
-                for(int i=0;i<lineas.size();i++){
-                    pw.println("\t\t"+lineas.get(i));
+                if (!texto.equalsIgnoreCase("")) {
+                    String sublineas[] = texto.split("\n");
+                    lineas.add("<principal>");
+                    for (int i = 0; i < sublineas.length; i++) {
+                        lineas.add(sublineas[i]);
+                    }
+                    lineas.add("</principal>");
+                    for (int i = 0; i < lineas.size(); i++) {
+                        pw.println(lineas.get(i));
+                    }
+                    pw.println("</lista>");
                 }
-                pw.println("</lista>");
+                pw.close();
+                fichero.close();
+            } catch (IOException ex) {
+                Logger.getLogger(est_ventana.class.getName()).log(Level.SEVERE, null, ex);
             }
-            pw.close();
-            fichero.close();
-        } catch (IOException ex) {
-            Logger.getLogger(est_ventana.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(texto);
+        else{
+            try {
+                ArrayList<String> lineas = new ArrayList();
+                lineas.add("<lista>");
+                fichero = new FileWriter(guardado);
+                pw = new PrintWriter(fichero);
+                for (int i = 0; i < contenedores.size(); i++) {
+                    String textoad = contenedores.get(i).obtener_datos();
+                    if (!textoad.equalsIgnoreCase("")) {
+                        texto += textoad;
+                    }
+                }
+                if (!texto.equalsIgnoreCase("")) {
+                    String sublineas[] = texto.split("\n");
+                    lineas.add("<principal>");
+                    for (int i = 0; i < sublineas.length; i++) {
+                        lineas.add(sublineas[i].trim());
+                    }
+                    lineas.add("</principal>");
+                    for (int i = 0; i < lineas.size(); i++) {
+                        pw.println(lineas.get(i).trim());
+                    }
+                    pw.println("</lista>");
+                }
+                pw.close();
+                fichero.close();
+            } catch (IOException ex) {
+                Logger.getLogger(est_ventana.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     void inicializarSV() {
-       for (int i = 0; i < contenedores.size(); i++) {
+        for (int i = 0; i < contenedores.size(); i++) {
             contenedores.get(i).inicializar_SV();
         }
     }
@@ -239,6 +272,6 @@ public class est_ventana extends javax.swing.JFrame {
         for (int i = 0; i < contenedores.size(); i++) {
             contenedores.get(i).finalizar_SV();
         }
-        }
+    }
 
 }

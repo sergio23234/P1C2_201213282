@@ -172,7 +172,7 @@ public class Generar_Archivo_FS {
             maximo = String.valueOf(raiz.maximo);
         }
         if (raiz.minimo >= 0) {
-            maximo = String.valueOf(raiz.minimo);
+            minimo = String.valueOf(raiz.minimo);
         }
         String defecto="";
         if(raiz.Defecto!=null){
