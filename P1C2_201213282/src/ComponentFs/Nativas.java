@@ -25,7 +25,7 @@ public class Nativas {
         this.num = num;
     }
 
-    public NodoRespuesta Analizarv2(NodoFs raiz, ArrayList<NodoError> errores) {
+    private NodoRespuesta Analizarv2(NodoFs raiz, ArrayList<NodoError> errores) {
         Fs_varios varios = new Fs_varios();
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
         //System.out.println("el ID es:" + raiz.valor + " y si existe:" + existe);
@@ -33,7 +33,7 @@ public class Nativas {
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
             //System.out.println(resultadoid.tipo + " es estetipo");
             if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid);
+                return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid,raiz.linea,raiz.columna);
             } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                 //System.out.println("es vector de objetos");
                 return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
@@ -49,7 +49,7 @@ public class Nativas {
                 NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, global);
                 //System.out.println(resultadoid.tipo + " es estetipo");
                 if (resultadoid.tipo.equalsIgnoreCase("vector")) {
-                    return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid);
+                    return Analizarp2(raiz.valor, raiz.hijos.get(0), errores, resultadoid,raiz.linea,raiz.columna);
                 } else if (resultadoid.tipo.equalsIgnoreCase("array")) {
                     //System.out.println("es vector de objetos");
                     return Analizarp2_A(raiz.hijos.get(0), errores, resultadoid);
@@ -69,13 +69,12 @@ public class Nativas {
         boolean existe = varios.ret_Existencia_ID(raiz.valor, tabla);
         if (existe) {//existe 
             NodoRespuesta resultadoid = varios.ret_ID_Tabla(raiz.valor, tabla);
-            System.out.println(existe + ">>>>" + raiz.valor);
             NodoFs actual1 = raiz.hijos.get(0);
             NodoRespuesta result = resultadoid;
             for (int i = 0; i < actual1.hijos.size(); i++) {
                 NodoFs actual = actual1.hijos.get(i);
                 if (result.tipo.equalsIgnoreCase("vector")) {
-                    result = Analizarp2(raiz.valor, actual, errores, result);
+                    result = Analizarp2(raiz.valor, actual, errores, result,actual.linea,actual.columna);
                 } else if (result.tipo.equalsIgnoreCase("array")) {
                     result = Analizarp2_A(actual, errores, result);
                 } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
@@ -94,7 +93,7 @@ public class Nativas {
                 for (int i = 0; i < actual1.hijos.size(); i++) {
                     NodoFs actual = actual1.hijos.get(i);
                     if (result.tipo.equalsIgnoreCase("vector")) {
-                        result = Analizarp2(raiz.valor, actual, errores, result);
+                        result = Analizarp2(raiz.valor, actual, errores, result,actual.linea,actual.columna);
                     } else if (result.tipo.equalsIgnoreCase("array")) {
                         result = Analizarp2_A(actual, errores, result);
                     } else if (result.tipo.equalsIgnoreCase("arrayespecial")) {
@@ -109,10 +108,20 @@ public class Nativas {
         }
     }
 
-    private NodoRespuesta Analizarp2(String ID, NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta vector) {
+    private NodoRespuesta Analizarp2(String ID, NodoFs actual, ArrayList<NodoError> errores, NodoRespuesta vector,int linea,int columna) {
         NodoRespuesta result = vector;
         if (actual.Tipo.equalsIgnoreCase("ordenamiento")) {
             int tipo = ret_tipo(vector);
+            if(tipo==-1)
+            {
+                 NodoError error = new NodoError("semantico");
+                error.descripcion = "no se puede ordenar este vector: ->"+ID+"<-";
+                error.linea = String.valueOf(linea);
+                error.columna = String.valueOf(columna);
+                errores.add(error);
+                return new NodoRespuesta(true);
+            
+            }
             result = Ordenamiento(actual.valor, errores, result, tipo);
             Fs_varios varios = new Fs_varios();
             if (!(actual.valor.equalsIgnoreCase("maximo") || actual.valor.equalsIgnoreCase("minimo"))) {

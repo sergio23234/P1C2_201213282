@@ -20,7 +20,7 @@ parser code {:
     }
 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-        System.err.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
+        //System.err.println("Error sintactico \"" + s.value+"\" en la Linea: "+(s.right+1) +", Columna: "+(s.left+1)+ "");
         /*Nodo_error nuevo = new Nodo_error();
         nuevo.dato = String.valueOf(s.value);
         nuevo.linea = (s.left+1);
@@ -42,8 +42,8 @@ terminal String impr,impo,dete,reto,si,sele,caso,defe,func,desc,asce,cada,inve,m
 terminal String map,redu,todo,algu,lgxm,opet,opid,opno,cven,ccon,ctex,ccte,cate,ccnu,cdes,cbot,cima,crep,cvid,acli,acar,acer,nulo;
 non terminal NodoFs accion_ID,Es_acc_ID,Estu_Cuerpo,Cuerpo_general,Acc_alcer,Acc_alcar,Lista_parametros,inicio_p1,inicio_p2;
 non terminal NodoFs Acc_repro,Acc_video,Acc_image,Acc_despl,Acc_Atext,Acc_Cnume,Acc_ctext,Acc_texto,Acc_boton,Acc_conte,Acc_venta,Acc_alcli;
-non terminal NodoFs func_gxml,func_leer,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_lla_fun1,Es_fun1,Es_func,Es_tipo_id1;
-non terminal NodoFs tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_asig1	,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Expresion,Start;
+non terminal NodoFs func_gxml,func_leer,func_nat,func_nat1,Lista_Aritmetica,Es_lla_fun,Es_lla_fun1,Es_fun1,Es_func;
+non terminal NodoFs tipo_sele,Cuerpo_sele,Es_sele,Es_tipo_id,Es_asig,Es_DeAu,Estru_si,Es_sino,Es_Si,Es_Impo,Es_Impr,Start;
 non terminal NodoFs recur_nat,Exp_Ari,Exp_Com,Exp_Log,Dato_Posfa,Lista_ID,Dato_Pri,Lista_Objetos,Lista_Datos,ES_VAR1,ES_VAR,Cuerpo_funcion,Dato_Obj;
 non terminal String Tipo_Obte,Ex_men,Ex_may,Tipos_Acc_Ord,Tipo_Fun;
 precedence left mas,nos;
@@ -55,53 +55,53 @@ start with Start;
 
 
 /*---------------------------- Inicio ----------------------------*/
-Start ::= 	inicio_p1:e1 inicio_p2:e2		{:NodoFs nuevo = new NodoFs("Inicio"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RCCSS = nuevo; RESULT=nuevo;:}
-	|		inicio_p2:e1 					{:NodoFs nuevo = new NodoFs("Inicio"); nuevo.add_NodoFs(e1); RCCSS = nuevo; RESULT=nuevo;:};
+Start ::= 	inicio_p1:e1 inicio_p2:e2		{:NodoFs nuevo = new NodoFs("Inicio"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RCCSS = nuevo; RESULT=nuevo;:}
+	|		inicio_p2:e1 					{:NodoFs nuevo = new NodoFs("Inicio"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RCCSS = nuevo; RESULT=nuevo;:};
 
 inicio_p1 ::= 	inicio_p1:e1 Es_Impo:e2		{:e1.add_NodoFs(e2); RESULT=e1;:}
-		|		Es_Impo:e1					{:NodoFs nuevo = new NodoFs("EST_IMP"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};
+		|		Es_Impo:e1					{:NodoFs nuevo = new NodoFs("EST_IMP"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:};
 
 inicio_p2 ::=	Cuerpo_funcion:e1			{:RESULT=e1;:};
 
 /*---------------------------- Estructura Variable ----------------------------*/
-ES_VAR ::= var Lista_ID:e2 ES_VAR1:e1				{:NodoFs nuevo = new NodoFs("DEC_VAR"); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e1); RESULT=nuevo;:};
+ES_VAR ::= var Lista_ID:e2 ES_VAR1:e1				{:NodoFs nuevo = new NodoFs("DEC_VAR"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e1); RESULT=nuevo;:};
 
 ES_VAR1 ::= igu Exp_Log:e1 pyc	 					{:RESULT=e1;:}//id = expresion_Aritmetica
-		|	igu ico fco pyc	 						{:NodoFs nuevo = new NodoFs("Vector"); nuevo.valor="Vacio";RESULT=nuevo;:}//id = [];
+		|	igu ico:e1 fco pyc	 					{:NodoFs nuevo = new NodoFs("Vector"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="Vacio";RESULT=nuevo;:}//id = [];
 		|	igu ico Lista_Datos:e1 fco pyc	 		{:RESULT=e1;:}//id =[datos,datos,datos]
 		|	igu ill Lista_Objetos:e1 fll pyc		{:RESULT=e1;:}//id={dato:"",dato:"",dato:""} 
 		|	igu Acc_venta:e1 pyc					{:RESULT=e1;:}// id = crear ventana 
 		|	igu Acc_conte:e1 pyc					{:RESULT=e1;:}// id = crear contenedor
 		|	igu Acc_boton:e1 pyc					{:RESULT=e1;:}// id = crear boton
 		| 	igu func_nat1:e1 pyc					{:RESULT=e1;:}// id = funcion_nativa
-		|	pyc 									{:NodoFs nuevo = new NodoFs("nada"); nuevo.valor=";";RESULT=nuevo;:};
+		|	pyc:e1 									{:NodoFs nuevo = new NodoFs("nada"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=";";RESULT=nuevo;:};
 		
 Lista_Datos ::= Lista_Datos:e1 com Exp_Log:e2		{:e1.add_NodoFs(e2); RESULT=e1;:}		/* Exp , Exp*/
-		|		Exp_Log:e1							{:NodoFs nuevo = new NodoFs("Vector"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};	/* Exp*/
+		|		Exp_Log:e1							{:NodoFs nuevo = new NodoFs("Vector"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:};	/* Exp*/
 
 Lista_Objetos ::= Lista_Objetos:e1 com idva:e2 dop Dato_Obj:e3 	{:NodoFs nuevo1 = new NodoFs(e2); nuevo1.add_NodoFs(e3); e1.add_NodoFs(nuevo1); RESULT=e1;:}/* Objetos , id : "objeto"*/
-			|		idva:e1 dop Dato_Obj:e2						{:NodoFs nuevo = new NodoFs("Objetos"); NodoFs nuevo1 = new NodoFs(e1); nuevo1.add_NodoFs(e2); nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
+			|		idva:e1 dop Dato_Obj:e2						{:NodoFs nuevo = new NodoFs("Objetos");nuevo.linea=e1left+1;  nuevo.columna=e1right+1; NodoFs nuevo1 = new NodoFs(e1); nuevo1.add_NodoFs(e2); nuevo.add_NodoFs(nuevo1); RESULT=nuevo;:}//* id : "objeto"*/
 				;
 
 Dato_Obj ::= Dato_Pri:e1						{:RESULT=e1;:}
 |			ico Lista_Datos:e1 fco 	 		{:RESULT=e1;:};//id =[datos,datos,datos]		
 
 Lista_ID ::=	Lista_ID:e1 com idva:e2	{:e1.add_ListaFs(e2); RESULT=e1;:}//id,id
-			|	idva:e1					{:NodoFs nuevo = new NodoFs("ListID"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};//id
+			|	idva:e1					{:NodoFs nuevo = new NodoFs("ListID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_ListaFs(e1); RESULT=nuevo;:};//id
 		
 /*!---------------------------- Estructura Operaciones ----------------------------!*/
 		
-Exp_Log ::=	Exp_Log:e1	Sor Exp_Log:e2 					{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.valor="OR";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*LOG || LOG*/
-		|	Exp_Log:e1	and	Exp_Log:e2					{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.valor="AND";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*LOG && LOG*/
-		|	not			Exp_Log:e1						{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.valor="NOT";nuevo.add_NodoFs(e1);                      RESULT=nuevo;:}/* ! LOG*/
-		|	Exp_Log:e3	fin Exp_Ari:e1 dop Exp_Ari:e2	{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.valor="Ternario"; nuevo.add_NodoFs(e3);nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*Ternario*/
+Exp_Log ::=	Exp_Log:e1	Sor Exp_Log:e2 					{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="OR";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*LOG || LOG*/
+		|	Exp_Log:e1	and	Exp_Log:e2					{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="AND";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*LOG && LOG*/
+		|	not			Exp_Log:e1						{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="NOT";nuevo.add_NodoFs(e1);                      RESULT=nuevo;:}/* ! LOG*/
+		|	Exp_Log:e3	fin Exp_Ari:e1 dop Exp_Ari:e2	{:NodoFs nuevo = new NodoFs("OPE_L"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="Ternario"; nuevo.add_NodoFs(e3);nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*Ternario*/
 		|	Exp_Com:e1 									{:RESULT=e1;:}/*Comparacion*/	
 		;
 		
-Exp_Com ::=	Exp_Ari:e1 igu igu		Exp_Ari:e2			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.valor="==";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI == ARI*/	
-		|	Exp_Ari:e1 not igu		Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.valor="!=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI != ARI*/
-		|	Exp_Ari:e1 Ex_may:e3	Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.valor=e3;nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI >= ARI*/
-		|	Exp_Ari:e1 Ex_men:e3	Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.valor=e3;nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI <= ARI*/
+Exp_Com ::=	Exp_Ari:e1 igu igu		Exp_Ari:e2			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="==";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI == ARI*/	
+		|	Exp_Ari:e1 not igu		Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="!=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI != ARI*/
+		|	Exp_Ari:e1 Ex_may:e3	Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=e3;nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI >= ARI*/
+		|	Exp_Ari:e1 Ex_men:e3	Exp_Ari:e2 			{:NodoFs nuevo = new NodoFs("OPE_C"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=e3;nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ARI <= ARI*/
 		|	Exp_Ari:e1									{:RESULT=e1;:};			
 
 Ex_may ::=	may 										{:RESULT=">";:}	/* >  */
@@ -112,109 +112,109 @@ Ex_men ::=	men 										{:RESULT="<";:}	/* <  */
 		|	men igu										{:RESULT="<=";:};/* <= */
 		
 
-Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.valor="+";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO + DATO*/
-		|	Exp_Ari:e1 nos Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.valor="-";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO - DATO*/
-		|	Exp_Ari:e1 por Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.valor="*";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO * DATO*/
-		|	Exp_Ari:e1 div Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.valor="/";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO / DATO*/
-		|	Exp_Ari:e1 pot Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.valor="^";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO ^ DATO*/
+Exp_Ari ::= Exp_Ari:e1 mas Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="+";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO + DATO*/
+		|	Exp_Ari:e1 nos Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="-";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO - DATO*/
+		|	Exp_Ari:e1 por Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="*";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO * DATO*/
+		|	Exp_Ari:e1 div Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="/";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO / DATO*/
+		|	Exp_Ari:e1 pot Exp_Ari:e2				{:NodoFs nuevo = new NodoFs("OPE_A"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="^";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*DATO ^ DATO*/
 		|	ipa 	Exp_Log:e1 	fpa					{:RESULT=e1;:}/*(	Dato  )*/
-		|	nos		Exp_Ari:e1						{:NodoFs nuevo = new NodoFs("Dato Negado"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}/*-Dato*/
+		|	nos		Exp_Ari:e1						{:NodoFs nuevo = new NodoFs("Dato Negado"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1);RESULT=nuevo;:}/*-Dato*/
 		|	Dato_Posfa:e1							{:RESULT=e1;:}
 		;
 
 Dato_Posfa ::= 	Dato_Pri:e1						{:RESULT=e1;:}
 			|	Es_tipo_id:e1					{:RESULT=e1;:}
-			|	nulo:e1							{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}
+			|	nulo:e1							{:NodoFs nuevo = new NodoFs("Dato"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=e1; RESULT=nuevo;:}
 			|	Es_lla_fun:e1					{:RESULT=e1;:}
-			|	idva:e2 recur_nat:e1			{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
-			|	idva:e2 idpu:e3	recur_nat:e1	{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.valor=e2+e3;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
-			|	Es_tipo_id:e1 dmas 				{:NodoFs nuevo = new NodoFs("Autoincremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID ++*/
-			|	Es_tipo_id:e1 dnos  			{:NodoFs nuevo = new NodoFs("Autodecremento"); nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID--*/
+			|	idva:e2 recur_nat:e1			{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=e2;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
+			|	idva:e2 idpu:e3	recur_nat:e1	{:NodoFs nuevo = new NodoFs("Nativas"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor=e2+e3;nuevo.add_NodoFs(e1); RESULT=nuevo;:}
+			|	Es_tipo_id:e1 dmas 				{:NodoFs nuevo = new NodoFs("Autoincremento");nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID ++*/
+			|	Es_tipo_id:e1 dnos  			{:NodoFs nuevo = new NodoFs("Autodecremento"); nuevo.linea=e1left+1;nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1);RESULT=nuevo;:}	/*ID--*/
 		;
 
-Dato_Pri ::= 	nume:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}//numero
-		|	 	cade:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}//cadena
-		|		deci:e1 		{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}//decimales
-		|		verd:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:}//verdadero
-		|		fals:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; RESULT=nuevo;:};//falso
+Dato_Pri ::= 	nume:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}//numero
+		|	 	cade:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}//cadena
+		|		deci:e1 		{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}//decimales
+		|		verd:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1; RESULT=nuevo;:}//verdadero
+		|		fals:e1			{:NodoFs nuevo = new NodoFs("Dato"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1;  RESULT=nuevo;:};//falso
 
 /*---------------------------- Estructura Imprimir ----------------------------*/
-Es_Impr ::= impr ipa Exp_Log:e1 fpa pyc 		{:NodoFs nuevo = new NodoFs("Imprimir"); nuevo.add_NodoFs(e1); RESULT=nuevo;:}	/*Imprimir(EXPRESION);*/
+Es_Impr ::= impr ipa Exp_Log:e1 fpa pyc 		{:NodoFs nuevo = new NodoFs("Imprimir"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:}	/*Imprimir(EXPRESION);*/
 				;
 /*---------------------------- Estructura Importar ----------------------------*/
-Es_Impo ::= impo ipa Exp_Log:e1 fpa pyc 			{:NodoFs nuevo = new NodoFs("Imprimir"); nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Importar(Expresion);*/
+Es_Impo ::= impo ipa Exp_Log:e1 fpa pyc 			{:NodoFs nuevo = new NodoFs("Imprimir"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Importar(Expresion);*/
 				;
 				
 /*---------------------------- Estructura Si ----------------------------*/
 
-Es_Si ::=	si ipa Exp_Log:e1 fpa ill Estu_Cuerpo:e2 fll 	{:NodoFs nuevo = new NodoFs("Si"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*si (Exp_log){CUERPO}*/
+Es_Si ::=	si ipa Exp_Log:e1 fpa ill Estu_Cuerpo:e2 fll 	{:NodoFs nuevo = new NodoFs("Si"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*si (Exp_log){CUERPO}*/
 			;
 			
-Es_sino ::= sino ill Estu_Cuerpo:e1 fll						{:NodoFs nuevo = new NodoFs("Sino"); nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*sino {CUERPO}*/
+Es_sino ::= sino ill Estu_Cuerpo:e1 fll						{:NodoFs nuevo = new NodoFs("Sino");nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*sino {CUERPO}*/
 			;
 		
 Estru_si ::= Estru_si:e1 sino Es_Si:e2						{: e1.add_NodoFs(e2); RESULT=e1;:}/*Si() sino si(){}*/
 			|Estru_si:e1 Es_sino:e2							{: e1.add_NodoFs(e2); RESULT=e1;:}/*Si() sino {}*/
-			|Es_Si:e1										{:NodoFs nuevo = new NodoFs("EST_SI"); nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Si()*/
+			|Es_Si:e1										{:NodoFs nuevo = new NodoFs("EST_SI"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Si()*/
 			;
 
 /*---------------------------- Estructura Asignacion ----------------------------*/
-Es_asig ::= Es_tipo_id:e1 igu 	  Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID  = Expresion_Ar*/
-		|	Es_tipo_id:e1 por igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="*=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID *= Expresion_Ar*/
-		|	Es_tipo_id:e1 div igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="/=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID /= Expresion_Ar*/
-		|	Es_tipo_id:e1 mas igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="+=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID += Expresion_Ar*/
-		|	Es_tipo_id:e1 nos igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="-=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID -= Expresion_Ar*/
-		|	Es_tipo_id:e1 dmas	pyc									{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="Autoincremento";nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*ID++;*/ 										
-		|	Es_tipo_id:e1 dnos  pyc 								{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="Autodecremento";nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*ID--;*/
-		|	Es_tipo_id:e1 igu func_nat1:e2 pyc						{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.valor="Funcion";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID = Funcion_nativa()	*/ 
+Es_asig ::= Es_tipo_id:e1 igu 	  Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID  = Expresion_Ar*/
+		|	Es_tipo_id:e1 por igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="*=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID *= Expresion_Ar*/
+		|	Es_tipo_id:e1 div igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="/=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID /= Expresion_Ar*/
+		|	Es_tipo_id:e1 mas igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="+=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID += Expresion_Ar*/
+		|	Es_tipo_id:e1 nos igu Exp_Log:e2	pyc					{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="-=";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID -= Expresion_Ar*/
+//		|	Es_tipo_id:e1 dmas	pyc									{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="Autoincremento";nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*ID++;*/ 										
+//		|	Es_tipo_id:e1 dnos  pyc 								{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.valor="Autodecremento";nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*ID--;*/
+		|	Es_tipo_id:e1 igu func_nat1:e2 pyc						{:NodoFs nuevo = new NodoFs("AS_ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.valor="Funcion";nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*ID = Funcion_nativa()	*/ 
 		;
 		
-Es_tipo_id ::=  idva:e1 ico Exp_Log:e2 fco 							{:NodoFs nuevo = new NodoFs("ID"); 	nuevo.add_NodoFs(e2); nuevo.valor=e1; RESULT=nuevo;:}/*ID[num]*/
-		|		idva:e1 											{:NodoFs nuevo = new NodoFs("ID"); 	nuevo.valor=e1; RESULT=nuevo;:}
-		|		idva:e1 idpu:e2										{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:}
-		|		idva:e1 ico Exp_Log:e2 fco  idpu:e3					{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs("especial");nuevo.add_NodoFs(e2); nuevo.add_ListaFs(e3);	nuevo.valor=e1; RESULT=nuevo;:}
-		|		idva:e1 idpu:e2 ico Exp_Log:e3 fco					{:NodoFs nuevo = new NodoFs("ID"); nuevo.add_ListaFs("objeto"); nuevo.add_NodoFs(e3); nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:};
+Es_tipo_id ::=  idva:e1 ico Exp_Log:e2 fco 							{:NodoFs nuevo = new NodoFs("ID"); 	nuevo.linea=e1left+1;  nuevo.columna=e1right+1; nuevo.add_NodoFs(e2); nuevo.valor=e1; RESULT=nuevo;:}/*ID[num]*/
+		|		idva:e1 											{:NodoFs nuevo = new NodoFs("ID"); nuevo.linea=e1left+1; 	nuevo.columna=e1right+1; nuevo.valor=e1; RESULT=nuevo;:}
+		|		idva:e1 idpu:e2										{:NodoFs nuevo = new NodoFs("ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:}
+		|		idva:e1 ico Exp_Log:e2 fco  idpu:e3					{:NodoFs nuevo = new NodoFs("ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_ListaFs("especial");nuevo.add_NodoFs(e2); nuevo.add_ListaFs(e3);	nuevo.valor=e1; RESULT=nuevo;:}
+		|		idva:e1 idpu:e2 ico Exp_Log:e3 fco					{:NodoFs nuevo = new NodoFs("ID"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_ListaFs("objeto"); nuevo.add_NodoFs(e3); nuevo.add_ListaFs(e2);	nuevo.valor=e1; RESULT=nuevo;:};
 /*---------------------------- Estructura Selecciona ----------------------------*/		
-Es_sele ::= sele ipa Exp_Ari:e1 fpa ill Cuerpo_sele:e2 fll		{:NodoFs nuevo = new NodoFs("ES_SEL"); 	nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*seleciona (Exp_Ari){ casos}*/
+Es_sele ::= sele ipa Exp_Ari:e1 fpa ill Cuerpo_sele:e2 fll		{:NodoFs nuevo = new NodoFs("ES_SEL"); 	nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2);RESULT=nuevo;:}/*seleciona (Exp_Ari){ casos}*/
 		;
 
 Cuerpo_sele ::= Cuerpo_sele:e1 tipo_sele:e2						{:e1.add_NodoFs(e2); RESULT=e1;:}
-		|		tipo_sele:e1									{:NodoFs nuevo = new NodoFs("CU_SEL"); 	nuevo.add_NodoFs(e1); RESULT=nuevo;:}
+		|		tipo_sele:e1									{:NodoFs nuevo = new NodoFs("CU_SEL"); 	nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:}
 		;
 
-tipo_sele ::= 	caso Exp_Ari:e1 dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("caso"); 	nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*caso Exp_Ari : */
-			|	defe 		    dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("defecto"); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*defecto : */
+tipo_sele ::= 	caso Exp_Ari:e1 dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("caso"); 	nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*caso Exp_Ari : */
+			|	defe 		    dop ill Estu_Cuerpo:e2 fll		{:NodoFs nuevo = new NodoFs("defecto"); nuevo.linea=e2left+1; nuevo.columna=e2right+1; nuevo.add_NodoFs(e2); RESULT=nuevo;:}/*defecto : */
 			;
 			
 /*---------------------------- Estructura funcion ----------------------------*/			
 Es_func ::= func idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("funcion"); RESULT=e2;:}/*funcion id (*/
 	/*	|	var  idva:e1 ipa  Es_fun1:e2							{:e2.valor=e1; e2.add_ListaFs("funcionvar"); RESULT=e2;:}*/;
 		
-Es_fun1 ::=   Lista_parametros:e1 	fpa	ill	Estu_Cuerpo:e2	fll		{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}		/*parametros ) {}*/
-			| fpa				ill		Estu_Cuerpo:e1 fll 			{:NodoFs nuevo = new NodoFs("funcion"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*) {}*/
+Es_fun1 ::=   Lista_parametros:e1 	fpa	ill	Estu_Cuerpo:e2	fll		{:NodoFs nuevo = new NodoFs("funcion"); nuevo.linea=e1left+1;  nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}		/*parametros ) {}*/
+			| fpa				ill		Estu_Cuerpo:e1 fll 			{:NodoFs nuevo = new NodoFs("funcion"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*) {}*/
 
 Lista_parametros ::= Lista_parametros:e1 com var idva:e2				{:e1.add_ListaFs(e2); RESULT=e1;:}/*Lista prametros com var id*/
-				|	 var idva:e1										{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
+				|	 var idva:e1										{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_ListaFs(e1); RESULT=nuevo;:};/*var idva*/
 			
 /*LLamada de una funcion*/
-Es_lla_fun ::= idva:e1 ipa Es_lla_fun1:e2 							{:e2.valor=e1; RESULT=e2;:};/*ID(param,param,etc)  */
+Es_lla_fun ::= idva:e1 ipa Es_lla_fun1:e2 							{:e2.valor=e1; e2.linea=e1left+1; e2.columna=e1right+1; RESULT=e2;:};/*ID(param,param,etc)  */
 
-Es_lla_fun1 ::=  fpa 												{:NodoFs nuevo = new NodoFs("llamadafun"); RESULT=nuevo;:}
-		|		Lista_Aritmetica:e1 fpa								{:NodoFs nuevo = new NodoFs("llamadafun"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};
+Es_lla_fun1 ::=  fpa 												{:NodoFs nuevo = new NodoFs("llamadafun");   RESULT=nuevo;:}
+		|		Lista_Aritmetica:e1 fpa								{:NodoFs nuevo = new NodoFs("llamadafun");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};
 		
 Lista_Aritmetica ::=	Lista_Aritmetica:e1 com Exp_Log:e2			{:e1.add_NodoFs(e2);RESULT=e1;:}/*Lista , param*/
-				|		Exp_Log:e1 									{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*param*/
+				|		Exp_Log:e1 									{:NodoFs nuevo = new NodoFs("Parametros"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*param*/
 				
 /*---------------------------- Funciones Navitas de arreglos ----------------------------*/
 
 recur_nat ::= 	recur_nat:e1 func_nat:e2				{:e1.add_NodoFs(e2); RESULT=e1;:}/*.funcionnativa.funcionnativa|*/
-			|	func_nat:e1								{:NodoFs nuevo = new NodoFs("funciones"); nuevo.valor="nativas"; nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*.funcionantiva*/
+			|	func_nat:e1								{:NodoFs nuevo = new NodoFs("funciones"); nuevo.valor="nativas"; nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*.funcionantiva*/
 		
 			
-func_nat ::= Tipo_Fun:e1 ipa idva:e2 fpa  				{:NodoFs nuevo = new NodoFs("filtros"); nuevo.valor=e1; nuevo.add_ListaFs(e2); RESULT=nuevo;:}/*funciones de filtrar y otros--->Solo creacion o asignacio de variable*/
-			|Tipos_Acc_Ord:e1  							{:NodoFs nuevo = new NodoFs("ordenamiento"); nuevo.valor=e1; RESULT=nuevo;:}/* funciones de ordenamiento--->Solo creacion o asignacio de variable*/
-			|Tipo_Obte:e1 ipa Exp_Ari:e2 fpa			{:NodoFs nuevo = new NodoFs("obtencion"); nuevo.valor=e1; nuevo.add_NodoFs(e2); RESULT=nuevo;:}	/*Funciones de obtencion--->Solo creacion o asignacio de variable*/
-			|opno ipa Exp_Ari:e1 com Exp_Ari:e2 fpa 	{:NodoFs nuevo = new NodoFs("obtencion"); nuevo.valor="ObtenerporNombre"; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:};/*ObtenerporNombre("nombre",id);*/
+func_nat ::= Tipo_Fun:e1 ipa idva:e2 fpa  				{:NodoFs nuevo = new NodoFs("filtros"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_ListaFs(e2); RESULT=nuevo;:}/*funciones de filtrar y otros--->Solo creacion o asignacio de variable*/
+			|Tipos_Acc_Ord:e1  							{:NodoFs nuevo = new NodoFs("ordenamiento"); nuevo.valor=e1; nuevo.linea=e1left+1;nuevo.columna=e1right+1;   RESULT=nuevo;:}/* funciones de ordenamiento--->Solo creacion o asignacio de variable*/
+			|Tipo_Obte:e1 ipa Exp_Ari:e2 fpa			{:NodoFs nuevo = new NodoFs("obtencion"); nuevo.valor=e1; nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e2); RESULT=nuevo;:}	/*Funciones de obtencion--->Solo creacion o asignacio de variable*/
+			|opno ipa Exp_Ari:e1 com Exp_Ari:e2 fpa 	{:NodoFs nuevo = new NodoFs("obtencion"); nuevo.valor="ObtenerporNombre"; nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:};/*ObtenerporNombre("nombre",id);*/
 			
 func_nat1 ::= func_leer:e1								{:RESULT=e1;:}/*Crear array desde archivo--->Solo creacion o asignacio de variable */				
 			 |func_gxml:e1								{:RESULT=e1;:};/*Leer Gxml --->Solo creacion o asignacio de variable*/
@@ -232,9 +232,9 @@ Tipos_Acc_Ord ::= 	desc  								{:RESULT="descendente";:}/*Descendente */
 				|	maxi 								{:RESULT="maximo";:}/*Maximo */
 				|	mini 								{:RESULT="minimo";:};/*Minimo */
 
-func_leer ::= lgxm ipa Exp_Log:e1 fpa 					{:NodoFs nuevo = new NodoFs("leergxml"); 	 nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*LeerGxml(expresion);*/
+func_leer ::= lgxm ipa Exp_Log:e1 fpa 					{:NodoFs nuevo = new NodoFs("leergxml"); 	nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*LeerGxml(expresion);*/
 
-func_gxml ::= cada ipa Exp_Log:e1 fpa 					{:NodoFs nuevo = new NodoFs("arrayarchivo"); nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Creararraydesdearchivo(expresion);*/					
+func_gxml ::= cada ipa Exp_Log:e1 fpa 					{:NodoFs nuevo = new NodoFs("arrayarchivo");nuevo.linea=e1left+1; nuevo.columna=e1right+1;   nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Creararraydesdearchivo(expresion);*/					
 
 
 Tipo_Obte ::= 	opet									{:RESULT="obt_etiquieta";:}/*ObtenerporEtiqueta();*/
@@ -242,36 +242,36 @@ Tipo_Obte ::= 	opet									{:RESULT="obt_etiquieta";:}/*ObtenerporEtiqueta();*/
 
 
 /*---------------------------- Acciones de 	Crear ----------------------------*/				
-Acc_venta ::= cven ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 fpa 													 /*CrearVentana--->Solo creacion o asignacio de variable */		{:NodoFs nuevo = new NodoFs("Ventana");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); RESULT=nuevo;:}; 
+Acc_venta ::= cven ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 fpa 													 /*CrearVentana--->Solo creacion o asignacio de variable */		{:NodoFs nuevo = new NodoFs("Ventana"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); RESULT=nuevo;:}; 
 
-Acc_conte ::= idva:e0 ccon	ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa 	/*Crear contenedor--->Solo creacion o asignacio de variable */	{:NodoFs nuevo = new NodoFs("Contenedor");  nuevo.valor=e0; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);RESULT=nuevo;:}; 
+Acc_conte ::= idva:e0 ccon	ipa Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa 	/*Crear contenedor--->Solo creacion o asignacio de variable */	{:NodoFs nuevo = new NodoFs("Contenedor"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.valor=e0; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);RESULT=nuevo;:}; 
 
-Acc_boton ::= idva:e0 cbot  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 fpa/*Crear boton--->Solo creacion o asignacio de variable*/	{:NodoFs nuevo = new NodoFs("Boton"); nuevo.valor=e0;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9); RESULT=nuevo;:};
+Acc_boton ::= idva:e0 cbot  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 fpa/*Crear boton--->Solo creacion o asignacio de variable*/	{:NodoFs nuevo = new NodoFs("Boton");nuevo.linea=e1left+1; nuevo.columna=e1right+1;   nuevo.valor=e0;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9); RESULT=nuevo;:};
 
-Acc_texto ::= ctex  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 fpa /*Crear texto--->Solo accion sobre variable*/	{:NodoFs nuevo = new NodoFs("label");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8);  RESULT=nuevo;:};
+Acc_texto ::= ctex  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 fpa /*Crear texto--->Solo accion sobre variable*/	{:NodoFs nuevo = new NodoFs("label"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8);  RESULT=nuevo;:};
 
-Acc_ctext ::= ccte  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 com Exp_Log:e10 com Exp_Log:e11 fpa {:NodoFs nuevo = new NodoFs("texto");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;:}; /*Crear Caja texto--->Solo accion sobre variable*/
+Acc_ctext ::= ccte  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 com Exp_Log:e10 com Exp_Log:e11 fpa {:NodoFs nuevo = new NodoFs("texto"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;   nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;:}; /*Crear Caja texto--->Solo accion sobre variable*/
 
-Acc_Atext ::= cate  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 com Exp_Log:e10 com Exp_Log:e11 fpa {:NodoFs nuevo = new NodoFs("Area");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;:};/*Crear Area texto--->Solo accion sobre variable*/
+Acc_Atext ::= cate  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 com Exp_Log:e9 com Exp_Log:e10 com Exp_Log:e11 fpa {:NodoFs nuevo = new NodoFs("Area"); nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7); nuevo.add_NodoFs(e8); nuevo.add_NodoFs(e9);nuevo.add_NodoFs(e10); nuevo.add_NodoFs(e11); RESULT=nuevo;:};/*Crear Area texto--->Solo accion sobre variable*/
 
-Acc_Cnume ::= ccnu  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 fpa {:NodoFs nuevo = new NodoFs("numero");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7);  nuevo.add_NodoFs(e8); RESULT=nuevo;:};/*Crear control numerico--->Solo accion sobre variable*/
+Acc_Cnume ::= ccnu  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 com Exp_Log:e8 fpa {:NodoFs nuevo = new NodoFs("numero"); nuevo.linea=e1left+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.columna=e1right+1;  nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7);  nuevo.add_NodoFs(e8); RESULT=nuevo;:};/*Crear control numerico--->Solo accion sobre variable*/
 
-Acc_despl ::= cdes  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 fpa {:NodoFs nuevo = new NodoFs("desplegable");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7);  RESULT=nuevo;:};/*Crear desplegable--->Solo accion sobre variable*/
+Acc_despl ::= cdes  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 com Exp_Log:e7 fpa {:NodoFs nuevo = new NodoFs("desplegable"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;   nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6);  nuevo.add_NodoFs(e7);  RESULT=nuevo;:};/*Crear desplegable--->Solo accion sobre variable*/
 
-Acc_image ::= cima  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5  fpa {:NodoFs nuevo = new NodoFs("imagen");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); RESULT=nuevo;:};/*Crear Imagen--->Solo accion sobre variable*/
+Acc_image ::= cima  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5  fpa {:NodoFs nuevo = new NodoFs("imagen"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); RESULT=nuevo;:};/*Crear Imagen--->Solo accion sobre variable*/
 
-Acc_video ::= cvid  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa {:NodoFs nuevo = new NodoFs("video");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6); RESULT=nuevo;:};/*Crear Video--->Solo accion sobre variable*/
+Acc_video ::= cvid  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa {:NodoFs nuevo = new NodoFs("video"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6); RESULT=nuevo;:};/*Crear Video--->Solo accion sobre variable*/
 
-Acc_repro ::= crep  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa {:NodoFs nuevo = new NodoFs("reproductor");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6); RESULT=nuevo;:};/*Crear Reproductor--->Solo accion sobre variable*/
+Acc_repro ::= crep  ipa  Exp_Log:e1 com Exp_Log:e2 com Exp_Log:e3 com Exp_Log:e4 com Exp_Log:e5 com Exp_Log:e6 fpa {:NodoFs nuevo = new NodoFs("reproductor"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;   nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); nuevo.add_NodoFs(e3); nuevo.add_NodoFs(e4); nuevo.add_NodoFs(e5); nuevo.add_NodoFs(e6); RESULT=nuevo;:};/*Crear Reproductor--->Solo accion sobre variable*/
 
 /*---------------------------- Acciones de Botones y otros ----------------------------*/
-Acc_alcar ::= acar ipa Es_lla_fun:e1 fpa			{:NodoFs nuevo = new NodoFs("cargar");  nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Alcargar(Metodo)--->Solo accion sobre variable*/
+Acc_alcar ::= acar ipa Es_lla_fun:e1 fpa			{:NodoFs nuevo = new NodoFs("cargar");  nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Alcargar(Metodo)--->Solo accion sobre variable*/
 			| acar ipa fpa 							{:NodoFs nuevo = new NodoFs("cargar");  RESULT=nuevo;:};/*Alcargar()--->Solo accion sobre variable*/
 			
-Acc_alcer ::= acer ipa Es_lla_fun:e1 fpa			{:NodoFs nuevo = new NodoFs("cerrar");  nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Alcerrar(Metodo)--->Solo accion sobre variable*/
+Acc_alcer ::= acer ipa Es_lla_fun:e1 fpa			{:NodoFs nuevo = new NodoFs("cerrar");  nuevo.linea=e1left+1; nuevo.columna=e1right+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Alcerrar(Metodo)--->Solo accion sobre variable*/
 			| acer ipa fpa 							{:NodoFs nuevo = new NodoFs("cerrar");   RESULT=nuevo;:};/*Alcerrar()--->Solo accion sobre variable*/
 			
-Acc_alcli ::= acli ipa Es_lla_fun:e1 fpa 			{:NodoFs nuevo = new NodoFs("click");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Alclick(Metodo)--->Solo accion sobre variable*/
+Acc_alcli ::= acli ipa Es_lla_fun:e1 fpa 			{:NodoFs nuevo = new NodoFs("click");  nuevo.linea=e1left+1; nuevo.columna=e1right+1;  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Alclick(Metodo)--->Solo accion sobre variable*/
 			
 /*---------------------------- Estructura del cuerpo ----------------------------*/			
 Cuerpo_general ::= 	ES_VAR:e1							{:RESULT=e1;:}/*Estructura variable*/
@@ -280,29 +280,31 @@ Cuerpo_general ::= 	ES_VAR:e1							{:RESULT=e1;:}/*Estructura variable*/
 			| 		Es_sele:e1							{:RESULT=e1;:}/*Estructura Selecciona*/
 			|		Es_asig:e1							{:RESULT=e1;:}/*Estructura de asignacion */
 			|		Es_acc_ID:e1						{:RESULT=e1;:}/*Estructura acciones ID */
-			|		reto Exp_Log:e1 pyc					{:NodoFs nuevo = new NodoFs("retornar");  nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Retornar expresion*/
+			|		reto Exp_Log:e1 pyc					{:NodoFs nuevo = new NodoFs("retornar");  nuevo.columna=e1right+1; nuevo.linea=e1left+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:}/*Retornar expresion*/
 			|		Es_lla_fun:e1 pyc 					{:RESULT=e1;:}/*Llamada a una funcion*/
-			| 		dete pyc							{:NodoFs nuevo = new NodoFs("Detener");  RESULT=nuevo;:};/*Detener ;*/
+			| 		dete:e1 pyc							{:NodoFs nuevo = new NodoFs("Detener");  nuevo.columna=e1right+1; nuevo.linea=e1left+1; RESULT=nuevo;:};/*Detener ;*/
 
 Estu_Cuerpo ::=  Estu_Cuerpo:e2 Cuerpo_general:e1		{:e2.add_NodoFs(e1); RESULT=e2;:}/*Estructura Cuerpo*/
-				| Cuerpo_general:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Cuerpo */	
+				| Cuerpo_general:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.columna=e1right+1; nuevo.linea=e1left+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:};/*Cuerpo */	
 
 /*---------------------------- Estructura Cuerpo Principal*/	
 Cuerpo_funcion ::= Cuerpo_funcion:e1 Es_DeAu:e2		{:e1.add_NodoFs(e2);RESULT=e1;:}
-				|  Es_DeAu:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.add_NodoFs(e1); RESULT=nuevo;:};
+				|  Es_DeAu:e1						{:NodoFs nuevo = new NodoFs("Cuerpo");  nuevo.columna=e1right+1; nuevo.linea=e1left+1; nuevo.add_NodoFs(e1); RESULT=nuevo;:};
 				
 Es_DeAu ::= Cuerpo_general:e1 	{:RESULT=e1;:}
 		|	Es_func:e1			{:RESULT=e1;:};				
 				
 /*---------------------------- Estructura acciones ID ----------------------------*/				
-Es_acc_ID ::= Es_tipo_id:e1 accion_ID:e2 pyc	{:NodoFs nuevo = new NodoFs("ID_ACCION");  nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}; /*ID . Accion ID*/
+Es_acc_ID ::= Es_tipo_id:e1 accion_ID:e2 pyc	{:NodoFs nuevo = new NodoFs("ID_ACCION"); nuevo.columna=e1right+1; nuevo.linea=e1left+1; nuevo.add_NodoFs(e1); nuevo.add_NodoFs(e2); RESULT=nuevo;:}; /*ID . Accion ID*/
 
 accion_ID ::= 	Acc_texto:e1			{:RESULT=e1;:}
-			|	pcada		            {:NodoFs nuevo = new NodoFs("arrayarchivo"); RESULT=nuevo;:}		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
+			|	pcada:e1	            {:NodoFs nuevo = new NodoFs("arrayarchivo"); nuevo.linea=e1left+1; nuevo.columna=e1right+1;  RESULT=nuevo;:}		/*Creararraydesdearchivo();--->Solo accion sobre variable*/
 			|	Acc_ctext:e1			{:RESULT=e1;:}
 			|	Acc_Atext:e1			{:RESULT=e1;:}
 			|	Acc_Cnume:e1			{:RESULT=e1;:}
 			|	Acc_despl:e1			{:RESULT=e1;:}
+			|	dmas 	    			{:NodoFs nuevo = new NodoFs("Autoincremento");RESULT=nuevo;:}	/*ID ++*/
+			|	dnos      				{:NodoFs nuevo = new NodoFs("Autodecremento");RESULT=nuevo;:}	/*ID--*/
 			|	Acc_image:e1			{:RESULT=e1;:}
 			|	Acc_video:e1			{:RESULT=e1;:}
 			|	Acc_repro:e1			{:RESULT=e1;:}

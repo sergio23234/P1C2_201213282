@@ -127,14 +127,28 @@ public class NodoGxml {
 
     public NodoObjeto Dev_Ventanas_Objeto(String nombre, String objeto) {
         for (int i = 0; i < Ventanas.size(); i++) {
-            if(Ventanas.get(i).Dev_Objeto(objeto)!=null){
+            if (Ventanas.get(i).Dev_Objeto(objeto) != null) {
                 return Ventanas.get(i).Dev_Objeto(objeto);
             }
         }
         return null;
     }
 
-    public ArrayList<Ventana> dev_ventanas(){
+    public ArrayList<Ventana> dev_ventanas() {
         return Ventanas;
+    }
+
+    public NodoObjeto Dev_Ventanas_u_Objeto(String ID) {
+        for (int i = 0; i < Ventanas.size(); i++) {
+            if (Ventanas.get(i).Id.equalsIgnoreCase(ID)) {
+                return Ventanas.get(i).dev_ventana();
+            }
+        }
+        for (int i = 0; i < Ventanas.size(); i++) {
+            if (Ventanas.get(i).Dev_Conte(ID) != null) {
+                return Ventanas.get(i).Dev_Conte(ID);
+            }
+        }
+        return null;
     }
 }

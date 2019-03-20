@@ -39,15 +39,17 @@ public class ES_ID {
                         if (!rama) {
                             NodoError error = new NodoError("semantico");
                             error.descripcion = "no se encuentra la variable: " + nombre + " en el documento";
+                            error.linea = String.valueOf(raiz.linea);
+                            error.columna = String.valueOf(raiz.columna);
                             errores.add(error);
                             uno = new NodoRespuesta(true);
                             return uno;
                         } else {
-                            
+
                             return nuevo.ret_ID_Tabla(nombre, global);
                         }
                     } else {
-                       // System.out.println("vino nombre: " + nombre);
+                        // System.out.println("vino nombre: " + nombre);
                         return nuevo.ret_ID_Tabla(nombre, tabla);
                     }
                 }
@@ -69,6 +71,8 @@ public class ES_ID {
                             if (!rama) {
                                 NodoError error = new NodoError("semantico");
                                 error.descripcion = "el vector: " + id + " no existe o el numero esta fuera del tamaño";
+                                error.linea = String.valueOf(raiz.linea);
+                                error.columna = String.valueOf(raiz.columna);
                                 errores.add(error);
                                 uno = new NodoRespuesta(true);
                                 return uno;
@@ -83,6 +87,8 @@ public class ES_ID {
                     } catch (Exception e) {
                         NodoError error = new NodoError("semantico");
                         error.descripcion = "dentro del verctor " + raiz.valor + " no se encontro un numero entero se encontro: " + uno.resultado;
+                        error.linea = String.valueOf(raiz.linea);
+                        error.columna = String.valueOf(raiz.columna);
                         errores.add(error);
                         return new NodoRespuesta(true);
                     }
@@ -98,6 +104,8 @@ public class ES_ID {
                 if (!rama) {
                     NodoError error = new NodoError("semantico");
                     error.descripcion = "no se encuentra la variable: " + nombre + " en el documento";
+                    error.linea = String.valueOf(raiz.linea);
+                    error.columna = String.valueOf(raiz.columna);
                     errores.add(error);
                     uno = new NodoRespuesta(true);
                     return uno;
@@ -115,6 +123,8 @@ public class ES_ID {
                 if (!rama) {
                     NodoError error = new NodoError("semantico");
                     error.descripcion = "no se encuentra la variable: " + raiz.valor + " en el documento";
+                    error.linea = String.valueOf(raiz.linea);
+                    error.columna = String.valueOf(raiz.columna);
                     errores.add(error);
                     uno = new NodoRespuesta(true);
                     return uno;
@@ -132,10 +142,10 @@ public class ES_ID {
     public NodoRespuesta autoincrementar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta uno;
         uno = Analizar(raiz.hijos.get(0), errores);
-        //System.out.println(uno.error + "_" + uno.resultado + "<---");
+        System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
             OPA_A nueva = new OPA_A(tabla, global, num);
-            NodoRespuesta dos = nueva.sumar_uno(uno, errores, tabla);
+            NodoRespuesta dos = nueva.sumar_uno(uno, tabla, raiz.linea, raiz.columna);
             if (dos.error) {
                 return dos;
             }
@@ -147,9 +157,10 @@ public class ES_ID {
         NodoRespuesta uno;
         // System.out.println(raiz.Tipo);
         uno = Analizar(raiz.hijos.get(0), errores);
+        System.out.println(uno.error + "_" + uno.resultado + "<---");
         if (!uno.error) {
             OPA_A nueva = new OPA_A(tabla, global, num);
-            NodoRespuesta dos = nueva.restar_uno(uno, errores, tabla);
+            NodoRespuesta dos = nueva.restar_uno(uno, tabla, raiz.linea, raiz.columna);
             if (dos.error) {
                 return dos;
             }
@@ -158,42 +169,3 @@ public class ES_ID {
     }
 
 }
-//    private NodoRespuesta Cuerpo_A(NodoFs raiz, ArrayList<NodoError> errores) {
-//        NodoRespuesta nuevo;
-//        switch (raiz.Tipo.toLowerCase()) {
-//            case "ope_l":
-//                break;
-//            case "ope_c":
-//                OPA_C operac = new OPA_C(tabla, global,num);
-//                return operac.Analizar_OPC(raiz, errores);
-//            case "ope_a":
-//                OPA_A operacon = new OPA_A(tabla, global,num);
-//                return operacon.Analizar_OPA(raiz, errores);
-//
-//            case "dato":
-//                nuevo = new NodoRespuesta(raiz.valor);
-//                return nuevo;
-//            case "dato negado":
-//                nuevo = new NodoRespuesta("-" + raiz.valor);
-//                return nuevo;
-//
-//            case "autoincremento":
-//                ES_ID retorno = new ES_ID(tabla, global);
-//                return retorno.autoincrementar(raiz, errores);
-//
-//            case "autodecremento":
-//                retorno = new ES_ID(tabla, global);
-//                return retorno.autodecrementar(raiz, errores);
-//
-//            case "nativas":
-//                break;
-//            case "llamadafun":
-//                break;
-//            case "id":
-//                ES_ID id = new ES_ID(tabla, global);
-//                return id.Analizar(raiz, errores);
-//
-//        }
-//        nuevo = new NodoRespuesta(true);
-//        return nuevo;
-//    }

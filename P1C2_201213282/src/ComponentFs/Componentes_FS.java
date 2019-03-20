@@ -33,7 +33,7 @@ public class Componentes_FS {
         NodoRespuesta dato3 = OP.Cuerpo_G(raiz.hijos.get(2), errores);
         NodoRespuesta dato4 = OP.Cuerpo_G(raiz.hijos.get(3), errores);
         /*ERROES*/
-        if (dato1.error || dato2.error || dato3.error|| dato4.error) {
+        if (dato1.error || dato2.error || dato3.error || dato4.error) {
             return new NodoRespuesta(true);
         } else {
             String tipo1 = ret_tipo(dato1.resultado.toString());
@@ -43,7 +43,7 @@ public class Componentes_FS {
             /*System.out.println(dato1.resultado.toString() + " es tipo: " + tipo1);
             System.out.println(dato2.resultado.toString() + " es tipo: " + tipo2);
             System.out.println(dato3.resultado.toString() + " es tipo: " + tipo3);*/
-            if (!tipo4.equalsIgnoreCase("cadena") ||!tipo1.equalsIgnoreCase("cadena") || !tipo2.equalsIgnoreCase("numero") || !tipo3.equalsIgnoreCase("numero")) {
+            if (!tipo4.equalsIgnoreCase("cadena") || !tipo1.equalsIgnoreCase("cadena") || !tipo2.equalsIgnoreCase("numero") || !tipo3.equalsIgnoreCase("numero")) {
                 return new NodoRespuesta(true);
             }
             String id = raices.lista.get(raices.lista.size() - 1);
@@ -51,7 +51,7 @@ public class Componentes_FS {
             int ancho = Integer.valueOf(dato3.resultado.toString());
             String color = dato1.resultado.toString().replace("\"", "");
             String path = dato4.resultado.toString().replace("\"", "");
-            boolean resultado = Menu.Lista.get(num).Add_ventana(color, largo, ancho, id,path);
+            boolean resultado = Menu.Lista.get(num).Add_ventana(color, largo, ancho, id, path);
             if (resultado) {
                 return new NodoRespuesta(false);
             } else {
@@ -493,9 +493,9 @@ public class Componentes_FS {
                     System.out.println("no es vector: " + tipos[i]);
                     error = true;
                     break;
-                    
-                }else if ((!tipos[i].equalsIgnoreCase("cadena") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 5)) {
-                   // System.out.println("no es numero o nulo" + tipos[i]);
+
+                } else if ((!tipos[i].equalsIgnoreCase("cadena") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 5)) {
+                    // System.out.println("no es numero o nulo" + tipos[i]);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 6)) {
@@ -528,7 +528,7 @@ public class Componentes_FS {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
                 return retorno;
             } else {
-               // System.out.println("no se añadio");
+                // System.out.println("no se añadio");
                 return new NodoRespuesta(true);
             }
         }
@@ -557,15 +557,15 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 0) {
-                   // System.out.println("no es cadena");
+                    // System.out.println("no es cadena");
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 3) {
-                   // System.out.println("no es numero" + i);
+                    // System.out.println("no es numero" + i);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && i == 3) {
-                   // System.out.println("no es boleano");
+                    // System.out.println("no es boleano");
                     error = true;
                     break;
                 }
@@ -625,15 +625,15 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 7)) {
-                   // System.out.println("no es cadena" + i);
+                    // System.out.println("no es cadena" + i);
                     error = true;
                     break;
                 } else if ((!tipos[i].equalsIgnoreCase("numero") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 2 || i == 3 || i == 6)) {
-                   // System.out.println("no es numero o nulo" + tipos[i]);
+                    // System.out.println("no es numero o nulo" + tipos[i]);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i != 7 && i != 2 && i != 3 && i != 6)) {
-                   // System.out.println("no es numero" + i);
+                    // System.out.println("no es numero" + i);
                     error = true;
                     break;
                 }
@@ -712,7 +712,7 @@ public class Componentes_FS {
             int y = Integer.valueOf(dato3.resultado.toString());
             int alto = Integer.valueOf(dato4.resultado.toString());
             int ancho = Integer.valueOf(dato5.resultado.toString());
-            boolean resultado = Menu.Lista.get(num).add_image(id_ventana, ruta, x, y,alto, ancho);
+            boolean resultado = Menu.Lista.get(num).add_image(id_ventana, ruta, x, y, alto, ancho);
             if (resultado) {
                 NodoRespuesta retorno = new NodoRespuesta(raiz.valor);
                 return retorno;
@@ -722,8 +722,6 @@ public class Componentes_FS {
             }
         }
     }
-public void Guardar_Datosventana(String id){
-    
-}
-    
+
+
 }

@@ -311,7 +311,13 @@ public class Menu extends javax.swing.JFrame {
         int num = Pestanias.getSelectedIndex();
         if (num >= 0) {
             Pestania pest = Lista.get(num);
-
+            if(pest.errores.size()>0){
+                Erroresview errores = new Erroresview(pest.errores);
+                errores.Set_errores();
+                errores.show();
+            }else{
+                
+            }
         }
     }//GEN-LAST:event_erroresActionPerformed
 

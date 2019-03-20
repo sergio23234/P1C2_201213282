@@ -27,11 +27,12 @@ public class Accion_ID {
 
     public NodoRespuesta Analizar(NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta id = ID_analisis(raiz.hijos.get(0), errores);
-        return Cuerpo_Accion(id, raiz.hijos.get(1), errores);
+        return Cuerpo_Accion(id, raiz, raiz.hijos.get(1), errores);
     }
 
-    private NodoRespuesta Cuerpo_Accion(NodoRespuesta id, NodoFs raiz, ArrayList<NodoError> errores) {
+    private NodoRespuesta Cuerpo_Accion(NodoRespuesta id, NodoFs raizid,NodoFs raiz, ArrayList<NodoError> errores) {
         NodoRespuesta nuevo;
+        System.out.println("-->"+raiz.Tipo+"<---");
         switch (raiz.Tipo.toLowerCase()) {
             case "funciones":
                 NodoFs prueba = new NodoFs("Nativas");
@@ -97,6 +98,13 @@ public class Accion_ID {
             case "arrayarchivo":
                 Menu.Lista.get(num).Add_Dato(id.resultado.toString());
                 break;
+           case "autoincremento":
+                ES_ID retorno = new ES_ID(tabla, global, num);
+                return retorno.autoincrementar(raizid, errores);
+
+            case "autodecremento":
+                retorno = new ES_ID(tabla, global, num);
+                return retorno.autodecrementar(raizid, errores);
         }
 
         return new NodoRespuesta(false);

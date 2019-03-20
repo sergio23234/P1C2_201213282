@@ -26,7 +26,7 @@ public class Pestania extends javax.swing.JPanel {
     private int num;
     public ArrayList<est_ventana> ventanas;
     public TablaSimbolos tabla;
-    private ArrayList<NodoError> errores;
+    public ArrayList<NodoError> errores;
     private int abierta_actual = -1;
 
     /**
@@ -110,38 +110,43 @@ public class Pestania extends javax.swing.JPanel {
 
     private void analizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analizarActionPerformed
         if (!path.equals("") && (path.toLowerCase().endsWith(".gxml"))) {
+            errores.clear();
             Analizador_gxml analizador = new Analizador_gxml(path, ABpath);
             analizador.Analizar();
-
+            errores = analizador.dev_errores();
         } else if (!path.equals("") && (path.toLowerCase().endsWith(".fs"))) {
             File archivo = new File(path);
             FileReader fr;
             try {
                 tabla = new TablaSimbolos();
+                if (abierta_actual != -1) {
+                    ventanas.get(abierta_actual).hide();
+                }
                 ventanas.clear();
                 fr = new FileReader(archivo);
                 LexicoFS lex = new LexicoFS(fr);
                 SintacticoFs miParser = new SintacticoFs(lex);
                 miParser.parse();
-                ArrayList<NodoError> errores = miParser.errores;
+                errores.clear();
+                ArrayList<NodoError> sintacticos = miParser.errores;
                 ArrayList<NodoError> lexicos = lex.Elista;
+                fusionar_Errores(lexicos, sintacticos);
                 NodoFs nuevo = miParser.regresar_raiz();
                 Consola.setText("");
-                Pasada1 pasada = new Pasada1(nuevo);
-                tabla = pasada.analizar(errores);
-                tabla.inicia_importados();
-                Importados imp = new Importados(tabla, tabla, num);
-                ArrayList<String> lista = new ArrayList();
-                lista.add(path);
-                imp.Analizar(nuevo, errores, lista);
-                Inicio ini = new Inicio(tabla, tabla, num);
-                ini.Analizar(nuevo, errores);
-                recorrer_Tabla(tabla);
-                System.out.println(miParser.errores.size() + " <----cantidad de errores");
-                System.out.println(ventanas.size() + " <----ventanas");
-                Imprimir_errores(miParser.errores);
-                //Impirmir_importados();
-                imprimir_ventanas();
+                if (!(errores.size() > 0)) {
+                    Pasada1 pasada = new Pasada1(nuevo);
+                    tabla = pasada.analizar(errores);
+                    tabla.inicia_importados();
+                    Importados imp = new Importados(tabla, tabla, num);
+                    ArrayList<String> lista = new ArrayList();
+                    lista.add(path);
+                    imp.Analizar(nuevo, errores, lista);
+                    Inicio ini = new Inicio(tabla, tabla, num);
+                    ini.Analizar(nuevo, errores);
+                    recorrer_Tabla(tabla);
+                    System.out.println(miParser.errores.size() + " <----cantidad de errores");
+                    imprimir_ventanas();
+                }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex) {
@@ -221,9 +226,9 @@ public class Pestania extends javax.swing.JPanel {
         }
     }
 
-    public boolean Add_ventana(String color, int largo, int ancho, String id,String guardado) {
-        String newpath = ABpath+"/"+guardado+".gdato";
-        est_ventana ven = new est_ventana(id, largo, ancho, color, num,newpath);
+    public boolean Add_ventana(String color, int largo, int ancho, String id, String guardado) {
+        String newpath = ABpath + "/" + guardado + ".gdato";
+        est_ventana ven = new est_ventana(id, largo, ancho, color, num, newpath);
         boolean add = true;
         for (int i = 0; i < ventanas.size(); i++) {
             if (ventanas.get(i).id.equalsIgnoreCase(id)) {
@@ -428,5 +433,15 @@ public class Pestania extends javax.swing.JPanel {
                 ventanas.get(i).Guardar_datosContenedor();
             }
         }
+    }
+
+    private boolean fusionar_Errores(ArrayList<NodoError> lexicos, ArrayList<NodoError> sintacticos) {
+        for (int i = 0; i < lexicos.size(); i++) {
+            errores.add(lexicos.get(i));
+        }
+        for (int i = 0; i < sintacticos.size(); i++) {
+            errores.add(sintacticos.get(i));
+        }
+        return true;
     }
 }

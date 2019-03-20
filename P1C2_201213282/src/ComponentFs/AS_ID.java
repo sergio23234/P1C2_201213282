@@ -33,7 +33,7 @@ public class AS_ID {
             if (raiz.hijos.size() > 1) {
                 NodoFs actual = raiz.hijos.get(1);
                 NodoRespuesta res = OP.Cuerpo_G(actual, errores);
-                Analizar_paso2(var, res, raiz.valor, errores);
+                Analizar_paso2(var, res, raiz.valor, errores,raiz.linea,raiz.columna);
             } else {
 
             }
@@ -41,18 +41,18 @@ public class AS_ID {
         return var;
     }
 
-    private NodoRespuesta Analizar_paso2(NodoRespuesta ID, NodoRespuesta resultado, String tipo, ArrayList<NodoError> errores) {
+    private NodoRespuesta Analizar_paso2(NodoRespuesta ID, NodoRespuesta resultado, String tipo, ArrayList<NodoError> errores,int linea,int columna) {
         switch (tipo.toLowerCase()) {
             case "=":
                 return es_igualar(ID, resultado, errores);
             case "+=":
-                return es_sumar(ID, resultado, errores);
+                return es_sumar(ID, resultado, errores,linea,columna);
             case "-=":
-                return es_restar(ID, resultado, errores);
+                return es_restar(ID, resultado, errores,linea,columna);
             case "*=":
-                return es_multi(ID, resultado, errores);
+                return es_multi(ID, resultado, errores,linea,columna);
             case "/=":
-                return es_divi(ID, resultado, errores);
+                return es_divi(ID, resultado, errores,linea,columna);
             case "funcion":
                 break;
         }
@@ -159,12 +159,12 @@ public class AS_ID {
         return false;
     }
 
-    private NodoRespuesta es_sumar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores) {
+    private NodoRespuesta es_sumar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
         if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.sumar_xdato(ID, resultado);
+            NodoRespuesta sumar = opa.sumar_xdato(ID, resultado,linea,columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -179,12 +179,12 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_restar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores) {
+    private NodoRespuesta es_restar(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
         if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.restar_xdato(ID, resultado);
+            NodoRespuesta sumar = opa.restar_xdato(ID, resultado,linea,columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -199,12 +199,12 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_multi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores) {
+    private NodoRespuesta es_multi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
         if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.multi_xdato(ID, resultado);
+            NodoRespuesta sumar = opa.multi_xdato(ID, resultado,linea,columna);
             if (sumar.error) {
                 return sumar;
             } else {
@@ -219,12 +219,12 @@ public class AS_ID {
         }
     }
 
-    private NodoRespuesta es_divi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores) {
+    private NodoRespuesta es_divi(NodoRespuesta ID, NodoRespuesta resultado, ArrayList<NodoError> errores,int linea,int columna) {
         if (resultado.tipo.equalsIgnoreCase("objeto") || resultado.tipo.equalsIgnoreCase("objeto")) {
             return new NodoRespuesta(true);
         } else {
             OPA_A opa = new OPA_A(tabla, global, num);
-            NodoRespuesta sumar = opa.divi_xdato(ID, resultado);
+            NodoRespuesta sumar = opa.divi_xdato(ID, resultado,linea,columna);
             if (sumar.error) {
                 return sumar;
             } else {

@@ -805,7 +805,7 @@ public class llamada_fun {
                         respuesta = retornara;
                     } else if (retornara.tipo.equalsIgnoreCase("variable")) {
                         OPA_A op = new OPA_A(tabla, global, num);
-                        respuesta = op.sumar_xdato(respuesta, retornara);
+                        respuesta = op.sumar_xdato(respuesta, retornara,actual.linea,actual.columna);
                     }
                     break;
                 } else {
@@ -882,7 +882,15 @@ public class llamada_fun {
                 }
                 return new NodoRespuesta(true);
             } else {
-
+                    String tipo1 = nombre.resultado.toString().toLowerCase();
+                    NodoObjeto retorno =nodo.Dev_Ventanas_u_Objeto(tipo1);
+                    if(retorno!=null) {
+                        NodoRespuesta nuevo = new NodoRespuesta(retorno);
+                        nuevo.tipo ="objeto";
+                        return nuevo;
+                    }else{
+                        return new NodoRespuesta("undefined");
+                    }
             }
         }
         return new NodoRespuesta(false);

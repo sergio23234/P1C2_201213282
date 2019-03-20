@@ -25,12 +25,14 @@ public class Analizador_gxml {
     private String parent;
     private ArrayList<NodoGxml> raices;
     private ArrayList<String> pats;
+    public ArrayList<NodoError> errores;
 
     public Analizador_gxml(String path, String parent) {
         this.path = path;
         raices = new ArrayList();
         this.parent = parent;
         pats = new ArrayList();
+        errores = new ArrayList();
     }
 
     public void Analizar() {
@@ -41,21 +43,23 @@ public class Analizador_gxml {
             SintacticoGxml miParser = new SintacticoGxml(lex);
             miParser.parse();
             NodoGxml Raiz = miParser.RCCSS;
-            Raiz.errores = com_errores(miParser.errores, lex.Elista);
+            errores = com_errores(miParser.errores, lex.Elista);
             System.out.println("errores --->" + Raiz.errores.size() + "--->" + miParser.errores.size());
-            raices.add(Raiz);
-            pats.add(path);
-            Analizar_Imports(Raiz);
-            Verificar_Ventanas();
-            if (!ver_errores()) {
-                System.out.println("no hay errores" + raices.size());
-                Generar_Archivo_FS nuevo = new Generar_Archivo_FS(raices);
-                String datos[] = path.split("/");
-                String nombre = path.replace(parent, "");
-                nuevo.Generar_archivo(nombre, parent);
+            if (Raiz.errores.size() > 0) {
+                raices.add(Raiz);
+                pats.add(path);
+                Analizar_Imports(Raiz);
+                Verificar_Ventanas();
+                if (!ver_errores()) {
+                    System.out.println("no hay errores" + raices.size());
+                    Generar_Archivo_FS nuevo = new Generar_Archivo_FS(raices);
+                    String datos[] = path.split("/");
+                    String nombre = path.replace(parent, "");
+                    nuevo.Generar_archivo(nombre, parent);
 
-            } else {
-                   imp_errores();
+                } else {
+                    imp_errores();
+                }
             }
 
         } catch (Exception ex) {
@@ -136,9 +140,8 @@ public class Analizador_gxml {
 
     private void imp_errores() {
         for (int i = 0; i < raices.size(); i++) {
-            for(int j=0;j<raices.get(i).errores.size();j++) {
-                NodoError nuevo=raices.get(i).errores.get(j);
-                System.out.println(nuevo.tipo+"--"+nuevo.linea+"--"+nuevo.columna+"--"+nuevo.descripcion);
+            for (int j = 0; j < raices.get(i).errores.size(); j++) {
+                errores.add(raices.get(i).errores.get(j));
             }
         }
     }
@@ -152,4 +155,7 @@ public class Analizador_gxml {
         return true;
     }
 
+    public ArrayList<NodoError> dev_errores() {
+        return this.errores;
+    }
 }

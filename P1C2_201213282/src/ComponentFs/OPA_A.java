@@ -5,6 +5,7 @@
  */
 package ComponentFs;
 
+import Principal.Menu;
 import Principal.NodoError;
 import java.util.ArrayList;
 
@@ -28,16 +29,18 @@ public class OPA_A {
         Cuerpo_op OP = new Cuerpo_op(tabla, global, num);
         NodoRespuesta uno = OP.Cuerpo_G(raiz.hijos.get(0), errores);
         NodoRespuesta dos = OP.Cuerpo_G(raiz.hijos.get(1), errores);
+        int linea = raiz.hijos.get(0).linea;
+        int columna = raiz.hijos.get(0).columna;
         if (uno.error || dos.error) {
             NodoRespuesta error = new NodoRespuesta(true);
             return error;
         }
-        NodoRespuesta resp = Accion_A(uno, raiz.valor, dos, errores);
+        NodoRespuesta resp = Accion_A(uno, raiz.valor, dos, errores, linea, columna);
         //System.out.println(uno.resultado + "<---uno " + dos.resultado + "<-----dos" + resp.resultado + "<-----res");
         return resp;
     }
 
-    private NodoRespuesta Accion_A(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores) {
+    private NodoRespuesta Accion_A(NodoRespuesta Izq, String tipo, NodoRespuesta Der, ArrayList<NodoError> errores, int linea, int columna) {
         String tipo_izq = ret_tipo(Izq.resultado.toString());
         String tipo_der = ret_tipo(Der.resultado.toString());
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
@@ -49,8 +52,9 @@ public class OPA_A {
         } else {
             NodoError error = new NodoError("semantico");
             error.descripcion = "erro tipos incompatibles no se puede: " + tipo + " con: " + tipo_izq + " y " + tipo_der;
-            //System.out.println(error.descripcion);
-            // System.out.println(Izq.resultado + "---" + Der.resultado);
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            System.out.println("llego aqui");
             errores.add(error);
             return new NodoRespuesta(true);
         }
@@ -333,7 +337,7 @@ public class OPA_A {
         }
     }
 
-    public NodoRespuesta sumar_uno(NodoRespuesta dato, ArrayList<NodoError> errores, TablaSimbolos tabla) {
+    public NodoRespuesta sumar_uno(NodoRespuesta dato, TablaSimbolos tabla, int linea, int columna) {
         //System.out.println(dato.dato + dato.error + dato.resultado);
         String tipo = ret_tipo(dato.resultado.toString());
         if (tipo.equalsIgnoreCase("decimal") || tipo.equalsIgnoreCase("numero")) {
@@ -344,13 +348,15 @@ public class OPA_A {
         } else {
             NodoError error = new NodoError("semantico");
             error.descripcion = "no se puede autoincrementar la variable: " + dato.dato + " no es decimal o entero ";
-            errores.add(error);
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             NodoRespuesta uno = new NodoRespuesta(true);
             return uno;
         }
     }
 
-    public NodoRespuesta restar_uno(NodoRespuesta dato, ArrayList<NodoError> errores, TablaSimbolos tabla) {
+    public NodoRespuesta restar_uno(NodoRespuesta dato, TablaSimbolos tabla, int linea, int columna) {
         String tipo = ret_tipo(dato.resultado.toString());
         if (tipo.equalsIgnoreCase("decimal") || tipo.equalsIgnoreCase("numero")) {
             String resultado = realizar_resta(dato.resultado.toString(), tipo, "1", "numero");
@@ -360,7 +366,9 @@ public class OPA_A {
         } else {
             NodoError error = new NodoError("semantico");
             error.descripcion = "no se puede autodecrementar la variable: " + dato.dato + " no es decimal o entero ";
-            errores.add(error);
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             NodoRespuesta uno = new NodoRespuesta(true);
             return uno;
         }
@@ -385,17 +393,24 @@ public class OPA_A {
             } else {
                 NodoError error = new NodoError("semantico");
                 error.descripcion = "la operacion no se puede negar";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
                 errores.add(error);
             }
         }
         return new NodoRespuesta(true);
     }
 
-    public NodoRespuesta sumar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+    public NodoRespuesta sumar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2, int linea, int columna) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());
         boolean compatible = ret_compatible(tipodato1, tipodato2, "+");
         if (!compatible) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede sumar con tipo:" + tipodato1 + " y " + tipodato2;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             String resultado = realizar_suma(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
@@ -409,11 +424,16 @@ public class OPA_A {
         }
     }
 
-    public NodoRespuesta restar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+    public NodoRespuesta restar_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2, int linea, int columna) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());
         boolean compatible = ret_compatible(tipodato1, tipodato2, "-");
         if (!compatible) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede resta con tipo:" + tipodato1 + " y " + tipodato2;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             String resultado = realizar_resta(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
@@ -427,11 +447,16 @@ public class OPA_A {
         }
     }
 
-    public NodoRespuesta multi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+    public NodoRespuesta multi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2, int linea, int columna) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());
         boolean compatible = ret_compatible(tipodato1, tipodato2, "*");
         if (!compatible) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede multiplicar con tipo:" + tipodato1 + " y " + tipodato2;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             String resultado = realizar_mul(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);
@@ -445,11 +470,16 @@ public class OPA_A {
         }
     }
 
-    public NodoRespuesta divi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2) {
+    public NodoRespuesta divi_xdato(NodoRespuesta Dato1, NodoRespuesta Dato2, int linea, int columna) {
         String tipodato1 = ret_tipo(Dato1.resultado.toString());
         String tipodato2 = ret_tipo(Dato2.resultado.toString());
         boolean compatible = ret_compatible(tipodato1, tipodato2, "/");
         if (!compatible) {
+            NodoError error = new NodoError("semantico");
+            error.descripcion = "la operacion no se puede dividir con tipo:" + tipodato1 + " y " + tipodato2;
+            error.linea = String.valueOf(linea);
+            error.columna = String.valueOf(columna);
+            Menu.Lista.get(num).errores.add(error);
             return new NodoRespuesta(true);
         } else {
             String resultado = realizar_div(Dato1.resultado.toString(), tipodato1, Dato2.resultado.toString(), tipodato2);

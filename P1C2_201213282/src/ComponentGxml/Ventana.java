@@ -255,4 +255,12 @@ public class Ventana {
         }
         return null;
     }
+    public NodoObjeto Dev_Conte(String ID) {
+        for (int i = 0; i < contenedores.size(); i++) {
+           if(contenedores.get(i).Id.equalsIgnoreCase(ID)){
+               return contenedores.get(i).dev_contenedor();
+           }
+        }
+        return null;
+    }
 }

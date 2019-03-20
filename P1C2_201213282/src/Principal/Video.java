@@ -5,26 +5,29 @@
  */
 package Principal;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+import java.awt.BorderLayout;
+import java.awt.Canvas;
 import java.awt.Component;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.media.CannotRealizeException;
-import javax.media.Manager;
-import javax.media.NoPlayerException;
-import javax.media.Player;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.player.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.videosurface.CanvasVideoSurface;
+import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+
 
 /**
  *
  * @author sergi
  */
 public class Video extends javax.swing.JPanel {
-
-    private Player mediaPlayer;
-    private Component controls;
-
+String ruta;
+int x,y;
+int alto,ancho;
+Videoview nuevo;
+boolean entro = true;
     /**
      * Creates new form Video
      *
@@ -37,25 +40,13 @@ public class Video extends javax.swing.JPanel {
      */
     public Video(String ruta, int x, int y, boolean auto, int alto, int ancho) {
         initComponents();
-        this.setBounds(x, y, ancho, alto);
-        try {
-            mediaPlayer = Manager.createRealizedPlayer(new File(ruta).toURI().toURL());
-            Component video2 = mediaPlayer.getVisualComponent();
-            video2.setSize(ancho, alto - 24);
-            video2.setVisible(true);
-            controls = mediaPlayer.getControlPanelComponent();
-            controls.setSize(ancho, 24);
-            if (video2 != null) {
-                add(video2); //agrega el componente del reproductor al panel 
-            }
-            mediaPlayer.start();
-        } catch (IOException ex) {
-            Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NoPlayerException ex) {
-            Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CannotRealizeException ex) {
-            Logger.getLogger(Video.class.getName()).log(Level.SEVERE, null, ex);
-        }
+      this.setLocation(x, y);
+      this.setSize(ancho,25);
+      this.x = x;
+      this.y = y;
+      this.ruta = ruta.replace("/", "\\\\");
+      this.alto= alto;
+      this.ancho = ancho;
     }
 
     /**
@@ -67,21 +58,43 @@ public class Video extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Stop = new javax.swing.JButton();
+
         setBackground(new java.awt.Color(255, 255, 255));
+
+        Stop.setBackground(new java.awt.Color(153, 255, 204));
+        Stop.setText("Reproducir");
+        Stop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StopActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(Stop)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(Stop)
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void StopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopActionPerformed
+        // TODO add your handling code here:
+       if(entro){
+            nuevo = new Videoview(ruta,x,y,alto,ancho);
+            entro= false;
+       }else{
+           nuevo.cerrar();
+           entro = true;
+       }
+    }//GEN-LAST:event_StopActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Stop;
     // End of variables declaration//GEN-END:variables
 }
