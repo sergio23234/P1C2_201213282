@@ -60,8 +60,8 @@ public class Control {
                 try {
                     Pattern pattern = Pattern.compile("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
                     Matcher matcher;
-                    Color color = Color.decode(hijo);
-                    matcher = pattern.matcher("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                    //Color color = Color.decode(hijo);
+                    matcher = pattern.matcher(hijo);
                     if (!matcher.matches()) {
                         NodoError error = new NodoError("semantico");
                         error.descripcion = "El color definido:" + hijo + " no es un color valido tiene que extar en hexadecimal";

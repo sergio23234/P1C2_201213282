@@ -685,7 +685,16 @@ public class Componentes_FS {
             if (error) {
                 return new NodoRespuesta(true);
             }
+
             String ruta = dato1.resultado.toString().replace("\"", "");
+            if (!ruta.endsWith(".mp3") && !ruta.endsWith(".avi") && !ruta.endsWith(".mp4") && !ruta.endsWith(".flv")) {
+                NodoError error1 = new NodoError("semantico");
+                error1.descripcion = "la ruta no tiene una extension valida";
+                error1.linea = String.valueOf(raiz.linea);
+                error1.columna = String.valueOf(raiz.columna);
+                Menu.Lista.get(num).errores.add(error1);
+                return new NodoRespuesta(true);
+            }
             int x = Integer.valueOf(dato2.resultado.toString());
             int y = Integer.valueOf(dato3.resultado.toString());
             int alto = Integer.valueOf(dato5.resultado.toString());
@@ -836,6 +845,14 @@ public class Componentes_FS {
                 return new NodoRespuesta(true);
             }
             String ruta = dato1.resultado.toString().replace("\"", "");
+            if (!ruta.endsWith(".jpg") && !ruta.endsWith(".png")) {
+                NodoError error1 = new NodoError("semantico");
+                error1.descripcion = "la ruta no tiene una extension valida";
+                error1.linea = String.valueOf(raiz.linea);
+                error1.columna = String.valueOf(raiz.columna);
+                Menu.Lista.get(num).errores.add(error1);
+                return new NodoRespuesta(true);
+            }
             int x = Integer.valueOf(dato2.resultado.toString());
             int y = Integer.valueOf(dato3.resultado.toString());
             int alto = Integer.valueOf(dato4.resultado.toString());
