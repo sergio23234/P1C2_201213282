@@ -63,8 +63,6 @@ public class est_ventana extends javax.swing.JFrame {
         Scrollpane = new javax.swing.JScrollPane();
         master = new javax.swing.JPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-
         master.setBackground(new java.awt.Color(204, 255, 255));
 
         javax.swing.GroupLayout masterLayout = new javax.swing.GroupLayout(master);

@@ -47,6 +47,11 @@ public class Est_Array {
                     nuevo.tipo = "array";
                     return nuevo;
                 } catch (Exception e) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "fallo en la lectura del archivo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     return new NodoRespuesta(true);
                 }
             } else {

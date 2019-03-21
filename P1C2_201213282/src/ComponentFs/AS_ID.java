@@ -67,12 +67,15 @@ public class AS_ID {
             if (ID.dato.contains("[") || ID.dato.contains(".")) {
                 return new NodoRespuesta(true);
             } else if (tipo.equalsIgnoreCase("arrayespecial")) {
+                 NodoError error = new NodoError("semantico");
+                error.descripcion = "la operacion no se puede asignar"+tipo;
+                errores.add(error);
                 return new NodoRespuesta(true);
             } else {
                 set_Nuevoval_ID(resultado, ID.dato, tabla);
             }
         } else {
-            System.out.println(ID.dato+"____"+resultado.resultado.toString());
+            //System.out.println(ID.dato+"____"+resultado.resultado.toString());
             set_Nuevoval_ID(resultado, ID.dato, tabla);
         }
 

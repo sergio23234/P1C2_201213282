@@ -114,6 +114,11 @@ public class Pestania extends javax.swing.JPanel {
             Analizador_gxml analizador = new Analizador_gxml(path, ABpath);
             analizador.Analizar();
             errores = analizador.dev_errores();
+            if(errores.size()>0){
+                Consola.append("Hay errores en el archivo no se logro traducir");
+            }else{
+                Consola.append("se logro traducir el archivo");
+            }
         } else if (!path.equals("") && (path.toLowerCase().endsWith(".fs"))) {
             File archivo = new File(path);
             FileReader fr;
@@ -143,9 +148,9 @@ public class Pestania extends javax.swing.JPanel {
                     imp.Analizar(nuevo, errores, lista);
                     Inicio ini = new Inicio(tabla, tabla, num);
                     ini.Analizar(nuevo, errores);
-                    recorrer_Tabla(tabla);
-                    System.out.println(miParser.errores.size() + " <----cantidad de errores");
-                    imprimir_ventanas();
+                    //recorrer_Tabla(tabla);
+                    //System.out.println(miParser.errores.size() + " <----cantidad de errores");
+                    //imprimir_ventanas();
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Pestania.class.getName()).log(Level.SEVERE, null, ex);

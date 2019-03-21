@@ -46,6 +46,11 @@ public class OPA_A {
         boolean relizar = ret_compatible(tipo_izq, tipo_der, tipo);
         if (relizar) {
             if (accion_posible(Izq.tipo) || accion_posible(Der.tipo)) {
+                        NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "no se puede realizar operaciones con ese tipo de archivos";
+                    error1.linea = String.valueOf(linea);
+                    error1.columna = String.valueOf(columna);
+                    Menu.Lista.get(num).errores.add(error1);
                 return new NodoRespuesta(true);
             }
             return realizar_OP(Izq.resultado.toString(), tipo_izq, tipo, Der.resultado.toString(), tipo_der);

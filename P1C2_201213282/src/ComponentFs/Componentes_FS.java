@@ -44,6 +44,11 @@ public class Componentes_FS {
             System.out.println(dato2.resultado.toString() + " es tipo: " + tipo2);
             System.out.println(dato3.resultado.toString() + " es tipo: " + tipo3);*/
             if (!tipo4.equalsIgnoreCase("cadena") || !tipo1.equalsIgnoreCase("cadena") || !tipo2.equalsIgnoreCase("numero") || !tipo3.equalsIgnoreCase("numero")) {
+                NodoError error = new NodoError("semantico");
+                error.descripcion = "el dato no coincide con el necesario";
+                error.linea = String.valueOf(raiz.linea);
+                error.columna = String.valueOf(raiz.columna);
+                Menu.Lista.get(num).errores.add(error);
                 return new NodoRespuesta(true);
             }
             String id = raices.lista.get(raices.lista.size() - 1);
@@ -84,15 +89,27 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 2) {
-                    //  System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && i == 3) {
-                    //System.out.println("no es boleano");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser booleano";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 2 && i != 3) {
-                    //System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numero";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -151,14 +168,27 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 5) && (!tipos[i].equalsIgnoreCase("undefined") && i == 5)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena o nulo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 0 || i == 2 || i == 6)) {
-                    //  System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 2 && i != 5 && i != 6) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -245,13 +275,28 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("boleano") && i == 5 && i == 6)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser booleano";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 0 || i == 2 || i == 7)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     // System.out.println("no es cadena");
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 1 || i == 3 || i == 4)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     // System.out.println("no es numero" + i);
                     error = true;
                     break;
@@ -325,18 +370,35 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 9) && (!tipos[i].equalsIgnoreCase("undefined") && i == 9)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena o nulo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 4 || i == 2 || i == 10)) {
-                    // System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 0 || i == 1 || i == 5 || i == 6)) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && (i == 8 || i == 7)) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser booleano";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -411,18 +473,35 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 9) && (!tipos[i].equalsIgnoreCase("undefined") && i == 9)) {
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena o nulo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 4 || i == 2 || i == 10)) {
-                    // System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 0 || i == 1 || i == 5 || i == 6)) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numero";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && (i == 8 || i == 7)) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser booleano";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -491,19 +570,36 @@ public class Componentes_FS {
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("vector") && i == 2)) {
                     System.out.println("no es vector: " + tipos[i]);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser vector";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
 
                 } else if ((!tipos[i].equalsIgnoreCase("cadena") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 5)) {
-                    // System.out.println("no es numero o nulo" + tipos[i]);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena o nulo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("cadena") && (i == 6)) {
-                    System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i == 0 || i == 1 || i == 3 || i == 4)) {
-                    System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -557,15 +653,27 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 0) {
-                    // System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0 && i != 3) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("boleano") && i == 3) {
-                    // System.out.println("no es boleano");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser booleano";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);;
                     error = true;
                     break;
                 }
@@ -625,15 +733,27 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if ((!tipos[i].equalsIgnoreCase("cadena") && i == 7)) {
-                    // System.out.println("no es cadena" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if ((!tipos[i].equalsIgnoreCase("numero") && (!tipos[i].equalsIgnoreCase("undefined"))) && (i == 2 || i == 3 || i == 6)) {
-                    // System.out.println("no es numero o nulo" + tipos[i]);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico o nulo";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && (i != 7 && i != 2 && i != 3 && i != 6)) {
-                    // System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -691,11 +811,19 @@ public class Componentes_FS {
             boolean error = false;
             for (int i = 0; i < tipos.length; i++) {
                 if (!tipos[i].equalsIgnoreCase("cadena") && i == 0) {
-                    //System.out.println("no es cadena");
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser cadena";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 } else if (!tipos[i].equalsIgnoreCase("numero") && i != 0) {
-                    //System.out.println("no es numero" + i);
+                    NodoError error1 = new NodoError("semantico");
+                    error1.descripcion = "el dato tiene que ser numerico entero";
+                    error1.linea = String.valueOf(raiz.linea);
+                    error1.columna = String.valueOf(raiz.columna);
+                    Menu.Lista.get(num).errores.add(error1);
                     error = true;
                     break;
                 }
@@ -722,6 +850,5 @@ public class Componentes_FS {
             }
         }
     }
-
 
 }

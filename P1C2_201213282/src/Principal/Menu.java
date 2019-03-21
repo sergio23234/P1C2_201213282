@@ -406,7 +406,7 @@ public class Menu extends javax.swing.JFrame {
                 errores.Set_errores();
                 errores.show();
             } else {
-
+                 JOptionPane.showMessageDialog(this, "No hay errores", "¡¡¡Hurra!!!", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_erroresActionPerformed
